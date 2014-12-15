@@ -34,8 +34,10 @@ if ( MADP_FOUND )
                 src/controller_mdp.cpp
                 src/controller_timed_mdp.cpp
                 src/controller_event_mdp.cpp
+                src/controller_decpomdp.cpp
                 src/controller_pomdp.cpp
                 src/controller_timed_pomdp.cpp
+                src/controller_event_decpomdp.cpp
                 src/controller_event_pomdp.cpp
                 src/decpomdp_loader.cpp)
             

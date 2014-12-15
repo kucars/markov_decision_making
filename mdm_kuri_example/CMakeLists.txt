@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(mdm_example)
+project(mdm_kuri_example)
 
 find_package(catkin REQUIRED COMPONENTS mdm_library
                                         predicate_manager
@@ -18,25 +18,21 @@ catkin_package(
                  topological_tools
 )
 
+
 message("======================================== ${topological_tools_LIBRARIES}")
 
 include_directories(include ${catkin_INCLUDE_DIRS})
 
-add_executable(demo_predicates src/demo_predicates.cpp)
+add_executable(predicates src/predicates.cpp)
+target_link_libraries(predicates ${catkin_LIBRARIES} ${topological_tools_LIBRARIES} ${predicate_manager_LIBRARIES})
 
-target_link_libraries(demo_predicates ${catkin_LIBRARIES} ${topological_tools_LIBRARIES} ${predicate_manager_LIBRARIES})
 
+add_executable(state_layer src/state_layer.cpp)
+target_link_libraries(state_layer ${catkin_LIBRARIES})
 
-add_executable(demo_state_layer src/demo_state_layer.cpp)
+add_executable(action_layer src/action_layer.cpp)
+target_link_libraries(action_layer ${catkin_LIBRARIES})
 
-target_link_libraries(demo_state_layer ${catkin_LIBRARIES})
-
-add_executable(demo_action_layer src/demo_action_layer.cpp)
-
-target_link_libraries(demo_action_layer ${catkin_LIBRARIES})
-
-add_executable(demo_control_layer src/demo_control_layer.cpp)
-
-target_link_libraries(demo_control_layer ${catkin_LIBRARIES})
-
-set_target_properties(demo_control_layer PROPERTIES COMPILE_FLAGS "-std=c++0x")
+add_executable(control_layer src/control_layer.cpp)
+target_link_libraries(control_layer ${catkin_LIBRARIES})
+set_target_properties(control_layer PROPERTIES COMPILE_FLAGS "-std=c++0x")

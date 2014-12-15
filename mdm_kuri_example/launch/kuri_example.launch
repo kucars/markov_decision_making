@@ -1,0 +1,20 @@
+<launch>
+    <group ns="agent/100">
+        <param name="pm_id" value="0" />
+
+        <rosparam file="$(find mdm_kuri_example)/config/predicate_labels.yaml" command="load" ns="predicate_labels" />
+        <node pkg="mdm_kuri_example" name="predicates" type="predicates" respawn="true"/>
+
+        <node pkg="mdm_kuri_example" name="state_layer" type="state_layer" respawn="true"/>
+
+        <node pkg="mdm_kuri_example" name="control_layer" type="control_layer" 
+              args="$(find mdm_kuri_example)/config/MDP_policy" respawn="true"/>
+        
+        <node pkg="mdm_kuri_example" name="action_layer" type="action_layer" 
+              args="$(find mdm_kuri_example)/config/topological_map.xml" respawn="true"/>
+        
+        <node pkg="rostopic" type="rostopic" name="rostopic_pub"        
+              args="pub -1 /agent/100/initialpose geometry_msgs/PoseWithCovarianceStamped '{pose: {pose: {position: {x: -10, y: -7.5, z: 0}, orientation: { w: 0.7071, z: 0.7071, x: 0, y: 0 } } } }'"/>
+              
+    </group>
+</launch>
