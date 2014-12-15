@@ -10,7 +10,7 @@ find_package(catkin REQUIRED COMPONENTS
                              std_msgs
                              predicate_manager)
 
-find_package( MADP )
+find_package( MADP REQUIRED)
 
 add_message_files(FILES
                   ActionSymbol.msg 
@@ -56,7 +56,7 @@ endif ( MADP_FOUND )
 
 add_dependencies(mdm_control_layer ${PROJECT_NAME}_generate_messages_cpp)
 
-target_link_libraries(mdm_control_layer ${MADP_LIBRARIES})
+target_link_libraries(mdm_control_layer -L/home/tataha/workspace/madp-0.3/src/libpomdp-solve/src/lp-solve-old/ ${MADP_LIBRARIES})
 
 add_library(mdm_action_layer
             src/action_layer.cpp)

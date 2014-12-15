@@ -15,7 +15,7 @@ FIND_PATH( MADP_INCLUDE_DIRS madp/Globals.h
            $ENV{MADP_ROOT}
            $ENV{MADP_ROOT}/include
            DOC "directory containing madp/*.h for the MADP library" )
-
+message ("==================================== Maybe ${MADP_INCLUDE_DIRS} $ENV{MADP_ROOT}")
 IF(EXISTS ${MADP_INCLUDE_DIRS})
   SET(MADP_LIBRARIES "-lMADPBase -lMADPSupport -lMADPPlanning -lMADPParser -lPOMDPSolve -lLPSolveOld -lmdp")
 ENDIF()

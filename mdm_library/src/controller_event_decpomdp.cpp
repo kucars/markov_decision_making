@@ -37,7 +37,7 @@ ControllerEventDecPOMDP::
 ControllerEventDecPOMDP ( string const& problem_file,
                        string const& value_function_file,
                        const CONTROLLER_STATUS initial_status ) :
-    ControllerPOMDP ( problem_file, initial_status )
+    ControllerDecPOMDP ( problem_file, initial_status )
 {
     try
     {

@@ -37,7 +37,7 @@ namespace mdm_library
 /**
  * ControllerEventPOMDP implements an asynchronous POMDP controller, driven by incoming observations.
  */
-class ControllerEventDecPOMDP : public ControllerPOMDP
+class ControllerEventDecPOMDP : public ControllerDecPOMDP
 {
 public:
     /**
