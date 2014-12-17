@@ -28,6 +28,11 @@ catkin_package(
    CATKIN_DEPENDS roscpp predicate_manager message_generation
   )
 
+include_directories(include
+${catkin_INCLUDE_DIRS}
+${MADP_INCLUDE_DIRS}
+)
+
 if ( MADP_FOUND )
     add_library(mdm_control_layer
                 src/control_layer_base.cpp
@@ -42,6 +47,7 @@ if ( MADP_FOUND )
                 src/decpomdp_loader.cpp)
             
     set_target_properties(mdm_control_layer PROPERTIES COMPILE_FLAGS "-std=c++0x")
+    link_directories(${MADP_LINK_DIRS})
     add_definitions(-DHAVE_MADP)
 else ( MADP_FOUND )
     message(STATUS "WARNING: MADP was not found on your system. Compiling without MADP support. Some functionalities may be absent.")
@@ -55,23 +61,18 @@ else ( MADP_FOUND )
 endif ( MADP_FOUND )
 
 add_dependencies(mdm_control_layer ${PROJECT_NAME}_generate_messages_cpp)
+set_target_properties( mdm_control_layer PROPERTIES IMPORTED_LOCATION ${MADP_LINK_DIRS} )
+target_link_libraries(mdm_control_layer -L${MADP_LINK_DIRS} ${MADP_LIBRARIES})
 
-target_link_libraries(mdm_control_layer -L/home/tataha/workspace/madp-0.3/src/libpomdp-solve/src/lp-solve-old/ ${MADP_LIBRARIES})
 
-add_library(mdm_action_layer
-            src/action_layer.cpp)
-
+add_library(mdm_action_layer src/action_layer.cpp)
 add_dependencies(mdm_action_layer ${PROJECT_NAME}_generate_messages_cpp)
             
 include_directories(include ${catkin_INCLUDE_DIRS})
 
 
-add_library(mdm_state_layer
-            src/state_layer.cpp)
-             
+add_library(mdm_state_layer src/state_layer.cpp)
 add_dependencies(mdm_state_layer ${PROJECT_NAME}_generate_messages_cpp)
 
-add_library(mdm_observation_layer
-            src/observation_layer.cpp)
-
+add_library(mdm_observation_layer src/observation_layer.cpp)
 add_dependencies(mdm_observation_layer ${PROJECT_NAME}_generate_messages_cpp)

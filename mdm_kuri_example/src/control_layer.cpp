@@ -16,8 +16,8 @@ int main ( int argc, char** argv )
     }
 
     string policy_path = argv[1];
-
-    ControllerEventMDP cl ( policy_path );
+    string value_file;
+    ControllerEventDecPOMDP cl ( policy_path ,value_file);
 
     spin();
 

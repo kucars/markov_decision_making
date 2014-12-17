@@ -59,7 +59,7 @@ public:
      * it must also reset the belief state of the process to the initial state distribution.
      */
     void startController();
-
+    ~ControllerEventDecPOMDP(){}
 private:
     /**
      * Callback for observation data. A new decision step is taken whenever an observation is received.

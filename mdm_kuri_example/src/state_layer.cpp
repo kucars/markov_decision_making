@@ -7,6 +7,7 @@ using namespace mdm_library;
 
 int main ( int argc, char** argv )
 {
+    /*
     init ( argc, argv, "state_layer" );
 
     StateLayer sl;
@@ -21,6 +22,6 @@ int main ( int argc, char** argv )
     sl.addStateFactor ( StateDep().add ( "PatrolHalfwayThrough" ) );
 
     spin();
-
+    */
     return 0;
 }
