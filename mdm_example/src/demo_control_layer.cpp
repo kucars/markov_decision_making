@@ -1,6 +1,7 @@
 #include <ros/ros.h>
-//#include <mdm_library/controller_event_mdp.h>
-#include <mdm_library/control_layer_base.h>
+#include <mdm_library/controller_event_mdp.h>
+#include <madp/maxplus.h>
+//#include <mdm_library/control_layer_base.h>
 
 using namespace std;
 using namespace ros;
@@ -18,8 +19,8 @@ int main ( int argc, char** argv )
 
     string policy_path = argv[1];
 
-    //ControllerEventMDP cl ( policy_path );
-    ControlLayerBase lp;
+    ControllerEventMDP cl ( policy_path );
+    //ControlLayerBase lp;
     spin();
 
     return 0;

@@ -31,9 +31,11 @@ catkin_package(
 include_directories(include
 ${catkin_INCLUDE_DIRS}
 ${MADP_INCLUDE_DIRS}
+${Boost_INCLUDE_DIRS}
 )
 
 if ( MADP_FOUND )
+    message(STATUS "===== ****** Building with Full MADP Support ****** =====")
     add_library(mdm_control_layer
                 src/control_layer_base.cpp
                 src/controller_mdp.cpp
@@ -44,10 +46,8 @@ if ( MADP_FOUND )
                 src/controller_timed_pomdp.cpp
                 src/controller_event_decpomdp.cpp
                 src/controller_event_pomdp.cpp
-                src/decpomdp_loader.cpp)
-            
+                src/decpomdp_loader.cpp)            
     set_target_properties(mdm_control_layer PROPERTIES COMPILE_FLAGS "-std=c++0x")
-    link_directories(${MADP_LINK_DIRS})
     add_definitions(-DHAVE_MADP)
 else ( MADP_FOUND )
     message(STATUS "WARNING: MADP was not found on your system. Compiling without MADP support. Some functionalities may be absent.")
@@ -60,16 +60,16 @@ else ( MADP_FOUND )
             
 endif ( MADP_FOUND )
 
-add_dependencies(mdm_control_layer ${PROJECT_NAME}_generate_messages_cpp)
-set_target_properties( mdm_control_layer PROPERTIES IMPORTED_LOCATION ${MADP_LINK_DIRS} )
-target_link_libraries(mdm_control_layer -L${MADP_LINK_DIRS} ${MADP_LIBRARIES})
+set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
+set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 
+add_dependencies(mdm_control_layer ${PROJECT_NAME}_generate_messages_cpp )
+target_link_libraries(mdm_control_layer -L${MADP_LINK_DIRS} ${MADP_LIBRARIES})
 
 add_library(mdm_action_layer src/action_layer.cpp)
 add_dependencies(mdm_action_layer ${PROJECT_NAME}_generate_messages_cpp)
             
 include_directories(include ${catkin_INCLUDE_DIRS})
-
 
 add_library(mdm_state_layer src/state_layer.cpp)
 add_dependencies(mdm_state_layer ${PROJECT_NAME}_generate_messages_cpp)

@@ -21,21 +21,14 @@ catkin_package(
 include_directories(include
    ${catkin_INCLUDE_DIRS}
    ${MADP_INCLUDE_DIRS}
-   /home/tataha/workspace/madp/include/madp/include
-   ${MADP_LOC}/src/base
-   ${MADP_LOC}/src/include
-   ${MADP_LOC}/src/support
-   ${MADP_LOC}/src/planning
-   ${MADP_LOC}/src/parser
+   ${MADP_INCLUDE_DIRS}/madp
+   ${Boost_INCLUDE_DIRS}
 )
-
-message("======================================== ${topological_tools_LIBRARIES}")
 
 include_directories(include ${catkin_INCLUDE_DIRS})
 
 add_executable(predicates src/predicates.cpp)
 target_link_libraries(predicates ${catkin_LIBRARIES} ${topological_tools_LIBRARIES} ${predicate_manager_LIBRARIES})
-
 
 add_executable(state_layer src/state_layer.cpp)
 target_link_libraries(state_layer ${catkin_LIBRARIES})
@@ -44,6 +37,5 @@ add_executable(action_layer src/action_layer.cpp)
 target_link_libraries(action_layer ${catkin_LIBRARIES})
 
 add_executable(control_layer src/control_layer.cpp)
-#-L/home/tataha/workspace/madp-0.3/src/libpomdp-solve/src/lp-solve-old/ ${MADP_LIBRARIES} -lDAI -lMADPBase -lMADPSupport -lMADPPlanning -lMADPParser -lPOMDPSolve -lmdp -llaspack -lm -lxml2
 target_link_libraries(control_layer ${MADP_LIBRARIES} ${catkin_LIBRARIES} -lxml2)
 set_target_properties(control_layer PROPERTIES COMPILE_FLAGS "-std=c++0x")
