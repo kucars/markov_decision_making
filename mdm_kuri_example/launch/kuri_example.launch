@@ -5,7 +5,7 @@
         <rosparam file="$(find mdm_kuri_example)/config/predicate_labels.yaml" command="load" ns="predicate_labels" />
         <node pkg="mdm_kuri_example" name="predicates" type="predicates" respawn="true"/>
 
-        <node pkg="mdm_kuri_example" name="state_layer" type="state_layer" respawn="true"/>
+        <node pkg="mdm_kuri_example" name="observation_layer" type="observation_layer" respawn="true"/>
 
         <node pkg="mdm_kuri_example" name="control_layer" type="control_layer" 
               args="$(find mdm_kuri_example)/config/MDP_policy" respawn="true"/>

@@ -253,8 +253,8 @@ void
 PredicateManager::
 publishPredicateMap()
 {
-    PredicateInfoMap info_map;
-
+    PredicateInfoMap info_map;// this is the message 
+	// fill the message
     for ( uint32_t i = 0; i < local_pred_refs_.size(); i++ )
     {
         PredicateInfo info;
@@ -265,7 +265,7 @@ publishPredicateMap()
 
     info_map.pm_id = pm_id_;
 
-    predicate_maps_pub_.publish ( info_map );
+    predicate_maps_pub_.publish ( info_map );//.publish the message 
 }
 
 void

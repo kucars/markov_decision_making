@@ -1,8 +1,9 @@
-/**\file controller_pomdp.h
+/**\file controller_decpomdp.h
  *
  * Author:
  * Joao Messias <jmessias@isr.ist.utl.pt>
  * Tarek Taha   <tarek.taha@kustar.ac.ae>
+ * Hend Al-Tair <hend.altair@kustar.ac.ae>
  *
  * Markov Decision Making is a ROS library for robot decision-making based on MDPs.
  * Copyright (C) 2014 Instituto Superior Tecnico, Instituto de Sistemas e Robotica
@@ -23,6 +24,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #ifndef _CONTROLLER_POMDP_H_
 #define _CONTROLLER_POMDP_H_
 
@@ -38,8 +40,6 @@
 #include <mdm_library/BeliefStateInfo.h>
 #include <mdm_library/FactoredDistribution.h>
 #include <mdm_library/decpomdp_loader.h>
-
-
 
 namespace mdm_library
 {
@@ -58,6 +58,9 @@ public:
     ControllerDecPOMDP ( const std::string& problem_file,
                       const CONTROLLER_STATUS initial_status = STARTED );
 
+    //===========================================
+     void fobservationCallback(const std_msgs::String::ConstPtr& msg);
+    //===========================================
     /**
      * Returns the number of actions in the POMDP, without exposing the DecPOMDPLoader.
      */
@@ -144,7 +147,16 @@ protected:
     ros::Publisher action_pub_;
     /** Publisher to the "reward" topic.*/
     ros::Publisher exp_reward_pub_;
+
+//------------for fake obsevration---------
+     
+   ros::NodeHandle nh_;
+   ros::Publisher fake_action_pub;
+   ros::Subscriber fake_observation_sub;
+//-----------------------------------------
 };
 }
 
 #endif
+
+

@@ -3,6 +3,7 @@
  * Author:
  * Joao Messias <jmessias@isr.ist.utl.pt>
  * Tarek Taha   <tarek.taha@kustar.ac.ae>
+ * Hend Al-Tair <hend.altair@kustar.ac.ae>
  *
  * Markov Decision Making is a ROS library for robot decision-making based on MDPs.
  * Copyright (C) 2014 Instituto Superior Tecnico, Instituto de Sistemas e Robotica
@@ -39,7 +40,7 @@ using namespace std;
 using namespace mdm_library;
 
 
-
+//===============constructor======================
 ControllerDecPOMDP::
 ControllerDecPOMDP ( const string& problem_file,
                   const CONTROLLER_STATUS initial_status ) :
@@ -52,11 +53,29 @@ ControllerDecPOMDP ( const string& problem_file,
     isd_sub_ ( nh_.subscribe ( "initial_state_distribution", 10, &ControllerDecPOMDP::isdCallback, this ) ),
     current_belief_pub_ ( nh_.advertise<BeliefStateInfo> ( "current_belief", 1, false ) ),
     action_pub_ ( nh_.advertise<ActionSymbol> ( "action", 0, true ) ),
-    exp_reward_pub_ ( nh_.advertise<std_msgs::Float32> ( "reward", 0, true ) )
+    exp_reward_pub_ ( nh_.advertise<std_msgs::Float32> ( "reward", 0, true ) ),
+   
+    //---------fake--------
+    fake_action_pub (nh_.advertise<std_msgs::String>("f_action", 1)),
+    fake_observation_sub (nh_.subscribe("f_observation",10, &ControllerDecPOMDP::fobservationCallback, this))//prints out what is recieved
+    //---------------------
 {}
+//=====================================
 
+// function prints observation subscribed to.. NOTE: there are two observations (1 and 2) 
+void 
+ControllerDecPOMDP::
+fobservationCallback(const std_msgs::String::ConstPtr& msg)
+{
+  ROS_INFO("I heard observation: [%s]", msg->data.c_str());
+}
 
+//=====================================
 
+// function load problem file and policy file (policy file is GMAA-ICE) make sure it exists in MADP. 
+// function publish action1 and action2 picked in a message (to be read by obsevration layer) . 
+
+//=====================================
 void
 ControllerDecPOMDP::
 act ( const uint32_t observation )
