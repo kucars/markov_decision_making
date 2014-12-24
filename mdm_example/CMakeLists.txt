@@ -8,6 +8,7 @@ find_package(catkin REQUIRED COMPONENTS mdm_library
 find_package( MADP REQUIRED)
 find_package( SDL REQUIRED)
 find_package( SDL_image REQUIRED)
+find_package(Boost REQUIRED)
 
 if ( NOT_SDLIMAGE_FOUND )
   message(FATAL_ERROR, "SDL_image must be installed in order to run the demo (and topological_tools must be compiled accordingly).")
@@ -18,22 +19,19 @@ catkin_package(
                  predicate_manager
                  topological_tools
 )
+<<<<<<< HEAD
 SET(MADP_LOC /home/hend/workspace/madp-0.3/)
+=======
+>>>>>>> b610694149ed1653ee8da21ad515544d245628b1
 
 message("======================================== ${topological_tools_LIBRARIES}  ====  ${MADP_LIBRARIES}   ==== ${MADP_INCLUDE_DIRS}")
 
 include_directories(include
    ${catkin_INCLUDE_DIRS}
    ${MADP_INCLUDE_DIRS}
-   /home/tataha/workspace/madp/include/madp/include
-   ${MADP_LOC}/src/base
-   ${MADP_LOC}/src/include
-   ${MADP_LOC}/src/support
-   ${MADP_LOC}/src/planning
-   ${MADP_LOC}/src/parser
+   ${MADP_INCLUDE_DIRS}/madp
+   ${Boost_INCLUDE_DIRS}
 )
-
-#set(BUILD_SHARED_LIBS OFF)
 
 add_executable(demo_predicates src/demo_predicates.cpp)
 target_link_libraries(demo_predicates ${catkin_LIBRARIES} ${topological_tools_LIBRARIES} ${predicate_manager_LIBRARIES})
@@ -45,15 +43,5 @@ add_executable(demo_action_layer src/demo_action_layer.cpp)
 target_link_libraries(demo_action_layer ${catkin_LIBRARIES})
 
 add_executable(demo_control_layer src/demo_control_layer.cpp)
-#Static start
-#set_target_properties(demo_control_layer PROPERTIES LINK_SEARCH_START_STATIC 1)
-#set_target_properties(demo_control_layer PROPERTIES LINK_SEARCH_END_STATIC 1)
-set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
-target_link_libraries(demo_control_layer ${catkin_LIBRARIES} -lDAI -lMADPBase -lMADPSupport -lMADPPlanning -lMADPParser -lPOMDPSolve -lmdp -llaspack -lm -lxml2)
-set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
+target_link_libraries(demo_control_layer ${catkin_LIBRARIES} ${MADP_LIBRARIES} -lxml2)
 set_target_properties(demo_control_layer PROPERTIES COMPILE_FLAGS "-std=c++0x -Wall -pipe -march=native")
-
-#add_executable(demo_test src/demo_test.cpp)
-#target_link_libraries(demo_test ${catkin_LIBRARIES} -lDAI -lMADPBase -lMADPSupport -lMADPPlanning -lMADPParser -lPOMDPSolve -lLPSolveOld -lmdp -llaspack -lm -lxml2)
-#set_target_properties(demo_test PROPERTIES COMPILE_FLAGS "-std=c++0x -Wall -pipe -march=native")
-

@@ -25,6 +25,7 @@
 #ifndef _COMMON_DEFS_H_
 #define _COMMON_DEFS_H_
 
+#include <boost/graph/adjacency_list.hpp>
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/matrix_sparse.hpp>
