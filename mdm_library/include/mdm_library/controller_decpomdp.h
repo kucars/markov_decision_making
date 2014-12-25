@@ -60,6 +60,7 @@ public:
 
     //===========================================
      void fobservationCallback(const std_msgs::String::ConstPtr& observation1_msg, const std_msgs::String::ConstPtr& observation2_msg);
+     void fActionPublish(const std::string observation1, const std::string observation2);
     //===========================================
     /**
      * Returns the number of actions in the POMDP, without exposing the DecPOMDPLoader.
