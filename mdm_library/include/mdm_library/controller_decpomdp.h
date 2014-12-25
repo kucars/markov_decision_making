@@ -59,7 +59,7 @@ public:
                       const CONTROLLER_STATUS initial_status = STARTED );
 
     //===========================================
-     void fobservationCallback(const std_msgs::String::ConstPtr& msg);
+     void fobservationCallback(const std_msgs::String::ConstPtr& observation1_msg, const std_msgs::String::ConstPtr& observation2_msg);
     //===========================================
     /**
      * Returns the number of actions in the POMDP, without exposing the DecPOMDPLoader.

@@ -56,26 +56,38 @@ ControllerDecPOMDP ( const string& problem_file,
     exp_reward_pub_ ( nh_.advertise<std_msgs::Float32> ( "reward", 0, true ) ),
    
     //---------fake--------
-    fake_action_pub (nh_.advertise<std_msgs::String>("f_action", 1)),
-    fake_observation_sub (nh_.subscribe("f_observation",10, &ControllerDecPOMDP::fobservationCallback, this))//prints out what is recieved
-    //---------------------
+    fake_action1_pub (nh_.advertise<std_msgs::String>("f_action1", 1)),
+    fake_action2_pub (nh_.advertise<std_msgs::String>("f_action2", 1)),
+    fake_observation1_sub (nh_.subscribe("f_observation1",10, &ControllerDecPOMDP::fobservationCallback, this)),
+    fake_observation2_sub (nh_.subscribe("f_observation2",10, &ControllerDecPOMDP::fobservationCallback, this))
+  //---------------------
 {}
-//=====================================
-
-// function prints observation subscribed to.. NOTE: there are two observations (1 and 2) 
+//===============fobservationCallback=====================
+// Purpose: function prints observation subscribed to.. NOTE: there are two observations (1 and 2)
 void 
 ControllerDecPOMDP::
-fobservationCallback(const std_msgs::String::ConstPtr& msg)
+fobservationCallback(const std_msgs::String::ConstPtr& observation1_msg, const std_msgs::String::ConstPtr& observation2_msg )
 {
-  ROS_INFO("I heard observation: [%s]", msg->data.c_str());
-}
+    ROS_INFO("I heard observation1: [%s]", observation1_msg->data.c_str());
+    ROS_INFO("I heard observation2: [%s]", observation2_msg->data.c_str());
+}//end fobservationCallback
 
 //=====================================
 
 // function load problem file and policy file (policy file is GMAA-ICE) make sure it exists in MADP. 
-// function publish action1 and action2 picked in a message (to be read by obsevration layer) . 
+//problem file already passed in constructor new DecPOMDPLoader ( problem_file ) ? check that
 
-//=====================================
+//===============fActionPublish===================================
+
+// purpose: function publish action1 and action2 picked in a message (to be read by obsevration layer) .
+void
+ControllerDecPOMDP::
+fActionPublish(const std::string observation1, const std::string observation2)
+{
+    //does this function take the policy file and check current observations to pick action?
+
+}// end fActionPublish
+//================act=====================
 void
 ControllerDecPOMDP::
 act ( const uint32_t observation )
@@ -125,10 +137,9 @@ act ( const uint32_t observation )
     }
 
     incrementDecisionEpisode();
-}
+}//end act
 
-
-
+//===============publishAction==========================
 void
 ControllerDecPOMDP::
 publishAction ( uint32_t a )
@@ -137,9 +148,9 @@ publishAction ( uint32_t a )
     aInfo.action_symbol = a;
     aInfo.decision_episode = getDecisionEpisode();
     action_pub_.publish ( aInfo );
-}
+}// end publishAction
 
-
+//================publishExpectedReward==================
 
 void
 ControllerDecPOMDP::
@@ -154,9 +165,9 @@ publishExpectedReward ( uint32_t a )
 
     reward.data = belief_->InnerProduct ( r_vec );
     exp_reward_pub_.publish ( reward );
-}
+}// end publishExpectedReward
 
-
+//==============publishCurrentBelief=======================
 
 void
 ControllerDecPOMDP::
@@ -168,36 +179,36 @@ publishCurrentBelief ()
         b.belief.push_back ( belief_->Get ( i ) );
     }
     current_belief_pub_.publish ( b );
-}
+}// end publishCurrentBelief
 
-
+//==============getNumberOfActions========================
 
 size_t
 ControllerDecPOMDP::
 getNumberOfActions ()
 {
     return loader_->GetDecPOMDP()->GetNrJointActions();
-}
+}// end getNumberOfActions
 
-
+//==============getNumberOfStates==========================
 
 size_t
 ControllerDecPOMDP::
 getNumberOfStates ()
 {
     return loader_->GetDecPOMDP()->GetNrStates();
-}
+}//end getNumberOfStates
 
-
+//==============getNumberOfObservations====================
 
 size_t
 ControllerDecPOMDP::
 getNumberOfObservations ()
 {
     return loader_->GetDecPOMDP()->GetNrJointObservations();
-}
+}// end getNumberOfObservations
 
-
+//==============extBeliefCallback =========================
 
 void
 ControllerDecPOMDP::
@@ -208,9 +219,9 @@ extBeliefCallback ( const BeliefStateInfoConstPtr& msg )
     {
         normalizeBelief ( belief_ );
     }
-}
+}// end extBeliefCallback
 
-
+//==============isdCallback===============================
 
 void
 ControllerDecPOMDP::
@@ -247,9 +258,9 @@ isdCallback ( const FactoredDistributionConstPtr& msg )
     }
 
     ISD_->SanityCheck(); ///handles normalization internally.
-}
+}// end isdCallback
 
-
+//================normalizeBelief ========================
 
 void
 ControllerDecPOMDP::
@@ -270,4 +281,4 @@ normalizeBelief ( boost::shared_ptr<JointBeliefInterface> b )
         ROS_WARN ( "ControllerDecPOMDP:: Failed to normalize. Setting belief to default ISD." );
         b->Set ( * ( loader_->GetDecPOMDP()->GetISD() ) );
     }
-}
+}// end normalizeBelief

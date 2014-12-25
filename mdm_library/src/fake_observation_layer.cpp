@@ -35,24 +35,32 @@
 using namespace std;
 using namespace mdm_library;
 
-//===========constructor=============== 
+//===========constructor========================
+//the names of the topics for each action and each observation
+//
 FakeObservationLayer::
 FakeObservationLayer() :
-	fake_action_sub (nh_.subscribe("f_action",10, &FakeObservationLayer::factionCallback,this)),// only prints out what is recieved
-	fake_observation_pub (nh_.advertise<std_msgs::String>("f_observation", 1)) // f_observation is name of topic
+    fake_action1_sub (nh_.subscribe("f_action1",10, &FakeObservationLayer::factionCallback,this)),
+    fake_action2_sub (nh_.subscribe("f_action2",10, &FakeObservationLayer::factionCallback,this)),
+    fake_observation1_pub (nh_.advertise<std_msgs::String>("f_observation1", 1)),
+    fake_observation2_pub (nh_.advertise<std_msgs::String>("f_observation2", 1))
 {}
 
-//=====================================
+//=============factionCallback===================
 
-//prints out the actions subscribed to it from controller  NOTE: there are two actions (1 and 2) 
+//Purpose: prints out the actions subscribed to it from controller  NOTE: there are two actions (1 and 2)
+// NOTE:it is not practical to pass each action of an agent in a message maybe it should be 1 array in message better
 void 
 FakeObservationLayer::
-factionCallback(const std_msgs::String::ConstPtr& msg)
+factionCallback(const std_msgs::String::ConstPtr& action1_msg, const std_msgs::String::ConstPtr& action2_msg )
 {
-  ROS_INFO("I heard action: [%s]", msg->data.c_str());
-}
+  ROS_INFO("I heard action1: [%s]", action1_msg->data.c_str());
+  ROS_INFO("I heard action2: [%s]", action2_msg->data.c_str());
 
-//=====================================
+  fObservationPublish(action1_msg->data.c_str(),action2_msg->data.c_str());//pass the actions
+} //end factionCallback
+
+//==============fObservationPublish=======================
 
   
 //Function: pick flames noFlames observations based on certain actions and put in msg
@@ -61,21 +69,53 @@ factionCallback(const std_msgs::String::ConstPtr& msg)
 // 3. put in msg : is it same message for two agents? 
 // 4. publish msg  
  
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    std_msgs::String msg;
+void
+FakeObservationLayer::
+fObservationPublish(const std::string action1, const std::string action2)
+{
+    //define megs
+    //NOTE: it should be array of observations to be sent in one message not two messages for each agent observation
+    std_msgs::String observation1_msg;
+    std_msgs::String observation2_msg;
 
-    std::stringstream ss;
-    // define variable observation1 and observation2 
-    // define variable action1 and action2 ( how to get these from the msg? is it 2 messages or from one?)
+    std::string observation1;
+    std::string observation2;
 
-    ss << "observation is: " << observation;
-    msg.data = ss.str();
+    //conditions for action 1
+    //which action leads to what observation *scenario?*
+    //in case of two observations then f_observation_pub should be two also to not cause conflict
+    if (action1.compare(""))
+    {
+        observation1 = "flame";
+        observation1_msg.data = observation1.str();
+        ROS_INFO("%s", observation1_msg.data.c_str()); //prints message of observation to check if it matches or not (for testing purpose)
+        f_observation_pub.publish(observation1_msg);
 
-    ROS_INFO("%s", msg.data.c_str()); //prints message of observation to check if it matches or not (for testing purpose) 
-     
-    f_observation_pub.publish(msg);
+    }else if (action1.compare(""))
+    {
+        observation1 = "noFlame";
+        observation1_msg.data = observation1.str();
+        ROS_INFO("%s", observation1_msg.data.c_str()); //prints message of observation to check if it matches or not (for testing purpose)
+        f_observation_pub.publish(observation1_msg);
+    }
+
+    //conditions for action 2
+    //which action leads to what observation *scenario?*
+    if (action2.compare(""))
+    {
+        observation2 = "flame";
+        observation2_msg.data = observation2.str();
+        ROS_INFO("%s", observation2_msg.data.c_str()); //prints message of observation to check if it matches or not (for testing purpose)
+        f_observation_pub.publish(observation2_msg);
+
+    }else if (action2.compare(""))
+    {
+        observation2 = "noFlame";
+        observation2_msg.data = observation2.str();
+        ROS_INFO("%s", observation2_msg.data.c_str()); //prints message of observation to check if it matches or not (for testing purpose)
+        f_observation_pub.publish(observation2_msg);
+    }
 
     ros::spinOnce();
-
- //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+}//end fObservationPublish
 

@@ -35,14 +35,16 @@ class FakeObservationLayer
 
 public:
     FakeObservationLayer();
-    void factionCallback(const std_msgs::String::ConstPtr& msg);
-
+    void factionCallback(const std_msgs::String::ConstPtr& action1_msg, const std_msgs::String::ConstPtr& action2_msg );
+    void fObservationPublish(const std::string action1, const std::string action2);
 private:
 
    ros::NodeHandle nh_;
 
-   ros::Subscriber fake_action_sub; //from fake action layer 
-   ros::Publisher fake_observation_pub; 
+   ros::Subscriber fake_action1_sub;//from controller  
+   ros::Subscriber fake_action2_sub; 
+   ros::Publisher fake_observation1_pub;
+   ros::Publisher fake_observation2_pub; 
 
 }; //end class FakeObservationLayer
 }//end namespace 
