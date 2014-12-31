@@ -53,40 +53,9 @@ ControllerDecPOMDP ( const string& problem_file,
     isd_sub_ ( nh_.subscribe ( "initial_state_distribution", 10, &ControllerDecPOMDP::isdCallback, this ) ),
     current_belief_pub_ ( nh_.advertise<BeliefStateInfo> ( "current_belief", 1, false ) ),
     action_pub_ ( nh_.advertise<ActionSymbol> ( "action", 0, true ) ),
-    exp_reward_pub_ ( nh_.advertise<std_msgs::Float32> ( "reward", 0, true ) ),
-   
-    //---------fake--------
-    fake_action1_pub (nh_.advertise<std_msgs::String>("f_action1", 1)),
-    fake_action2_pub (nh_.advertise<std_msgs::String>("f_action2", 1)),
-    fake_observation1_sub (nh_.subscribe("f_observation1",10, &ControllerDecPOMDP::fobservationCallback, this)),
-    fake_observation2_sub (nh_.subscribe("f_observation2",10, &ControllerDecPOMDP::fobservationCallback, this))
-  //---------------------
+    exp_reward_pub_ ( nh_.advertise<std_msgs::Float32> ( "reward", 0, true ) )
 {}
-//===============fobservationCallback=====================
-// Purpose: function prints observation subscribed to.. NOTE: there are two observations (1 and 2)
-void 
-ControllerDecPOMDP::
-fobservationCallback(const std_msgs::String::ConstPtr& observation1_msg, const std_msgs::String::ConstPtr& observation2_msg )
-{
-    ROS_INFO("I heard observation1: [%s]", observation1_msg->data.c_str());
-    ROS_INFO("I heard observation2: [%s]", observation2_msg->data.c_str());
-}//end fobservationCallback
 
-//=====================================
-
-// function load problem file and policy file (policy file is GMAA-ICE) make sure it exists in MADP. 
-//problem file already passed in constructor new DecPOMDPLoader ( problem_file ) ? check that
-
-//===============fActionPublish===================================
-
-// purpose: function publish action1 and action2 picked in a message (to be read by obsevration layer) .
-void
-ControllerDecPOMDP::
-fActionPublish(const std::string observation1, const std::string observation2)
-{
-    //does this function take the policy file and check current observations to pick action?
-
-}// end fActionPublish
 //================act=====================
 void
 ControllerDecPOMDP::

@@ -19,10 +19,6 @@ catkin_package(
                  predicate_manager
                  topological_tools
 )
-<<<<<<< HEAD
-SET(MADP_LOC /home/hend/workspace/madp-0.3/)
-=======
->>>>>>> b610694149ed1653ee8da21ad515544d245628b1
 
 message("======================================== ${topological_tools_LIBRARIES}  ====  ${MADP_LIBRARIES}   ==== ${MADP_INCLUDE_DIRS}")
 

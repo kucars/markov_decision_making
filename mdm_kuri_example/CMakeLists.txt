@@ -21,17 +21,8 @@ catkin_package(
 include_directories(include
    ${catkin_INCLUDE_DIRS}
    ${MADP_INCLUDE_DIRS}
-<<<<<<< HEAD
-   /home/hend/workspace/madp/include/madp/include
-   ${MADP_LOC}/src/base
-   ${MADP_LOC}/src/include
-   ${MADP_LOC}/src/support
-   ${MADP_LOC}/src/planning
-   ${MADP_LOC}/src/parser
-=======
    ${MADP_INCLUDE_DIRS}/madp
    ${Boost_INCLUDE_DIRS}
->>>>>>> b610694149ed1653ee8da21ad515544d245628b1
 )
 
 include_directories(include ${catkin_INCLUDE_DIRS})
@@ -48,3 +39,7 @@ target_link_libraries(action_layer ${catkin_LIBRARIES})
 add_executable(control_layer src/control_layer.cpp)
 target_link_libraries(control_layer ${MADP_LIBRARIES} ${catkin_LIBRARIES} -lxml2)
 set_target_properties(control_layer PROPERTIES COMPILE_FLAGS "-std=c++0x")
+
+add_executable(test_node src/test_node.cpp)
+target_link_libraries(test_node ${MADP_LIBRARIES} ${catkin_LIBRARIES} -lxml2)
+set_target_properties(test_node PROPERTIES COMPILE_FLAGS "-std=c++0x")

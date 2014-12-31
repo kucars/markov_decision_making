@@ -58,10 +58,6 @@ public:
     ControllerDecPOMDP ( const std::string& problem_file,
                       const CONTROLLER_STATUS initial_status = STARTED );
 
-    //===========================================
-     void fobservationCallback(const std_msgs::String::ConstPtr& observation1_msg, const std_msgs::String::ConstPtr& observation2_msg);
-     void fActionPublish(const std::string observation1, const std::string observation2);
-    //===========================================
     /**
      * Returns the number of actions in the POMDP, without exposing the DecPOMDPLoader.
      */
@@ -149,12 +145,6 @@ protected:
     /** Publisher to the "reward" topic.*/
     ros::Publisher exp_reward_pub_;
 
-//------------for fake obsevration---------
-     
-   ros::NodeHandle nh_;
-   ros::Publisher fake_action_pub;
-   ros::Subscriber fake_observation_sub;
-//-----------------------------------------
 };
 }
 
