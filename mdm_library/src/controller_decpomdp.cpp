@@ -39,8 +39,6 @@
 using namespace std;
 using namespace mdm_library;
 
-
-//===============constructor======================
 ControllerDecPOMDP::
 ControllerDecPOMDP ( const string& problem_file,
                   const CONTROLLER_STATUS initial_status ) :
@@ -56,10 +54,7 @@ ControllerDecPOMDP ( const string& problem_file,
     exp_reward_pub_ ( nh_.advertise<std_msgs::Float32> ( "reward", 0, true ) )
 {}
 
-//================act=====================
-void
-ControllerDecPOMDP::
-act ( const uint32_t observation )
+void ControllerDecPOMDP::act ( const uint32_t observation )
 {
     if ( getStatus() == STOPPED )
     {
@@ -77,7 +72,7 @@ act ( const uint32_t observation )
     double q, v = -DBL_MAX;
     for ( size_t a = 0; a < getNumberOfActions(); a++ )
     {
-        q = Q_->GetQ ( *belief_, a );
+        //q = Q_->GetQ ( *belief_, a );
         if ( q > v )
         {
             v = q;
@@ -106,24 +101,17 @@ act ( const uint32_t observation )
     }
 
     incrementDecisionEpisode();
-}//end act
+}
 
-//===============publishAction==========================
-void
-ControllerDecPOMDP::
-publishAction ( uint32_t a )
+void ControllerDecPOMDP::publishAction ( uint32_t a )
 {
     ActionSymbol aInfo;
     aInfo.action_symbol = a;
     aInfo.decision_episode = getDecisionEpisode();
     action_pub_.publish ( aInfo );
-}// end publishAction
+}
 
-//================publishExpectedReward==================
-
-void
-ControllerDecPOMDP::
-publishExpectedReward ( uint32_t a )
+void ControllerDecPOMDP::publishExpectedReward ( uint32_t a )
 {
     std_msgs::Float32 reward;
     vector<double> r_vec;
@@ -134,13 +122,9 @@ publishExpectedReward ( uint32_t a )
 
     reward.data = belief_->InnerProduct ( r_vec );
     exp_reward_pub_.publish ( reward );
-}// end publishExpectedReward
+}
 
-//==============publishCurrentBelief=======================
-
-void
-ControllerDecPOMDP::
-publishCurrentBelief ()
+void ControllerDecPOMDP::publishCurrentBelief ()
 {
     BeliefStateInfo b;
     for ( size_t i = 0; i < belief_->Size(); i++ )
@@ -148,53 +132,33 @@ publishCurrentBelief ()
         b.belief.push_back ( belief_->Get ( i ) );
     }
     current_belief_pub_.publish ( b );
-}// end publishCurrentBelief
+}
 
-//==============getNumberOfActions========================
-
-size_t
-ControllerDecPOMDP::
-getNumberOfActions ()
+size_t ControllerDecPOMDP::getNumberOfActions ()
 {
     return loader_->GetDecPOMDP()->GetNrJointActions();
-}// end getNumberOfActions
+}
 
-//==============getNumberOfStates==========================
-
-size_t
-ControllerDecPOMDP::
-getNumberOfStates ()
+size_t ControllerDecPOMDP::getNumberOfStates ()
 {
     return loader_->GetDecPOMDP()->GetNrStates();
-}//end getNumberOfStates
+}
 
-//==============getNumberOfObservations====================
-
-size_t
-ControllerDecPOMDP::
-getNumberOfObservations ()
+size_t ControllerDecPOMDP::getNumberOfObservations ()
 {
     return loader_->GetDecPOMDP()->GetNrJointObservations();
-}// end getNumberOfObservations
+}
 
-//==============extBeliefCallback =========================
-
-void
-ControllerDecPOMDP::
-extBeliefCallback ( const BeliefStateInfoConstPtr& msg )
+void ControllerDecPOMDP::extBeliefCallback ( const BeliefStateInfoConstPtr& msg )
 {
     belief_->Set ( msg->belief );
     if ( ! ( belief_->SanityCheck() ) )
     {
         normalizeBelief ( belief_ );
     }
-}// end extBeliefCallback
+}
 
-//==============isdCallback===============================
-
-void
-ControllerDecPOMDP::
-isdCallback ( const FactoredDistributionConstPtr& msg )
+void ControllerDecPOMDP::isdCallback ( const FactoredDistributionConstPtr& msg )
 {
     if ( ISD_ == 0 )
     {
@@ -227,13 +191,9 @@ isdCallback ( const FactoredDistributionConstPtr& msg )
     }
 
     ISD_->SanityCheck(); ///handles normalization internally.
-}// end isdCallback
+}
 
-//================normalizeBelief ========================
-
-void
-ControllerDecPOMDP::
-normalizeBelief ( boost::shared_ptr<JointBeliefInterface> b )
+void ControllerDecPOMDP::normalizeBelief ( boost::shared_ptr<JointBeliefInterface> b )
 {
     vector<double> one_vec ( getNumberOfStates(), 1.0 );
     float sum = b->InnerProduct ( one_vec );
@@ -250,4 +210,4 @@ normalizeBelief ( boost::shared_ptr<JointBeliefInterface> b )
         ROS_WARN ( "ControllerDecPOMDP:: Failed to normalize. Setting belief to default ISD." );
         b->Set ( * ( loader_->GetDecPOMDP()->GetISD() ) );
     }
-}// end normalizeBelief
+}

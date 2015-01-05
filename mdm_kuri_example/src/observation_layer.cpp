@@ -1,5 +1,5 @@
 #include <ros/ros.h>
-#include <mdm_library/f_observation_layer.h>
+#include <mdm_library/observation_layer.h>
 
 using namespace std;
 using namespace ros;

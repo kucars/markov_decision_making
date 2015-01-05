@@ -36,6 +36,9 @@ target_link_libraries(state_layer ${catkin_LIBRARIES})
 add_executable(action_layer src/action_layer.cpp)
 target_link_libraries(action_layer ${catkin_LIBRARIES})
 
+add_executable(observation_layer src/observation_layer.cpp)
+target_link_libraries(observation_layer ${catkin_LIBRARIES})
+
 add_executable(control_layer src/control_layer.cpp)
 target_link_libraries(control_layer ${MADP_LIBRARIES} ${catkin_LIBRARIES} -lxml2)
 set_target_properties(control_layer PROPERTIES COMPILE_FLAGS "-std=c++0x")

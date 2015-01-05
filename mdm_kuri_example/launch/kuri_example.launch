@@ -8,7 +8,7 @@
         <node pkg="mdm_kuri_example" name="observation_layer" type="observation_layer" respawn="true"/>
 
         <node pkg="mdm_kuri_example" name="control_layer" type="control_layer" 
-              args="$(find mdm_kuri_example)/config/MDP_policy" respawn="true"/>
+              args="$(find mdm_kuri_example)/config/fireFighting_2_3_3.dpomdp" respawn="true"/>
         
         <node pkg="mdm_kuri_example" name="action_layer" type="action_layer" 
               args="$(find mdm_kuri_example)/config/topological_map.xml" respawn="true"/>

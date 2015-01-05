@@ -41,14 +41,14 @@ int main ( int argc, char** argv )
         abort();
     }
 
-    string policy_path = argv[1];
+    string problemFile = argv[1];
     string value_file;
-    ControllerEventDecPOMDP cl ( policy_path ,value_file);
-
+    ControllerEventDecPOMDP cl ( problemFile ,value_file);
+/*
     ros::NodeHandle nodeHandler;
     ros::Publisher observationPub;
     ros::Publisher extBeliefEstimatePub;
-    /* initial_state_distribution */
+    // initial_state_distribution
     ros::Publisher isdSubPub;
 
 
@@ -63,7 +63,7 @@ int main ( int argc, char** argv )
     currentBeliefSub     = nodeHandler.subscribe ( "current_belief", 10, &currentBeliefCallback );
     actionSub            = nodeHandler.subscribe ( "action", 10, &actionCallback);
     expRewardSub         = nodeHandler.subscribe ( "reward", 10, &expRewardCallback );
-
+*/
     spin();
     return 0;
 }

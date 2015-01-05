@@ -22,6 +22,12 @@
 #include <madp/PerseusConstrainedPOMDPPlanner.h>
 #include <madp/JointBeliefEventDriven.h>
 #include <madp/NullPlanner.h>
+#include <madp/DecPOMDPDiscreteInterface.h>
+#include <madp/MADPParser.h>
+#include <madp/directories.h>
+#include <madp/SimulationDecPOMDPDiscrete.h>
+#include <madp/JointPolicyPureVector.h>
+
 
 #include <mdm_library/controller_event_decpomdp.h>
 
@@ -35,10 +41,26 @@ using namespace mdm_library;
 
 ControllerEventDecPOMDP::
 ControllerEventDecPOMDP ( string const& problem_file,
-                       string const& value_function_file,
+                          string const& value_function_file,
                        const CONTROLLER_STATUS initial_status ) :
     ControllerDecPOMDP ( problem_file, initial_status )
 {
+    int h=2;
+    LIndex index = 375; // for the firefighting 2_3_3 GMAA h2
+    PlanningUnitMADPDiscreteParameters params;
+    params.SetComputeAll(false);
+
+    NullPlanner np(params,h,loader_->GetDecPOMDP().get());
+    JointPolicyPureVector jp(&np);
+    jp.SetIndex(index);
+    /// Constructor specifying the number of runs and the random seed.
+    SimulationDecPOMDPDiscrete sim(np,2,45);
+    SimulationResult result;
+
+    result = sim.RunSimulations(&jp);
+
+    cout << "Reward h " << h << " reward: " << result.GetAvgReward() << endl;
+
     try
     {
         bool isSparse;
@@ -63,12 +85,14 @@ ControllerEventDecPOMDP ( string const& problem_file,
         loader_->GetDecPOMDP()->SetDiscount ( discount );
 
         boost::shared_ptr<PlanningUnitDecPOMDPDiscrete> np ( new NullPlanner ( puParams, MAXHORIZON, loader_->GetDecPOMDP().get() ) );
+
         /// only considering infinite-horizon models at the moment.
-        Q_ = boost::shared_ptr<QAV<PerseusConstrainedPOMDPPlanner> >
+        /*
+         * Q_ = boost::shared_ptr<QAV<PerseusConstrainedPOMDPPlanner> >
              ( new QAV<PerseusConstrainedPOMDPPlanner> ( np,
                      value_function_file,
                      qavParams ) );
-
+         */
         belief_ = boost::shared_ptr<JointBeliefEventDriven>
                   ( new JointBeliefEventDriven ( loader_->GetDecPOMDP()->GetNrStates(), false_negative_obs ) );
         if ( initial_status == STARTED )

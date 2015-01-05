@@ -154,7 +154,6 @@ publishStateMetadata ( boost::shared_ptr<FactoredDecPOMDPDiscrete> f )
 }
 
 
-
 void
 DecPOMDPLoader::
 publishStateMetadata ( boost::shared_ptr<DecPOMDPDiscrete> d )
@@ -224,7 +223,8 @@ publishInitialStateDistribution ( boost::shared_ptr<DecPOMDPDiscrete> d )
     BeliefStateInfo b;
     b.belief = isd;
     fdist.factors.push_back ( b );
-    initial_state_distribution_pub_.publish ( b );
+    // Possible Bug: This was pubishing previously b instead fdist causing a crash.
+    initial_state_distribution_pub_.publish ( fdist );
 }
 
 
