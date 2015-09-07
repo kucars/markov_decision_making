@@ -16,7 +16,7 @@ catkin_package(
                  topological_tools
 )
 
-include_directories(include ${catkin_INCLUDE_DIRS})
+include_directories(include ${catkin_INCLUDE_DIRS} ${MADP_INCLUDE_DIRS})
 
 add_executable(demo_predicates src/demo_predicates.cpp)
 

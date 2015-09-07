@@ -46,3 +46,6 @@ set_target_properties(control_layer PROPERTIES COMPILE_FLAGS "-std=c++0x")
 add_executable(test_node src/test_node.cpp)
 target_link_libraries(test_node ${MADP_LIBRARIES} ${catkin_LIBRARIES} -lxml2)
 set_target_properties(test_node PROPERTIES COMPILE_FLAGS "-std=c++0x")
+
+add_executable(tiger_demo_test src/tiger_demo_test.cpp)
+target_link_libraries(tiger_demo_test ${catkin_LIBRARIES})
