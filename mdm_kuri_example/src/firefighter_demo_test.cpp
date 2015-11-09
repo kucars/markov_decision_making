@@ -28,8 +28,8 @@
 
 int main ( int argc, char** argv )
 {
-    std::string const& problem_file("dectiger.dpomdp");
-    std::string const& value_function_file = "dectiger_value";
+    std::string const& problem_file("fireFighting_2_3_3.dpomdp");
+    std::string const& value_function_file = "fireFighting_value";
     //ControllerPOMDP ( problem_file, initial_status ),
     Index observations = 0;
     /** Pointer to the internal belief state.*/
