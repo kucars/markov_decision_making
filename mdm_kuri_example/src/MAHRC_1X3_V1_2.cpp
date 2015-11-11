@@ -54,7 +54,7 @@ int main ( int argc, char** argv )
     //publishInitialStateDistribution ( d );
     decpomdp_ = d;
     // 10 is JA10_stop_stop: it's just an initial condition for P(O|a,S')
-    prev_action_ =  10;
+    prev_action_ =  6;
     try
     {
         boost::shared_ptr<PlanningUnitDecPOMDPDiscrete> np ( new NullPlanner ( decpomdp_.get() ) );
@@ -101,8 +101,10 @@ int main ( int argc, char** argv )
         }
         */
 	
-        std::cout<<"Initial Belief is:"<<belief_->SoftPrint()<<"\n";
+    //-------This will print the intial belief and the initial action to check where we are starting from -----------------------
+        //std::cout<<"Initial Belief is:"<<belief_->SoftPrint()<<"\n";
         std::cout<<"Inital Action is:"<<decpomdp_->GetJointAction ( prev_action_ )->SoftPrint()<<"\n";
+
         decision_episode_ = 0;
 
 
@@ -113,8 +115,8 @@ int main ( int argc, char** argv )
 	// i removed the vic_dan so the index will change now 
 
         observations = 1;
-        int observations[4]= {8,5,2,0};
-        for(int i=0;i<4;i++)
+        int observations[2]= {8,5};
+        for(int i=0;i<2;i++)
         {
             double eta = 0; //eta is the probability of the current action-observation trace. It is a by-product of the update procedure.
             if ( decision_episode_ > 0 )

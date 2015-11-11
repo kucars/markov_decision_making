@@ -329,8 +329,8 @@ fprintf(fid,'\nR: * : * : * : * : -10.00');
  for a1=1:length(agent1Actions)
       for x=1:length(nodesX)
           for xxx=1:length(victimLoc)
-                fprintf(fid,'\nR: %s stop : %s_b_%s_b : * :  * : -100', agent1Actions{a1}, nodesX{x}, victimLoc{xxx});
-                fprintf(fid,'\nR: %s extract_victim : %s_b_%s_b : * :  * : -100', agent1Actions{a1}, nodesX{x}, victimLoc{xxx});
+                fprintf(fid,'\nR: %s stop : %s_b_%s_b : * :  * : -150', agent1Actions{a1}, nodesX{x}, victimLoc{xxx});
+                fprintf(fid,'\nR: %s extract_victim : %s_b_%s_b : * :  * : -150', agent1Actions{a1}, nodesX{x}, victimLoc{xxx});
 
           end 
       end 
@@ -366,7 +366,7 @@ fprintf(fid,'\nR: * : * : * : * : -10.00');
 for a3=1:length(agent3Actions)
   for z=1:length(nodesZ)
     for v=1:length(victimLoc)                
-      fprintf(fid,'\nR:  clear_danger %s : b_%s_%s_b :  * : * : 130',agent3Actions{a3}, nodesZ{z}, victimLoc{v});
+      fprintf(fid,'\nR:  clear_danger %s : b_%s_%s_b :  * : * : 100',agent3Actions{a3}, nodesZ{z}, victimLoc{v});
     end
   end 
 end
@@ -376,7 +376,7 @@ end
 for x=1:length(nodesX)
 for a1=1:length(agent1Actions)
 	for k=1:length(dangerLoc)
-	  fprintf(fid,'\nR:  %s extract_victim : %s_a_a_%s : * : * : 130', agent1Actions{a1},nodesX{x},dangerLoc{k});
+	  fprintf(fid,'\nR:  %s extract_victim : %s_a_a_%s : * : * : 100', agent1Actions{a1},nodesX{x},dangerLoc{k});
 	end
     end
 end 
