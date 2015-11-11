@@ -55,3 +55,7 @@ target_link_libraries(firefighter_demo_test ${catkin_LIBRARIES})
 
 add_executable(MAHRC_1X3_V1_2 src/MAHRC_1X3_V1_2.cpp)
 target_link_libraries(MAHRC_1X3_V1_2 ${catkin_LIBRARIES})
+
+add_executable(mahrc src/mahrc.cpp)
+target_link_libraries(mahrc ${catkin_LIBRARIES})
+
