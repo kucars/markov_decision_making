@@ -327,12 +327,14 @@ fprintf(fid,'\nR: * : * : * : * : -10.00');
 %----------------- penality for human go to danger------------------------- 
 
  for a1=1:length(agent1Actions)
-      for x=1:length(nodesX)
-          for xxx=1:length(victimLoc)
-                fprintf(fid,'\nR: %s stop : %s_b_%s_b : * :  * : -150', agent1Actions{a1}, nodesX{x}, victimLoc{xxx});
-                fprintf(fid,'\nR: %s extract_victim : %s_b_%s_b : * :  * : -150', agent1Actions{a1}, nodesX{x}, victimLoc{xxx});
-
-          end 
+     for a3=1:length(agent3Actions)
+	for x=1:length(nodesX)
+          for v=1:length(victimLoc)
+	    if(a3<3)
+                fprintf(fid,'\nR: %s %s : %s_b_%s_b : * :  * : -150', agent1Actions{a1}, agent3Actions{a3}, nodesX{x}, victimLoc{v});
+             end
+	    end 
+         end 
       end 
   end 
 
