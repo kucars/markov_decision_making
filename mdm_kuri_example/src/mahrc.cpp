@@ -26,13 +26,22 @@
 
 #include <string>
 
-void publishCurrentBelief (boost::shared_ptr<JointBeliefInterface> belief_)
+void publishCurrentBelief (boost::shared_ptr<DecPOMDPDiscreteInterface> decpomdp_,boost::shared_ptr<JointBeliefInterface> belief_)
 {
+    double maxBelief = -1, belief = 0;
+    size_t maxIndex  = 0;
     std::cout<<"Current Belief:";
     for ( size_t i = 0; i < belief_->Size(); i++ )
     {
-         std::cout<<" "<< belief_->Get ( i );
+        belief = belief_->Get ( i );
+        if( belief > maxBelief)
+        {
+            maxBelief = belief;
+            maxIndex  = i;
+        }
+        std::cout<<"\nState:"<<decpomdp_->GetState(i)->GetName()<<" Belief:"<< belief;
     }
+    std::cout<<"\nOur highest belief is in state:"<< decpomdp_->GetState(maxIndex)->GetName()<<" probability:"<<belief_->Get (maxIndex );
     std::cout<<"\n";
 }
 
@@ -42,16 +51,15 @@ void publishExpectedReward ( uint32_t a, boost::shared_ptr<DecPOMDPDiscreteInter
     std::vector<double> r_vec;
     for ( uint32_t s = 0; s < decpomdp_->GetNrStates(); s++ )
     {
-         r_vec.push_back (decpomdp_->GetReward ( s, a )) ;
+        r_vec.push_back (decpomdp_->GetReward ( s, a )) ;
     }
-
     reward = belief_->InnerProduct ( r_vec );
     std::cout<<"Expected Reward from this action is:"<<reward<<"\n";
 }
 
 int main ( int argc, char** argv )
 {
-    if (argc != 3) 
+    if (argc != 3)
     {
         std::cout<<"\nExpecting model name and value function file as input: mahrc <modelname.dpomdp> <value_fun_file>\n";
         return 1;
@@ -59,10 +67,6 @@ int main ( int argc, char** argv )
     std::string modelName    = argv[1];
     std::string valueFunFile = argv[2];
     
-    //std::string const& problem_file("MAHRC_1x3_v1_9.dpomdp");
-    //std::string const& value_function_file = "value_fun_file_MAHRC_1x3_v1_9";
-    //ControllerPOMDP ( problem_file, initial_status ),
-    Index observations = 0;
     /** Pointer to the internal belief state.*/
     boost::shared_ptr<JointBeliefInterface> belief_;
     /** Pointer to this problem's Q-Value function.*/
@@ -81,8 +85,7 @@ int main ( int argc, char** argv )
     boost::shared_ptr<DecPOMDPDiscreteInterface> decpomdp_;
     boost::shared_ptr<DecPOMDPDiscrete> d ( new DecPOMDPDiscrete ( "", "", modelName ) );
     MADPParser parser ( d.get() );
-    //publishStateMetadata ( d );
-    //publishInitialStateDistribution ( d );
+
     decpomdp_ = d;
     // 10 is JA10_stop_stop: it's just an initial condition for P(O|a,S')
     prev_action_ =  10;
@@ -96,23 +99,24 @@ int main ( int argc, char** argv )
         else
             belief_ = boost::shared_ptr<JointBelief> ( new JointBelief ( decpomdp_->GetNrStates() ) );
 
-        std::cout<<"Number of states:"<<decpomdp_->GetNrStates()<<"\n";
         std::vector<double> init_belief;
         // Index 32 = c_c_a_b
-	int mainStateIndex=32;
-	double beliefInMainState = 0.8;
-	double beliefInMinorStates = (1.0 - beliefInMainState)/double(decpomdp_->GetNrStates()-1);
-	for(int i=0;i<decpomdp_->GetNrStates();i++)
-	{
-	  if(i==mainStateIndex)
-	  {
-	    init_belief.push_back(beliefInMainState);
-	  }
-	  else
-	    init_belief.push_back(beliefInMinorStates);
-	}
-	belief_ = boost::shared_ptr<JointBelief>(new JointBelief ( init_belief ) );
-	/*
+        int mainStateIndex = 32;
+        double beliefInMainState = 1.0;
+        double beliefInMinorStates = (1.0 - beliefInMainState)/double(decpomdp_->GetNrStates()-1);
+
+        for(int i=0;i<decpomdp_->GetNrStates();i++)
+        {
+            if(i==mainStateIndex)
+            {
+                init_belief.push_back(beliefInMainState);
+            }
+            else
+                init_belief.push_back(beliefInMinorStates);
+        }
+
+        belief_ = boost::shared_ptr<JointBelief>(new JointBelief ( init_belief ) );
+        /*
         if ( belief_ == 0 )
         {
             std::cout<< ( "\nControllerTimedPOMDP:: Attempted to start controller, but the belief state hasn't been initialized." );
@@ -127,29 +131,31 @@ int main ( int argc, char** argv )
             belief_->Set ( * ( decpomdp_->GetISD() ) );
         }
         */
-        
-        //-------This will print the intial belief and the initial action to check where we are starting from -----------------------
-        //std::cout<<"Initial Belief is:"<<belief_->SoftPrint()<<"\n";
-        std::cout<<"Inital Action is:"<<decpomdp_->GetJointAction ( prev_action_ )->SoftPrint()<<"\n";
 
         decision_episode_ = 0;
 
-
-        // Act in a loop
-	//observations:
-	//vic_dan vic_noDan noVic_dan noVic_noDan 
-	//vic_dan vic_noDan noVic_dan noVic_noDan 
-	// i removed the vic_dan so the index will change now 
-
-        observations = 1;
-        int observations[2]= {8,5};
-        double eta = beliefInMainState; //eta is the probability of the current action-observation trace. It is a by-product of the update procedure.        
-        for(int i=0;i<2;i++)
+        for(int i=0; i < decpomdp_->GetNrJointObservations();i++)
         {
-            if ( decision_episode_ > 0 )
-            {
+            std::cout<<"\nObservation:"<<decpomdp_->GetJointObservation(i)->SoftPrint()<<" has this index:"<<i;
+        }
+        // Act in a loop
+        //observations:
+        //vic_dan vic_noDan noVic_dan noVic_noDan
+        //vic_dan vic_noDan noVic_dan noVic_noDan
+        // i removed the vic_dan so the index will change now
+        // S -> O -> A -> S -> O -> A ...
+
+        int observations[4]= {-1,4,6,8};
+        double eta = 0;
+
+        for(int i=0;i<sizeof(observations)/sizeof(int);i++)
+        {
+            std::cout<<"\nIterating through a new S->O->A Episode";
+            if( decision_episode_ > 0 )
                 eta = belief_->Update ( * ( decpomdp_ ), prev_action_, observations[i] );
-            }
+            else
+                eta = beliefInMainState;
+            publishCurrentBelief(decpomdp_,belief_);
 
             uint32_t action = INT_MAX;
             double q, v = -DBL_MAX;
@@ -169,25 +175,18 @@ int main ( int argc, char** argv )
                 return 0;
             }
             prev_action_ = action;
+            publishExpectedReward( action,decpomdp_,belief_);
 
-            //std::cout<<"the action is :"<< action << endl;
-            publishExpectedReward ( action,decpomdp_,belief_);
-            publishCurrentBelief (belief_);
-            float maxb=0.0;
-            int ind_b;
-            for(int v=0;v<belief_->Size();v++)
+            if( decision_episode_ == 0)
             {
-                if (belief_->Get(v)>maxb)
-                {
-                    maxb=belief_->Get(v);
-                    ind_b=v;
-                }
+                std::cout<< "\nEpisode " << decision_episode_ << " - Action: " << action << " (" << decpomdp_->GetJointAction ( action )->SoftPrint()<< ")"<<std::endl;
             }
-            std::cout<< "\nControllerPOMDP:: Episode " << decision_episode_ << " - Action: "
-                     << action << " (" << decpomdp_->GetJointAction ( action )->SoftPrint()
-                     << ") - Observation: " << observations[i] << " (" << decpomdp_->GetJointObservation ( observations[i] )->SoftPrint()
-                     << ") - P(b|a,o): " << eta << " maxBelief: "<< maxb<<" index is: "<<ind_b<<std::endl;
-
+            else
+            {
+                std::cout<< "\nEpisode " << decision_episode_ << " - Action: "
+                         << action << " (" << decpomdp_->GetJointAction ( action )->SoftPrint()
+                         << ") - Observation: " << observations[i] << " (" << decpomdp_->GetJointObservation ( observations[i] )->SoftPrint()<<")"<<std::endl;
+            }
 
             if ( decision_episode_ > 0 && eta <= Globals::PROB_PRECISION )
             {
