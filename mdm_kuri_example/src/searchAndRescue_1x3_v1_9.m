@@ -320,23 +320,25 @@ end
 %   or
 %   R: <a1 a2...an> : <start-state> : <end-state> : <observation> %f
 
+
 %---------------- Useless motions are penalised----------------------------
 %fprintf(fid,'\nR: * : * : * : * : -1.0');
 fprintf(fid,'\nR: * : * : * : * : -10.00');
-
 %----------------- penality for human go to danger------------------------- 
 
- for a1=1:length(agent1Actions)
-     for a3=1:length(agent3Actions)
-	for x=1:length(nodesX)
-          for v=1:length(victimLoc)
-	    if(a3<3)
-                fprintf(fid,'\nR: %s %s : %s_b_%s_b : * :  * : -150', agent1Actions{a1}, agent3Actions{a3}, nodesX{x}, victimLoc{v});
-             end
+      for a1=1:length(agent1Actions)
+	 for a3=1:length(agent3Actions)
+	  for x=1:length(nodesX)
+	   for z=1:length(nodesZ)
+	    for v=1:length(victimLoc)
+	      if(a3<3 && z~=2)
+                fprintf(fid,'\nR: %s %s : %s_%s_%s_b : * :  * : -100', agent1Actions{a1},agent3Actions{a3}, nodesX{x}, nodesZ{z},victimLoc{v});
+               end
+              end
 	    end 
-         end 
+	  end 
+	 end
       end 
-  end 
 
 %----------------- penality for  robot clears danger and there is no danger------------------------- 
 
@@ -349,7 +351,32 @@ fprintf(fid,'\nR: * : * : * : * : -10.00');
           end 
       end 
   end 
-  
+%----------------- penality for  robot clears danger and robot is not in danger------------------------- 
+for a3=1:length(agent3Actions)
+      for x=1:length(nodesX)
+	 for z=1:length(nodesZ)
+            for v=1:length(victimLoc)
+              if(x~=2)
+                fprintf(fid,'\nR: clear_danger %s : %s_%s_%s_b : * :  * : -50', agent3Actions{a3}, nodesX{x}, nodesZ{z}, victimLoc{v});
+	      end
+	    end
+          end 
+      end 
+  end 
+
+%----------------- penality for extract victim and human is not in node of victim------------------------- 
+for a1=1:length(agent1Actions)
+      for x=1:length(nodesX)
+	 for z=1:length(nodesZ)
+            for d=1:length(dangerLoc)
+	      if(z~=1)
+                fprintf(fid,'\nR: %s extract_victim : %s_%s_a_%s : * :  * : -50', agent1Actions{a1}, nodesX{x}, nodesZ{z}, dangerLoc{d});
+               end
+	    end
+          end 
+      end 
+  end 
+
 %----------------- penality for extract victim and there is no victim------------------------- 
 
  for a1=1:length(agent1Actions)
