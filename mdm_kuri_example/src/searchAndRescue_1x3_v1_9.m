@@ -351,7 +351,7 @@ fprintf(fid,'\nR: * : * : * : * : -10.00');
           end 
       end 
   end 
-%----------------- penality for  robot clears danger and robot is not in danger------------------------- 
+%----------------- penality for  robot clears danger and robot is not in danger node------------------------- 
 for a3=1:length(agent3Actions)
       for x=1:length(nodesX)
 	 for z=1:length(nodesZ)
