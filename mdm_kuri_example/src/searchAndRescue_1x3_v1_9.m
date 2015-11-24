@@ -327,17 +327,17 @@ fprintf(fid,'\nR: * : * : * : * : -10.00');
 %----------------- penality for human go to danger------------------------- 
 
       for a1=1:length(agent1Actions)
-	 for a3=1:length(agent3Actions)
 	  for x=1:length(nodesX)
 	   for z=1:length(nodesZ)
 	    for v=1:length(victimLoc)
-	      if(a3<3 && z~=2)
-                fprintf(fid,'\nR: %s %s : %s_%s_%s_b : * :  * : -100', agent1Actions{a1},agent3Actions{a3}, nodesX{x}, nodesZ{z},victimLoc{v});
-               end
+	      %if(a3<3 )%remove && z~=2
+                fprintf(fid,'\nR: %s left : %s_%s_%s_b : * :  * : -100', agent1Actions{a1}, nodesX{x}, nodesZ{z},victimLoc{v});
+                fprintf(fid,'\nR: %s right : %s_%s_%s_b : * :  * : -100', agent1Actions{a1}, nodesX{x}, nodesZ{z},victimLoc{v});
+
+              % end
               end
 	    end 
 	  end 
-	 end
       end 
 
 %----------------- penality for  robot clears danger and there is no danger------------------------- 
