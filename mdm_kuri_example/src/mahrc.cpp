@@ -100,8 +100,13 @@ int main ( int argc, char** argv )
             belief_ = boost::shared_ptr<JointBelief> ( new JointBelief ( decpomdp_->GetNrStates() ) );
 
         std::vector<double> init_belief;
+        //---------------1x3-------
         // Index 32 = c_c_a_b
-        int mainStateIndex = 8;
+        // index 8 = a_c_a_b
+        //index 20 = b_c_a_b
+        //-----------------3x3------
+        // index 4 = a_b_f_d
+        int mainStateIndex = 4;
         double beliefInMainState = 1.0;
         double beliefInMinorStates = (1.0 - beliefInMainState)/double(decpomdp_->GetNrStates()-1);
 
@@ -145,7 +150,7 @@ int main ( int argc, char** argv )
         // i removed the vic_dan so the index will change now
         // S -> O -> A -> S -> O -> A ...
 
-        int observations[5]= {-1,5,8,0,8};
+        int observations[4]= {-1,8,8,5};
         double eta = 0;
 
         for(int i=0;i<sizeof(observations)/sizeof(int);i++)
