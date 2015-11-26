@@ -39,7 +39,7 @@ void publishCurrentBelief (boost::shared_ptr<DecPOMDPDiscreteInterface> decpomdp
             maxBelief = belief;
             maxIndex  = i;
         }
-        std::cout<<"\nState:"<<decpomdp_->GetState(i)->GetName()<<" Belief:"<< belief;
+        //std::cout<<"\nState:"<<decpomdp_->GetState(i)->GetName()<<" Belief:"<< belief;//this line will print all beliefs now it is commented becasue no space for big map
     }
     std::cout<<"\nOur highest belief is in state:"<< decpomdp_->GetState(maxIndex)->GetName()<<" probability:"<<belief_->Get (maxIndex );
     std::cout<<"\n";
@@ -150,7 +150,7 @@ int main ( int argc, char** argv )
         // i removed the vic_dan so the index will change now
         // S -> O -> A -> S -> O -> A ...
 
-        int observations[8]= {-1,8,8,5,8,8,2,3};
+        int observations[8]= {-1,8,8,5,8,8,2,6};
         double eta = 0;
 
         for(int i=0;i<sizeof(observations)/sizeof(int);i++)
