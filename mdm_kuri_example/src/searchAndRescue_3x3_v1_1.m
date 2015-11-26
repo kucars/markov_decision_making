@@ -336,58 +336,55 @@ fprintf(fid,'\nR: * : * : * : * : -10.00');
 	  end 
       end 
 
-%----------------- penality for  robot clears danger and there is no danger------------------------- 
-
- for a3=1:length(agent3Actions)
-      for x=1:length(agent1Loc)
-	 for z=1:length(agent2Loc)
-            for v=1:length(victimLoc)
-                fprintf(fid,'\nR: clear_danger %s : %s_%s_%s_n : * :  * : -50', agent3Actions{a3}, agent1Loc{x}, agent2Loc{z}, victimLoc{v});
-	    end
-          end 
-      end 
-  end 
+%  %  %----------------- penality for  robot clears danger and there is no danger------------------------- 
+%  
+%   for a3=1:length(agent3Actions)
+%        for x=1:length(agent1Loc)
+%  	 for z=1:length(agent2Loc)
+%              for v=1:length(victimLoc)
+%                  fprintf(fid,'\nR: clear_danger %s : %s_%s_%s_n : * :  * : -50', agent3Actions{a3}, agent1Loc{x}, agent2Loc{z}, victimLoc{v});
+%  	    end
+%            end 
+%        end 
+%    end 
   
 %----------------- penality for  robot clears danger and robot is not in danger node------------------------- 
-for a3=1:length(agent3Actions)
-      for x=1:length(agent1Loc)
-	 for z=1:length(agent2Loc)
-            for v=1:length(victimLoc)
-              if(x~=4)
-                fprintf(fid,'\nR: clear_danger %s : %s_%s_%s_d : * :  * : -50', agent3Actions{a3}, agent1Loc{x}, agent2Loc{z}, victimLoc{v});
-	      end
-	    end
-          end 
-      end 
-  end 
-%----------------- penality for  robot in danger but dont clear danger------------------------- 
-for a1=1:length(agent1Actions)
-   for a3=1:length(agent3Actions)
-      for x=1:length(agent1Loc)
-	 for z=1:length(agent2Loc)
-            for v=1:length(victimLoc)
-	      if(a1~=6)
-                fprintf(fid,'\nR: %s %s : %s_%s_%s_d : * :  * : -50', agent1Actions{a1},agent3Actions{a3}, agent1Loc{x}, agent2Loc{z}, victimLoc{v});
-               end
-	    end
-          end 
-      end 
-  end 
-end
-%----------------- penality for  human in victim node but dont extract him------------------------- 
-for a1=1:length(agent1Actions)
-   for a3=1:length(agent3Actions)
-      for x=1:length(agent1Loc)
-	 for z=1:length(agent2Loc)
-            for v=1:length(victimLoc)
-	      if(a3~=6)
-                fprintf(fid,'\nR: %s %s : %s_%s_f_%s : * :  * : -50', agent1Actions{a1},agent3Actions{a3}, agent1Loc{x}, agent2Loc{z}, dangerLoc{d});
-               end
-	    end
-          end 
-      end 
-  end 
-end
+%  for a3=1:length(agent3Actions)
+%        for x=1:length(agent1Loc)
+%  	 for z=1:length(agent2Loc)
+%              for v=1:length(victimLoc)
+%                if(x~=4)
+%                  fprintf(fid,'\nR: clear_danger %s : %s_%s_%s_d : * :  * : -50', agent3Actions{a3}, agent1Loc{x}, agent2Loc{z}, victimLoc{v});
+%  	      end
+%  	    end
+%            end 
+%        end 
+%    end 
+%  %----------------- penality for  robot in danger but dont clear danger------------------------- 
+%  for a1=1:length(agent1Actions)
+%     for a3=1:length(agent3Actions)
+%  	 for z=1:length(agent2Loc)
+%              for v=1:length(victimLoc)
+%  	      if(a1~=6)
+%                  fprintf(fid,'\nR: %s %s : d_%s_%s_d : * :  * : -50', agent1Actions{a1},agent3Actions{a3}, agent2Loc{z}, victimLoc{v});
+%                 end
+%  	    end
+%            end 
+%    end 
+%  end
+%  %----------------- penality for  human in victim node but dont extract him------------------------- 
+%  for a1=1:length(agent1Actions)
+%     for a3=1:length(agent3Actions)
+%        for x=1:length(agent1Loc)
+%              for d=1:length(dangerLoc)
+%  	      if(a3~=6)
+%                  fprintf(fid,'\nR: %s %s : %s_f_f_%s : * :  * : -50', agent1Actions{a1},agent3Actions{a3}, agent1Loc{x}, dangerLoc{d});
+%                 end
+%  	    end
+%             
+%        end 
+%    end 
+%  end
 %----------------- penality for extract victim and human is not in node of victim------------------------- 
 for a1=1:length(agent1Actions)
       for x=1:length(agent1Loc)
