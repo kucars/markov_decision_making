@@ -341,24 +341,24 @@ fprintf(fid,'\nR: * : * : * : * : -10.00');
       for a1=1:length(agent1Actions)
 	  for x=1:length(agent1Loc)
 	    for v=1:length(victimLoc)
-                fprintf(fid,'\nR: %s right : %s_f_%s_c : * :  * : -70', agent1Actions{a1}, agent1Loc{x},victimLoc{v});
-                fprintf(fid,'\nR: %s up : %s_b_%s_c : * :  * : -70', agent1Actions{a1}, agent1Loc{x},victimLoc{v});
-                fprintf(fid,'\nR: %s down : %s_d_%s_c : * :  * : -70', agent1Actions{a1}, agent1Loc{x},victimLoc{v}); 
+                fprintf(fid,'\nR: %s right : %s_f_%s_c : * :  * : -100', agent1Actions{a1}, agent1Loc{x},victimLoc{v});
+                fprintf(fid,'\nR: %s up : %s_b_%s_c : * :  * : -100', agent1Actions{a1}, agent1Loc{x},victimLoc{v});
+                fprintf(fid,'\nR: %s down : %s_d_%s_c : * :  * : -100', agent1Actions{a1}, agent1Loc{x},victimLoc{v}); 
               end
 	  end 
       end 
 
 %  %  %----------------- penality for  robot clears danger and there is no danger------------------------- 
 
-%   for a3=1:length(agent3Actions)
-%        for x=1:length(agent1Loc)
-%  	 for z=1:length(agent2Loc)
-%              for v=1:length(victimLoc)
-%                  fprintf(fid,'\nR: clear_danger %s : %s_%s_%s_n : * :  * : -50', agent3Actions{a3}, agent1Loc{x}, agent2Loc{z}, victimLoc{v});
-%  	    end
-%            end 
-%        end 
-%    end 
+ for a3=1:length(agent3Actions)
+      for x=1:length(agent1Loc)
+	 for z=1:length(agent2Loc)
+            for v=1:length(victimLoc)
+                fprintf(fid,'\nR: clear_danger %s : %s_%s_%s_n : * :  * : -50', agent3Actions{a3}, agent1Loc{x}, agent2Loc{z}, victimLoc{v});
+	    end
+          end 
+      end 
+  end 
   
 %  %----------------- penality for  robot clears danger and robot is not in danger node------------------------- 
 %  for a3=1:length(agent3Actions)
