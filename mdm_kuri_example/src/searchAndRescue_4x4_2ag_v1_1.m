@@ -211,7 +211,7 @@ for a1=1:length(agent1Actions)
 			    uniProb1= probx*probz*probd*probv;
 			    sum = sum + uniProb1;
 
-			    fprintf(fid,'\nT: %s %s : %s_%s_%s_%s : %s_%s_%s_%s : %f',agent1Actions{a1},agent3Actions{a3},agent1Loc{x},agent2Loc{z},victimLoc{w},dangerLoc{k},agent1Loc{x1},agent2Loc{z1},victimLoc{w1},dangerLoc{k1},uniProb1);
+			    fprintf(fid,'\nT: %s %s : %s_%s_%s_%s : %s_%s_%s_%s : %e',agent1Actions{a1},agent3Actions{a3},agent1Loc{x},agent2Loc{z},victimLoc{w},dangerLoc{k},agent1Loc{x1},agent2Loc{z1},victimLoc{w1},dangerLoc{k1},uniProb1);
 			    
 			end 
 		      end 
