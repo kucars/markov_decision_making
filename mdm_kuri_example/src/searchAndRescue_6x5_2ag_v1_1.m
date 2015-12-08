@@ -197,14 +197,14 @@ for a1=1:length(agent1Actions)
 %!strcmp(agent1Actions{a1},'clear_danger')
 
 %strcmp(agent3Actions{a3},'extract_victim')
-	     
-			  if (x== dangerLocState && strcmp(dangerLoc{k},'c') && strcmp(agent1Actions{a1},'clear_danger') && strcmp(dangerLoc{k1},'n'))
+
+			  if (x== dangerLocState && k==1 && a1==6 && k1==2)
 			    probd=certainty;
-			  elseif (x== dangerLocState && strcmp(dangerLoc{k},'c') && a1<6 && k1==k)
+			  elseif (x== dangerLocState && k==1 && a1<6 && k1==k)
 			    probd=certainty;
-			  elseif (x== dangerLocState && strcmp(dangerLoc{k},'n') && k1==k)
+			  elseif (x== dangerLocState && k==2 && k1==k)
 			    probd=certainty;
-			  elseif (x~= dangerLocState && strcmp(dangerLoc{k},'n') &&  a1<6 && k1==k)
+			  elseif (x~= dangerLocState && k==2 &&  a1<6 && k1==k)
 			    probd=certainty;
 			  elseif (x~= dangerLocState && k1==k)
 			    probd=certainty;
@@ -213,19 +213,49 @@ for a1=1:length(agent1Actions)
 			  end 
                             
                             
-			  if (z== victimLocState && strcmp(victimLoc{w},'f') && strcmp(agent3Actions{a3},'extract_victim') && strcmp(victimLoc{w},'n'))
+			  if (z== victimLocState && w==1 && a3==6 && w1==2 )
 			    probv=certainty;
-			  elseif (z== victimLocState && strcmp(victimLoc{w},'f') && a3<6 && w1==w )
+			  elseif (z== victimLocState && w==1 && a3<6 && w1==w )
 			    probv=certainty;
-			  elseif (z== victimLocState && strcmp(victimLoc{w},'n') && w1==w )
+			  elseif (z== victimLocState && w==2 && w1==w )
 			    probv=certainty;
-			  elseif (z~= victimLocState && a3<6 && w1==w && strcmp(victimLoc{w},'n'))
+			  elseif (z~= victimLocState && a3<6 && w1==w && w==2)
 			    probv=certainty;
 			  elseif (z~= victimLocState && w1==w )
 			    probv=certainty;
 			  else 
 			    probv=1-certainty;
 			  end                
+			   
+	     
+%  			  if (x== dangerLocState && strcmp(dangerLoc{k},'c') && strcmp(agent1Actions{a1},'clear_danger') && strcmp(dangerLoc{k1},'n'))
+%  			    probd=certainty;
+%  			  elseif (x== dangerLocState && strcmp(dangerLoc{k},'c') && a1<6 && k1==k)
+%  			    probd=certainty;
+%  			  elseif (x== dangerLocState && strcmp(dangerLoc{k},'n') && k1==k)
+%  			    probd=certainty;
+%  			  elseif (x~= dangerLocState && strcmp(dangerLoc{k},'n') &&  a1<6 && k1==k)
+%  			    probd=certainty;
+%  			  elseif (x~= dangerLocState && k1==k)
+%  			    probd=certainty;
+%  			  else
+%  			    probd=1-certainty;
+%  			  end 
+%                              
+%                              
+%  			  if (z== victimLocState && strcmp(victimLoc{w},'f') && strcmp(agent3Actions{a3},'extract_victim') && strcmp(victimLoc{w},'n'))
+%  			    probv=certainty;
+%  			  elseif (z== victimLocState && strcmp(victimLoc{w},'f') && a3<6 && w1==w )
+%  			    probv=certainty;
+%  			  elseif (z== victimLocState && strcmp(victimLoc{w},'n') && w1==w )
+%  			    probv=certainty;
+%  			  elseif (z~= victimLocState && a3<6 && w1==w && strcmp(victimLoc{w},'n'))
+%  			    probv=certainty;
+%  			  elseif (z~= victimLocState && w1==w )
+%  			    probv=certainty;
+%  			  else 
+%  			    probv=1-certainty;
+%  			  end                
 			   
 			   
 			    uniProb1= probx*probz*probd*probv;
@@ -358,15 +388,15 @@ end
 %fprintf(fid,'\nR: * : * : * : * : -1.0');
 fprintf(fid,'\nR: * : * : * : * : -10.00');
 %----------------- penality for human go to danger------------------------- 
-
-      for a1=1:length(agent1Actions)
-	  for x=1:length(agent1Loc)
-	    for v=1:length(victimLoc)
-                fprintf(fid,'\nR: %s right : %s_d_%s_c : * :  * : -100', agent1Actions{a1}, agent1Loc{x},victimLoc{v});
-                fprintf(fid,'\nR: %s up : %s_b_%s_c : * :  * : -100', agent1Actions{a1}, agent1Loc{x},victimLoc{v});
-              end
-	  end 
-      end 
+%  
+%        for a1=1:length(agent1Actions)
+%  	  for x=1:length(agent1Loc)
+%  	    for v=1:length(victimLoc)
+%                  fprintf(fid,'\nR: %s right : %s_d_%s_c : * :  * : -100', agent1Actions{a1}, agent1Loc{x},victimLoc{v});
+%                  fprintf(fid,'\nR: %s up : %s_b_%s_c : * :  * : -100', agent1Actions{a1}, agent1Loc{x},victimLoc{v});
+%                end
+%  	  end 
+%        end 
 
 %  %  %----------------- penality for  robot clears danger and there is no danger------------------------- 
 
