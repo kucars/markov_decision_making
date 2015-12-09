@@ -325,35 +325,61 @@ for a1=1:length(agent1Actions)
 		  uniProb1=0.0;  
 
 		  
-		  if(x==victimLocState && strcmp(victimLoc{w},'f') && strcmp(agent1Observation{o1},'vic_noDan')) 
+%  		  if(x==victimLocState && strcmp(victimLoc{w},'f') && strcmp(agent1Observation{o1},'vic_noDan')) 
+%  		    probO1= obsCertainty;
+%  		  elseif(x==victimLocState && strcmp(victimLoc{w},'n') && strcmp(agent1Observation{o1},'noVic_noDan'))
+%  		     probO1= obsCertainty;
+%  		  elseif ( x==dangerLocState && strcmp(dangerLoc{k},'c') && strcmp(agent1Observation{o1},'noVic_dan'))
+%  		     probO1= obsCertainty;
+%  		  elseif ( x==dangerLocState && strcmp(dangerLoc{k},'n') && strcmp(agent1Observation{o1},'noVic_noDan'))
+%  		     probO1= obsCertainty;
+%  		  elseif (x~=dangerLocState && x~=victimLocState && strcmp(agent1Observation{o1},'noVic_noDan'))
+%  		      probO1= obsCertainty;
+%  		  else 
+%  		     probO1= (1-obsCertainty)/(a1ObservationSpace-1);
+%  		  end 
+%  
+%  		  if(z==victimLocState && strcmp(victimLoc{w},'f') && strcmp(agent3Observation{o3},'vic_noDan'))
+%  		    probO3= obsCertainty;
+%  		  elseif(z==victimLocState && strcmp(victimLoc{w},'n') && strcmp(agent3Observation{o3},'noVic_noDan'))
+%  		     probO3= obsCertainty;
+%  		  elseif ( z==dangerLocState && strcmp(dangerLoc{k},'c') && strcmp(agent3Observation{o3},'noVic_dan'))
+%  		     probO3= obsCertainty;
+%  		  elseif ( z==dangerLocState && strcmp(dangerLoc{k},'n') && strcmp(agent3Observation{o3},'noVic_noDan'))
+%  		     probO3= obsCertainty;
+%  		  elseif (z~=dangerLocState && z~=victimLocState && strcmp(agent3Observation{o3},'noVic_noDan'))
+%  		      probO3= obsCertainty;
+%  		  else 
+%  		     probO3= (1-obsCertainty)/(a2ObservationSpace-1);
+%  		  end 
+%  		  
+		    if(x==6 && w==1 && o1 ==1)
 		    probO1= obsCertainty;
-		  elseif(x==victimLocState && strcmp(victimLoc{w},'n') && strcmp(agent1Observation{o1},'noVic_noDan'))
+		  elseif(x==6 && w==2 && o1 ==3)
 		     probO1= obsCertainty;
-		  elseif ( x==dangerLocState && strcmp(dangerLoc{k},'c') && strcmp(agent1Observation{o1},'noVic_dan'))
+		  elseif ( x==3 && k==1 && o1==2)
 		     probO1= obsCertainty;
-		  elseif ( x==dangerLocState && strcmp(dangerLoc{k},'n') && strcmp(agent1Observation{o1},'noVic_noDan'))
+		  elseif ( x==3 && k==2 && o1==3)
 		     probO1= obsCertainty;
-		  elseif (x~=dangerLocState && x~=victimLocState && strcmp(agent1Observation{o1},'noVic_noDan'))
+		  elseif (x~=3 && x~=6 && o1==3)
 		      probO1= obsCertainty;
 		  else 
-		     probO1= (1-obsCertainty)/(a1ObservationSpace-1);
+		     probO1= (1-obsCertainty)/(a1ObservationSpace-1);%2 is the other options of the observations 
 		  end 
 
-		  if(z==victimLocState && strcmp(victimLoc{w},'f') && strcmp(agent3Observation{o3},'vic_noDan'))
+		  if(z==6 && w==1 && o3 ==1)
 		    probO3= obsCertainty;
-		  elseif(z==victimLocState && strcmp(victimLoc{w},'n') && strcmp(agent3Observation{o3},'noVic_noDan'))
+		  elseif(z==6 && w==2 && o3 ==3)
 		     probO3= obsCertainty;
-		  elseif ( z==dangerLocState && strcmp(dangerLoc{k},'c') && strcmp(agent3Observation{o3},'noVic_dan'))
+		  elseif ( z==3 && k==1 && o3==2)
 		     probO3= obsCertainty;
-		  elseif ( z==dangerLocState && strcmp(dangerLoc{k},'n') && strcmp(agent3Observation{o3},'noVic_noDan'))
+		  elseif ( z==3 && k==2 && o3==3)
 		     probO3= obsCertainty;
-		  elseif (z~=dangerLocState && z~=victimLocState && strcmp(agent3Observation{o3},'noVic_noDan'))
+		  elseif (z~=3 && z~=6 && o3==3)
 		      probO3= obsCertainty;
 		  else 
 		     probO3= (1-obsCertainty)/(a2ObservationSpace-1);
 		  end 
-		  
-		  
 		  uniProb1=probO1*probO3;
 		  sum = sum + uniProb1;
 		  
@@ -388,28 +414,28 @@ end
 %fprintf(fid,'\nR: * : * : * : * : -1.0');
 fprintf(fid,'\nR: * : * : * : * : -10.00');
 %----------------- penality for human go to danger------------------------- 
-%  
-%        for a1=1:length(agent1Actions)
-%  	  for x=1:length(agent1Loc)
-%  	    for v=1:length(victimLoc)
-%                  fprintf(fid,'\nR: %s right : %s_d_%s_c : * :  * : -100', agent1Actions{a1}, agent1Loc{x},victimLoc{v});
-%                  fprintf(fid,'\nR: %s up : %s_b_%s_c : * :  * : -100', agent1Actions{a1}, agent1Loc{x},victimLoc{v});
-%                end
-%  	  end 
-%        end 
+
+      for a1=1:length(agent1Actions)
+	  for x=1:length(agent1Loc)
+	    for v=1:length(victimLoc)
+                fprintf(fid,'\nR: %s right : %s_d_%s_c : * :  * : -100', agent1Actions{a1}, agent1Loc{x},victimLoc{v});
+                fprintf(fid,'\nR: %s up : %s_b_%s_c : * :  * : -100', agent1Actions{a1}, agent1Loc{x},victimLoc{v});
+              end
+	  end 
+      end 
 
 %  %  %----------------- penality for  robot clears danger and there is no danger------------------------- 
 
- for a3=1:length(agent3Actions)
-      for x=1:length(agent1Loc)
-	 for z=1:length(agent2Loc)
-            for v=1:length(victimLoc)
-                fprintf(fid,'\nR: clear_danger %s : %s_%s_%s_n : * :  * : -50', agent3Actions{a3}, agent1Loc{x}, agent2Loc{z}, victimLoc{v});
-	    end
-          end 
-      end 
-  end 
-  
+%   for a3=1:length(agent3Actions)
+%        for x=1:length(agent1Loc)
+%  	 for z=1:length(agent2Loc)
+%              for v=1:length(victimLoc)
+%                  fprintf(fid,'\nR: clear_danger %s : %s_%s_%s_n : * :  * : -50', agent3Actions{a3}, agent1Loc{x}, agent2Loc{z}, victimLoc{v});
+%  	    end
+%            end 
+%        end 
+%    end 
+%    
 %  %----------------- penality for  robot clears danger and robot is not in danger node------------------------- 
 %  for a3=1:length(agent3Actions)
 %        for x=1:length(agent1Loc)
