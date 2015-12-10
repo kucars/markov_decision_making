@@ -449,17 +449,17 @@ fprintf(fid,'\nR: * : * : * : * : -10.00');
 %        end 
 %    end 
 %  %----------------- penality for  robot in danger but dont clear danger------------------------- 
-for a1=1:length(agent1Actions)
-   for a3=1:length(agent3Actions)
-	 for z=1:length(agent2Loc)
-            for v=1:length(victimLoc)
-	      if(a1~=6)
-                fprintf(fid,'\nR: %s %s : c_%s_%s_c : * :  * : -50', agent1Actions{a1},agent3Actions{a3}, agent2Loc{z}, victimLoc{v});
-               end
-	    end
-         end 
-    end 
-end
+%  for a1=1:length(agent1Actions)
+%     for a3=1:length(agent3Actions)
+%  	 for z=1:length(agent2Loc)
+%              for v=1:length(victimLoc)
+%  	      if(a1~=6)
+%                  fprintf(fid,'\nR: %s %s : c_%s_%s_c : * :  * : -80', agent1Actions{a1},agent3Actions{a3}, agent2Loc{z}, victimLoc{v});
+%                 end
+%  	    end
+%           end 
+%      end 
+%  end
 %  %----------------- penality for  human in victim node but dont extract him------------------------- 
 %  for a1=1:length(agent1Actions)
 %     for a3=1:length(agent3Actions)
@@ -488,23 +488,23 @@ end
 
 %  %----------------- penality for extract victim and there is no victim------------------------- 
 %  
- for a1=1:length(agent1Actions)
-      for x=1:length(agent1Loc)
-	 for z=1:length(agent2Loc)
-            for d=1:length(dangerLoc)
-                fprintf(fid,'\nR: %s extract_victim : %s_%s_n_%s : * :  * : -50', agent1Actions{a1}, agent1Loc{x}, agent2Loc{z}, dangerLoc{d});
-	    end
-          end 
-      end 
-  end 
- 
+%   for a1=1:length(agent1Actions)
+%        for x=1:length(agent1Loc)
+%  	 for z=1:length(agent2Loc)
+%              for d=1:length(dangerLoc)
+%                  fprintf(fid,'\nR: %s extract_victim : %s_%s_n_%s : * :  * : -50', agent1Actions{a1}, agent1Loc{x}, agent2Loc{z}, dangerLoc{d});
+%  	    end
+%            end 
+%        end 
+%    end 
+%   
 
  
 % -----------------Reward for clearing danger----------------------------------
 for a3=1:length(agent3Actions)
   for z=1:length(agent2Loc)
     for v=1:length(victimLoc)                
-      fprintf(fid,'\nR:  clear_danger %s : c_%s_%s_c :  * : * : 100',agent3Actions{a3}, agent2Loc{z}, victimLoc{v});
+      fprintf(fid,'\nR:  clear_danger %s : c_%s_%s_c :  * : * : 180',agent3Actions{a3}, agent2Loc{z}, victimLoc{v});
     end
   end 
 end
@@ -514,7 +514,7 @@ end
 for x=1:length(agent1Loc)
    for a1=1:length(agent1Actions)
 	for k=1:length(dangerLoc)
-	  fprintf(fid,'\nR:  %s extract_victim : %s_f_f_%s : * : * : 100', agent1Actions{a1},agent1Loc{x},dangerLoc{k});
+	  fprintf(fid,'\nR:  %s extract_victim : %s_f_f_%s : * : * : 180', agent1Actions{a1},agent1Loc{x},dangerLoc{k});
 	end
     end
 end 
