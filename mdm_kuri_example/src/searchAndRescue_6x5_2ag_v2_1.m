@@ -3,12 +3,12 @@
 %d and sometimes its refered to originical as string 
 
 %agent1 is X,  agent 2 is Z
-agent1Loc = {'a','b', 'c','d','e','f','g','h','i','j'};
-agent2Loc = {'a','b', 'c','d','e','f','g','h','i','j'};
+agent1Loc = {'a','b', 'c','d','e','f','g','h','i','j','k','l'};
+agent2Loc = {'a','b', 'c','d','e','f','g','h','i','j','k','l'};
 dangerLoc = {'c','n'};%n means no danger
-victimLoc = {'f','n'};%n means no victim 
+victimLoc = {'g','n'};%n means no victim 
 
-victimLocState = 6;%the node 
+victimLocState = 7;%the node 
 dangerLocState = 3;
 
 agent1Actions     = {'right','left','up','down','stop','clear_danger'};
@@ -19,27 +19,28 @@ agent3Observation = {'vic_noDan','noVic_dan','noVic_noDan'};
 
 
 %right,left,up, down,stop,clear/extract
-%----------------------------------------
-%xxxxxxx|xxxxxxx|   d	|	|   c(D)|
-%----------------------------------------
-%   f(V)|	|   e	|xxxxxxx|	|
-%----------------------------------------
-%xxxxxxx|xxxxxxx|	|xxxxxxx|	|
-%----------------------------------------
-%   i	|	|   g(H)|	|   b(R)|
-%----------------------------------------
-%	|xxxxxxx|	|xxxxxxx|	|
-%----------------------------------------
-%   j	|xxxxxxx|   h	|xxxxxxx|   a   |
-%----------------------------------------
+%-----------------------------------------
+%  g(V)	|	|	|	|   f	|
+%-----------------------------------------
+% 	| xxxxxx|xxxxxx	|xxxxxx	|	|
+%-----------------------------------------
+%  h	|   i	|xxxxxxx|   d	|   e	|
+%-----------------------------------------
+%xxxxxxx|  j	|	|  c(D)	|xxxxxxx|
+%-----------------------------------------
+%  k	|xxxxxxx|xxxxxxx|	|xxxxxxx|
+%-----------------------------------------
+%  l	|	|	|   b	| a(R,H)|
+%-----------------------------------------
+
 
 %{right, left, up, down, stop, clear/extract}
-%a=1,b=2,c=3,d=4,e=5,f=6. g=7 h=8, i=9, j=10
-network =[[1,1,2,1,1,1];[2,7,3,1,2,2];[3,4,3,2,3,3];[3,4,4,5,4,4];[5,6,4,7,5,5];[5,6,6,6,6,6];[2,9,5,8,7,7];[8,8,7,8,8,8];[7,9,9,10,9,9];[10,10,9,10,10,10]];
+%a=1,b=2,c=3,d=4,e=5,f=6. g=7 h=8, i=9, j=10, k=11, l=12
+network =[[1,2,1,1,1,1];[1,12,3,2,2,2];[3,10,4,2,3,3];[5,4,4,3,4,4];[5,4,6,5,5,5];[6,7,6,5,6,6];[6,7,7,8,7,7];[9,8,7,8,8,8];[9,8,9,10,9,9];[3,10,9,10,10,10];[11,11,11,12,11,11];[2,12,11,12,12,12]];
 
 format long; 
 % Multi-Agent Human Robot Collaboration
-outputFile = 'MAHRC_6x5_2ag_v1_1.dpomdp';  
+outputFile = 'MAHRC_6x5_2ag_v2_1.dpomdp';  
 fid = fopen(outputFile, 'wb');
 
 % Write to File the top comments and warnings
@@ -353,29 +354,29 @@ for a1=1:length(agent1Actions)
 %  		     probO3= (1-obsCertainty)/(a2ObservationSpace-1);
 %  		  end 
 %  		  
-		    if(x==6 && w==1 && o1 ==1)
+		    if(x==7 && w==1 && o1 ==1)
 		    probO1= obsCertainty;
-		  elseif(x==6 && w==2 && o1 ==3)
+		  elseif(x==7 && w==2 && o1 ==3)
 		     probO1= obsCertainty;
 		  elseif ( x==3 && k==1 && o1==2)
 		     probO1= obsCertainty;
 		  elseif ( x==3 && k==2 && o1==3)
 		     probO1= obsCertainty;
-		  elseif (x~=3 && x~=6 && o1==3)
+		  elseif (x~=3 && x~=7 && o1==3)
 		      probO1= obsCertainty;
 		  else 
 		     probO1= (1-obsCertainty)/(a1ObservationSpace-1);%2 is the other options of the observations 
 		  end 
 
-		  if(z==6 && w==1 && o3 ==1)
+		  if(z==7 && w==1 && o3 ==1)
 		    probO3= obsCertainty;
-		  elseif(z==6 && w==2 && o3 ==3)
+		  elseif(z==7 && w==2 && o3 ==3)
 		     probO3= obsCertainty;
 		  elseif ( z==3 && k==1 && o3==2)
 		     probO3= obsCertainty;
 		  elseif ( z==3 && k==2 && o3==3)
 		     probO3= obsCertainty;
-		  elseif (z~=3 && z~=6 && o3==3)
+		  elseif (z~=3 && z~=7 && o3==3)
 		      probO3= obsCertainty;
 		  else 
 		     probO3= (1-obsCertainty)/(a2ObservationSpace-1);
@@ -449,17 +450,17 @@ fprintf(fid,'\nR: * : * : * : * : -10.00');
 %        end 
 %    end 
 %  %----------------- penality for  robot in danger but dont clear danger------------------------- 
-for a1=1:length(agent1Actions)
-   for a3=1:length(agent3Actions)
-	 for z=1:length(agent2Loc)
-            for v=1:length(victimLoc)
-	      if(a1~=6)
-                fprintf(fid,'\nR: %s %s : c_%s_%s_c : * :  * : -50', agent1Actions{a1},agent3Actions{a3}, agent2Loc{z}, victimLoc{v});
-               end
-	    end
-         end 
-    end 
-end
+%  for a1=1:length(agent1Actions)
+%     for a3=1:length(agent3Actions)
+%  	 for z=1:length(agent2Loc)
+%              for v=1:length(victimLoc)
+%  	      if(a1~=6)
+%                  fprintf(fid,'\nR: %s %s : c_%s_%s_c : * :  * : -50', agent1Actions{a1},agent3Actions{a3}, agent2Loc{z}, victimLoc{v});
+%                 end
+%  	    end
+%           end 
+%      end 
+%  end
 %  %----------------- penality for  human in victim node but dont extract him------------------------- 
 %  for a1=1:length(agent1Actions)
 %     for a3=1:length(agent3Actions)
