@@ -112,9 +112,11 @@ int main ( int argc, char** argv )
         // index 24 = a_g_f_c
         // index 112 = e_a_f_c
         // index 16= a_e_f_c
-        //------------------6x5--2ag
+        //------------------6x5--2ag-v1
         // index 64 =b_g_f_c
-        int mainStateIndex = 64;
+        //------------------6x5--2ag--v2------
+        // index 0=a_a_g_c
+        int mainStateIndex = 0;
         double beliefInMainState = 1.0;
         double beliefInMinorStates = (1.0 - beliefInMainState)/double(decpomdp_->GetNrStates()-1);
 
@@ -158,7 +160,7 @@ int main ( int argc, char** argv )
         // i removed the vic_dan so the index will change now
         // S -> O -> A -> S -> O -> A ...
 
-        int observations[7]= {-1,5,8,8,8,6,8};
+        int observations[8]= {-1,8,5,8,8,8,6,8};
         double eta = 0;
 
         for(int i=0;i<sizeof(observations)/sizeof(int);i++)
