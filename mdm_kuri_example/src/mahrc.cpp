@@ -160,7 +160,7 @@ int main ( int argc, char** argv )
         // i removed the vic_dan so the index will change now
         // S -> O -> A -> S -> O -> A ...
 
-        int observations[8]= {-1,8,8,8,8,5,6,8};
+        int observations[9]= {-1,8,5,8,8,8,8,6,8};
         double eta = 0;
 
         for(int i=0;i<sizeof(observations)/sizeof(int);i++)
