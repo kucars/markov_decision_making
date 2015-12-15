@@ -38,6 +38,8 @@ agent3Observation = {'vic_noDan','noVic_dan','noVic_noDan'};
 %a=1,b=2,c=3,d=4,e=5,f=6. g=7 h=8, i=9, j=10, k=11, l=12
 network =[[1,2,1,1,1,1];[1,12,3,2,2,2];[3,10,4,2,3,3];[5,4,4,3,4,4];[5,4,6,5,5,5];[6,7,6,5,6,6];[6,7,7,8,7,7];[9,8,7,8,8,8];[9,8,9,10,9,9];[3,10,9,10,10,10];[11,11,11,12,11,11];[2,12,11,12,12,12]];
 
+network_indices=[[6,5];[6,4];[4,4];[3,4];[3,5];[1,5];[1,1];[3,1];[3,2];[4,2];[5,1];[6,1]];
+
 format long; 
 % Multi-Agent Human Robot Collaboration
 outputFile = 'MAHRC_6x5_2ag_v2_1.dpomdp';  
@@ -419,9 +421,9 @@ fprintf(fid,'\nR: * : * : * : * : -10.00');
       for a1=1:length(agent1Actions)
 	  for x=1:length(agent1Loc)
 	    for v=1:length(victimLoc)
-                fprintf(fid,'\nR: %s down : %s_d_%s_c : * :  * : -55', agent1Actions{a1}, agent1Loc{x},victimLoc{v});
-                fprintf(fid,'\nR: %s up : %s_b_%s_c : * :  * : -55', agent1Actions{a1}, agent1Loc{x},victimLoc{v});
-                fprintf(fid,'\nR: %s right : %s_j_%s_c : * :  * : -55', agent1Actions{a1}, agent1Loc{x},victimLoc{v});
+                fprintf(fid,'\nR: %s down : %s_d_%s_c : * :  * : -50', agent1Actions{a1}, agent1Loc{x},victimLoc{v});
+                fprintf(fid,'\nR: %s up : %s_b_%s_c : * :  * : -50', agent1Actions{a1}, agent1Loc{x},victimLoc{v});
+                fprintf(fid,'\nR: %s right : %s_j_%s_c : * :  * : -50', agent1Actions{a1}, agent1Loc{x},victimLoc{v});
 
               end
 	  end 
