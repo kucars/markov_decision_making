@@ -1,38 +1,19 @@
-function [dangerZoneReward] = dangerRewardFun(network,dangerLocState,currentLocation)
+function [dangerZoneReward] = dangerRewardFun(network_indices,dangerLocState,nextLocation)
   dangerZoneReward=-100;
   
-  for x=1:4	%we don't need to be 6, only the connected nodes to the 4 directions 
-    level1node=network(dangerLocState,x);
-    if (currentLocation==level1node)%this is will be high penalization  
-	  dangerZoneReward=dangerZoneReward/1;
-	  break;
-    else
-	for i=1:4
-	  level2node=network(level1node,i);
-	  if(currentLocation==level2node)
-	    dangerZoneReward=dangerZoneReward/2;
-	    break;
-	  else
-	    for c=1:4
-	      level3node=network(level2node,c);
-	      if(currentLocation==level3node)
-		dangerZoneReward=dangerZoneReward/3;
-		break;
-	      else
-		for q=1:4
-		  level4node=network(level3node,q);
-		  if(currentLocation==level4node)
-		    dangerZoneReward=dangerZoneReward/10;
-		    break;
-		  end% end if level 4
-		end%end for level 4
-	      end%end if level 3
-	    end%end for level 3
-	  end% end if level 2 danger 
-	end%end for level 2 
-    end%end if 
-  end%end for 
+  x=power((network_indices(dangerLocState,1)-network_indices(nextLocation,1)),2);
+  y=power((network_indices(dangerLocState,2)-network_indices(nextLocation,2)),2);
+  distance=sqrt(x+y);
   
+  if (distance<=2)
+    dangerZoneReward=dangerZoneReward/1;
+  elseif (distance<3 && distance>2)
+    dangerZoneReward=dangerZoneReward/2;
+  elseif(distance<4 && distance>3)
+    dangerZoneReward=dangerZoneReward/3;
+  elseif(distance>4)
+    dangerZoneReward=dangerZoneReward/10;
+  end
 end%end function 
   
   
