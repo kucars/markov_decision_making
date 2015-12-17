@@ -1,12 +1,12 @@
 pomdp_model: /home/blackcoder/workspace/catkin_ws/src/markov_decision_making/mdm_kuri_example/src/MAHRC_6x5_2ag_v2_1.dpomdp
 policy_file: /home/blackcoder/workspace/catkin_ws/src/markov_decision_making/mdm_kuri_example/src/POMDP_MAHRC_6x5_2ag_v2_1_g0.9_PerseusPOMDPValueFunction_h999999
 decision_horizon: 50
-initial_action: 10
-initial_state: a_a_g_c
+initial_action: stop_stop
+initial_state: a_a_a_b
 initial_state_belief: 1.0
 observations: 
-    - 1
-    - 2
-    - 4
-    - 5
-    - 6
+    - vic_noDan_noVic_noDan
+    - vic_noDan_noVic_noDan
+    - vic_noDan_noVic_noDan
+    - vic_noDan_noVic_noDan
+    - vic_noDan_noVic_noDan
