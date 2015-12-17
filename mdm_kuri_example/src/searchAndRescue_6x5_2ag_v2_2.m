@@ -11,6 +11,9 @@ victimLoc = {'g','n'};%n means no victim
 victimLocState = 7;%the node 
 dangerLocState = 3;
 
+victimLocStateNode = 'g'; 
+dangerLocStateNode = 'c';
+
 agent1Actions     = {'right','left','up','down','stop','clear_danger'};
 agent3Actions     = {'right','left','up','down','stop','extract_victim'};
 
@@ -42,7 +45,7 @@ network_indices=[[6,5];[6,4];[4,4];[3,4];[3,5];[1,5];[1,1];[3,1];[3,2];[4,2];[5,
 
 format long; 
 % Multi-Agent Human Robot Collaboration
-outputFile = 'MAHRC_6x5_2ag_v2_1.dpomdp';  
+outputFile = 'MAHRC_6x5_2ag_v2_2.dpomdp';  
 fid = fopen(outputFile, 'wb');
 
 % Write to File the top comments and warnings
@@ -183,76 +186,44 @@ for a1=1:length(agent1Actions)
 			    probz=(1-certainty)/(a2StateSpace-1);
 			  end
 	     
-	     		  %victimLocState = 6; 
-		  %dangerLocState = 3;
-		  
-		  %strcmp(agent2Actions{a2},'extract_victim')
-		  %agent1Loc = {'a','b', 'c','d','e','f','g','h','i','j'};
-		  %agent2Loc = {'a','b', 'c','d','e','f','g','h','i','j'};
-%  		  dangerLoc = {'c','n'};%n means no danger
-%  		  victimLoc = {'f','n'};%n means no victim 
-%  
-%  		  agent1Actions     = {'right','left','up','down','stop','clear_danger'};
-%  		  agent3Actions     = {'right','left','up','down','stop','extract_victim'};
-%  
-%  		  agent1Observation = {'vic_noDan','noVic_dan','noVic_noDan'};
-%  		  agent3Observation = {'vic_noDan','noVic_dan','noVic_noDan'};
-%!strcmp(agent1Actions{a1},'clear_danger')
 
-%strcmp(agent3Actions{a3},'extract_victim')
-
-			  if (x== dangerLocState && k==1 && a1==6 && k1==2)
-			    probd=certainty;
-			  elseif (x== dangerLocState && k==1 && a1<6 && k1==k)
-			    probd=certainty;
-			  elseif (x== dangerLocState && k==2 && k1==k)
-			    probd=certainty;
-			  elseif (x~= dangerLocState && k==2 &&  a1<6 && k1==k)
-			    probd=certainty;
-			  elseif (x~= dangerLocState && k1==k)
-			    probd=certainty;
-			  else
-			    probd=1-certainty;
-			  end 
-                            
-                            
-			  if (z== victimLocState && w==1 && a3==6 && w1==2 )
-			    probv=certainty;
-			  elseif (z== victimLocState && w==1 && a3<6 && w1==w )
-			    probv=certainty;
-			  elseif (z== victimLocState && w==2 && w1==w )
-			    probv=certainty;
-			  elseif (z~= victimLocState && a3<6 && w1==w && w==2)
-			    probv=certainty;
-			  elseif (z~= victimLocState && w1==w )
-			    probv=certainty;
-			  else 
-			    probv=1-certainty;
-			  end                
-			   
-	     
-%  			  if (x== dangerLocState && strcmp(dangerLoc{k},'c') && strcmp(agent1Actions{a1},'clear_danger') && strcmp(dangerLoc{k1},'n'))
+%  			  if (x== dangerLocState && k==1 && a1==6 && k1==2)
 %  			    probd=certainty;
-%  			  elseif (x== dangerLocState && strcmp(dangerLoc{k},'c') && a1<6 && k1==k)
+%  			  elseif (x== dangerLocState && k==1 && a1<6 && k1==k)
 %  			    probd=certainty;
-%  			  elseif (x== dangerLocState && strcmp(dangerLoc{k},'n') && k1==k)
+%  			  elseif (x== dangerLocState && k==2 && k1==k)
 %  			    probd=certainty;
-%  			  elseif (x~= dangerLocState && strcmp(dangerLoc{k},'n') &&  a1<6 && k1==k)
+%  			  elseif (x~= dangerLocState && k==2 &&  a1<6 && k1==k)
 %  			    probd=certainty;
 %  			  elseif (x~= dangerLocState && k1==k)
 %  			    probd=certainty;
 %  			  else
 %  			    probd=1-certainty;
 %  			  end 
-%                              
-%                              
-%  			  if (z== victimLocState && strcmp(victimLoc{w},'f') && strcmp(agent3Actions{a3},'extract_victim') && strcmp(victimLoc{w},'n'))
+                            
+			  if (x== dangerLocState && strcmp(dangerLoc{k},dangerLocStateNode) && strcmp(agent1Actions{a1},'clear_danger') && strcmp(dangerLoc{k1},'n'))
+			    probd=certainty;
+			  elseif (x== dangerLocState && strcmp(dangerLoc{k},dangerLocStateNode) && !strcmp(agent1Actions{a1},'clear_danger') && strcmp(dangerLoc{k},dangerLoc{k1}))
+			    probd=certainty;
+			  elseif (x== dangerLocState && strcmp(dangerLoc{k},'n') && strcmp(dangerLoc{k},dangerLoc{k1}))
+			    probd=certainty;
+			  elseif (x~= dangerLocState && strcmp(dangerLoc{k},'n') &&  !strcmp(agent1Actions{a1},'clear_danger') && strcmp(dangerLoc{k},dangerLoc{k1}))
+			    probd=certainty;
+			  elseif (x~= dangerLocState && strcmp(dangerLoc{k},dangerLoc{k1}))
+			    probd=certainty;
+			  else
+			    probd=1-certainty/(dStateSpace-1);
+			  end   
+                              
+
+                           
+%  			  if (z== victimLocState && w==1 && a3==6 && w1==2 )
 %  			    probv=certainty;
-%  			  elseif (z== victimLocState && strcmp(victimLoc{w},'f') && a3<6 && w1==w )
+%  			  elseif (z== victimLocState && w==1 && a3<6 && w1==w )
 %  			    probv=certainty;
-%  			  elseif (z== victimLocState && strcmp(victimLoc{w},'n') && w1==w )
+%  			  elseif (z== victimLocState && w==2 && w1==w )
 %  			    probv=certainty;
-%  			  elseif (z~= victimLocState && a3<6 && w1==w && strcmp(victimLoc{w},'n'))
+%  			  elseif (z~= victimLocState && a3<6 && w1==w && w==2)
 %  			    probv=certainty;
 %  			  elseif (z~= victimLocState && w1==w )
 %  			    probv=certainty;
@@ -260,11 +231,26 @@ for a1=1:length(agent1Actions)
 %  			    probv=1-certainty;
 %  			  end                
 			   
+			  if (z== victimLocState && strcmp(victimLoc{w}, victimLocStateNode) && strcmp(agent3Actions{a3},'extract_victim') && strcmp(victimLoc{w},'n'))
+			    probv=certainty;
+			  elseif (z== victimLocState && strcmp(victimLoc{w},victimLocStateNode) && !strcmp(agent3Actions{a3},'extract_victim') && strcmp(victimLoc{w},victimLoc{w1}) )
+			    probv=certainty;
+			  elseif (z== victimLocState && strcmp(victimLoc{w},'n') && strcmp(victimLoc{w},victimLoc{w1}))
+			    probv=certainty;
+			  elseif (z~= victimLocState &&  strcmp(victimLoc{w},'n') && !strcmp(agent3Actions{a3},'extract_victim') && strcmp(victimLoc{w},victimLoc{w1}))
+			    probv=certainty;
+			  elseif (z~= victimLocState && strcmp(victimLoc{w},victimLoc{w1}) )
+			    probv=certainty;
+			  else 
+			    probv=1-certainty/(vStateSpace-1);
+			  end   
+			   
 			   
 			    uniProb1= probx*probz*probd*probv;
 			    sum = sum + uniProb1;
+			    %display scintific number %e instead of %f
 
-			    fprintf(fid,'\nT: %s %s : %s_%s_%s_%s : %s_%s_%s_%s : %e',agent1Actions{a1},agent3Actions{a3},agent1Loc{x},agent2Loc{z},victimLoc{w},dangerLoc{k},agent1Loc{x1},agent2Loc{z1},victimLoc{w1},dangerLoc{k1},uniProb1);
+			    fprintf(fid,'\nT: %s %s : %s_%s_%s_%s : %s_%s_%s_%s : %f',agent1Actions{a1},agent3Actions{a3},agent1Loc{x},agent2Loc{z},victimLoc{w},dangerLoc{k},agent1Loc{x1},agent2Loc{z1},victimLoc{w1},dangerLoc{k1},uniProb1);
 			    
 			end 
 		      end 
@@ -509,7 +495,7 @@ fprintf(fid,'\nR: * : * : * : * : -10.00');
 for a3=1:length(agent3Actions)
   for z=1:length(agent2Loc)
     for v=1:length(victimLoc)                
-      fprintf(fid,'\nR:  clear_danger %s : c_%s_%s_c :  * : * : 545',agent3Actions{a3}, agent2Loc{z}, victimLoc{v});
+      fprintf(fid,'\nR:  clear_danger %s : c_%s_%s_c :  * : * : 570',agent3Actions{a3}, agent2Loc{z}, victimLoc{v});
     end
   end 
 end
@@ -519,7 +505,7 @@ end
 for x=1:length(agent1Loc)
    for a1=1:length(agent1Actions)
 	for k=1:length(dangerLoc)
-	  fprintf(fid,'\nR:  %s extract_victim : %s_g_g_%s : * : * : 545', agent1Actions{a1},agent1Loc{x},dangerLoc{k});
+	  fprintf(fid,'\nR:  %s extract_victim : %s_g_g_%s : * : * : 570', agent1Actions{a1},agent1Loc{x},dangerLoc{k});
 	end
     end
 end 
