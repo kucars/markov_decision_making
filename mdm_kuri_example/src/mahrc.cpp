@@ -26,7 +26,7 @@ void publishCurrentBelief (boost::shared_ptr<DecPOMDPDiscreteInterface> decpomdp
             maxBelief = beliefValue;
             maxIndex  = i;
         }
-        //std::cout<<"\nState:"<<decpomdp_->GetState(i)->GetName()<<" Belief:"<< belief;//this line will print all beliefs now it is commented becasue no space for big map
+        //std::cout<<"\nState:"<<decpomdp->GetState(i)->GetName()<<" Belief:"<< belief;//this line will print all beliefs now it is commented becasue no space for big map
     }
     std::cout<<"\nOur highest belief is in state:"<< decpomdp->GetState(maxIndex)->GetName()<<" probability:"<<belief->Get (maxIndex );
     std::cout<<"\n";
