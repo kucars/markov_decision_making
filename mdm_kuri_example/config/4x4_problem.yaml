@@ -1,0 +1,12 @@
+pomdp_model: /home/hend/catkin_ws/src/markov_decision_making/mdm_kuri_example/src/MAHRC_4x4_v2_1.dpomdp
+policy_file: /home/hend/.madp/results/POMDP/MAHRC_4x4_v2_1/POMDP_MAHRC_4x4_v2_1_g0.9_PerseusPOMDPValueFunction_h999999
+decision_horizon: 50
+initial_action: stop_stop
+initial_state: e_a_f_c
+initial_state_belief: 1.0
+observations: 
+    - noVic_noDan_noVic_noDan
+    - noVic_dan_noVic_noDan
+    - noVic_noDan_noVic_noDan
+    - noVic_noDan_vic_noDan
+    - noVic_noDan_noVic_noDan

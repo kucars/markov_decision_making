@@ -1,14 +1,12 @@
-pomdp_model: /home/hend/catkin_ws/src/markov_decision_making/mdm_kuri_example/src/MAHRC_6x5_v2.dpomdp
-policy_file: /home/hend/.madp/results/POMDP/MAHRC_6x5_v2/POMDP_MAHRC_6x5_v2
+pomdp_model: /home/hend/catkin_ws/src/markov_decision_making/mdm_kuri_example/src/MAHRC_6x5_danger_v1.dpomdp
+policy_file: /home/hend/.madp/results/POMDP/MAHRC_6x5_danger_v1/POMDP_MAHRC_6x5_danger_v1
 decision_horizon: 50
 initial_action: stop_stop
-initial_state: a_a_g_c
+initial_state: a_a_f_c
 initial_state_belief: 1.0
 observations: 
     - noVic_noDan_noVic_noDan
     - noVic_dan_noVic_noDan
-    - noVic_noDan_noVic_noDan
-    - noVic_noDan_noVic_noDan
     - noVic_noDan_noVic_noDan
     - noVic_noDan_noVic_noDan
     - noVic_noDan_vic_noDan
