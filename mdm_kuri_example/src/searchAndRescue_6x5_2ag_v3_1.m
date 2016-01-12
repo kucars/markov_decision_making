@@ -3,8 +3,8 @@
 %d and sometimes its refered to originical as string 
 
 %agent1 is robot,  agent 2 is human
-agent1Loc = {'a','b', 'c','d','e','f','g','h','i','j','k','l','m'};
-agent2Loc = {'a','b', 'c','d','e','f','g','h','i','j','k','l','m'};
+agent1Loc = {'a','b', 'c','d','e','f','g','h','i','j','k','l'};
+agent2Loc = {'a','b', 'c','d','e','f','g','h','i','j','k','l'};
 dangerLoc = {'c','n'};%n means no danger
 victimLoc = {'f','n'};%n means no victim 
 
@@ -29,7 +29,7 @@ agent2Observation = {'vic_noDan','noVic_dan','noVic_noDan'};
 %-----------------------------------------
 %  h	|   i	|xxxxxxx|   d	|   e	|
 %-----------------------------------------
-%xxxxxxx|  j	|  m	|  c(D)	|xxxxxxx|
+%xxxxxxx|  j	| 	|  c(D)	|xxxxxxx|
 %-----------------------------------------
 %  k	|xxxxxxx|xxxxxxx|	|xxxxxxx|
 %-----------------------------------------
@@ -37,10 +37,10 @@ agent2Observation = {'vic_noDan','noVic_dan','noVic_noDan'};
 %-----------------------------------------
 
 %{right, left, up, down, stop, clear/extract}
-%a=1,b=2,c=3,d=4,e=5,f=6. g=7 h=8, i=9, j=10, k=11, l=12 m=13 
-network =[[1,2,1,1,1,1];[1,12,3,2,2,2];[3,13,4,2,3,3];[5,4,4,3,4,4];[5,4,6,5,5,5];[6,7,6,5,6,6];[6,7,7,8,7,7];[9,8,7 ,8,8,8];[9,8,9,10,9,9];[13,10,9,10,10,10];[11,11,11,12,11,11];[2,12,11,12,12,12];[3,10,13,13,13,13]];
+%a=1,b=2,c=3,d=4,e=5,f=6. g=7 h=8, i=9, j=10, k=11, l=12  
+network =[[1,2,1,1,1,1];[1,12,3,2,2,2];[3,10,4,2,3,3];[5,4,4,3,4,4];[5,4,6,5,5,5];[6,7,6,5,6,6];[6,7,7,8,7,7];[9,8,7,8,8,8];[9,8,9,10,9,9];[3,10,9,10,10,10];[11,11,11,12,11,11];[2,12,11,12,12,12]];
 
-network_indices=[[6,5];[6,4];[4,4];[3,4];[3,5];[1,5];[1,1];[3,1];[3,2];[4,2];[5,1];[6,1];[4,3]];
+network_indices=[[6,5];[6,4];[4,4];[3,4];[3,5];[1,5];[1,1];[3,1];[3,2];[4,2];[5,1];[6,1]];
 
 format long; 
 % Multi-Agent Human Robot Collaboration
@@ -208,8 +208,6 @@ for a1=1:length(agent1Actions)
 %  			  else
 %  			    probd=(1-uncertainty)/(dStateSpace-1);
 %  			  end 
-                            
-                            
 		   
 			  
 			  if (z== victimLocState && strcmp(victimLoc{sv}, victimlocNode) && strcmp(agent2Actions{a2},'extract_victim') && strcmp(victimLoc{svp},'n'))
@@ -408,7 +406,7 @@ fprintf(fid,'\nR: * : * : * : * : -10.00');
 	      %if(a2<3 )%remove && z~=2
                 fprintf(fid,'\nR: %s down : %s_d_%s_%s : * :  * : -69', agent1Actions{a1}, agent1Loc{x},victimLoc{v},dangerlocNode);
                 fprintf(fid,'\nR: %s up : %s_b_%s_%s : * :  * : -100', agent1Actions{a1}, agent1Loc{x},victimLoc{v},dangerlocNode);
-		fprintf(fid,'\nR: %s right : %s_m_%s_%s : * :  * : -100', agent1Actions{a1}, agent1Loc{x},victimLoc{v},dangerlocNode);
+		fprintf(fid,'\nR: %s right : %s_j_%s_%s : * :  * : -100', agent1Actions{a1}, agent1Loc{x},victimLoc{v},dangerlocNode);
 
               % end
               end
