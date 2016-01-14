@@ -29,7 +29,7 @@ agent2Observation = {'vic_noDan','noVic_dan','noVic_noDan'};
 %  a(v)   |     b(d)   |    c   |
 %-------------------------------
 % a,b,c {right, left, stop, clear/extract}
-netsvorsd =[[2,1,1,1];[3,1,2,2];[3,2,3,3]];
+network =[[2,1,1,1];[3,1,2,2];[3,2,3,3]];
 
 format long; 
 % Multi-Agent Human Robot Collaboration
@@ -157,13 +157,13 @@ for a1=1:length(agent1Actions)
                       for sdp=1:length(dangerLoc) 
 		        for svp=1:length(victimLoc)
 
-			  if(s1p==netsvorsd(s1,a1))
+			  if(s1p==network(s1,a1))
 			    probx=certainty;
 			  else 
 			    probx=(1-certainty)/(a1StateSpace-1);
 			  end 
               
-			  if (s2p==netsvorsd(s2,a2))
+			  if (s2p==network(s2,a2))
 			    probz=certainty;
 			  else 
 			    probz=(1-certainty)/(a2StateSpace-1);
@@ -395,8 +395,8 @@ fprintf(fid,'\nR: * : * : * : * : -10.00');
 	  for x=1:length(agent1Loc)
 	    for v=1:length(victimLoc)
 	      %if(a2<3 )%remove && z~=2
-                fprintf(fid,'\nR: %s left : %s_c_%s_b : * :  * : -69', agent1Actions{a1}, agent1Loc{x},victimLoc{v});
-                fprintf(fid,'\nR: %s right : %s_a_%s_b : * :  * : -100', agent1Actions{a1}, agent1Loc{x},victimLoc{v});
+                fprintf(fid,'\nR: %s left : %s_c_%s_%s : * :  * : -69', agent1Actions{a1}, agent1Loc{x},victimLoc{v},dangerlocNode);
+                fprintf(fid,'\nR: %s right : %s_a_%s_%s : * :  * : -100', agent1Actions{a1}, agent1Loc{x},victimLoc{v},dangerlocNode);
 
               % end
               end
@@ -430,8 +430,8 @@ for a2=1:length(agent2Actions)
       for x=1:length(agent1Loc)
 	 for z=1:length(agent2Loc)
             for v=1:length(victimLoc)
-              if(x~=2)
-                fprintf(fid,'\nR: clear_danger %s : %s_%s_%s_b : * :  * : -50', agent2Actions{a2}, agent1Loc{x}, agent2Loc{z}, victimLoc{v});
+              if(x~=dangerLocState)
+                fprintf(fid,'\nR: clear_danger %s : %s_%s_%s_%s : * :  * : -50', agent2Actions{a2}, agent1Loc{x}, agent2Loc{z}, victimLoc{v},dangerlocNode);
 	      end
 	    end
           end 
@@ -442,8 +442,8 @@ for a1=1:length(agent1Actions)
       for x=1:length(agent1Loc)
 	 for z=1:length(agent2Loc)
             for d=1:length(dangerLoc)
-	      if(z~=1)
-                fprintf(fid,'\nR: %s extract_victim : %s_%s_a_%s : * :  * : -50', agent1Actions{a1}, agent1Loc{x}, agent2Loc{z}, dangerLoc{d});
+	      if(z~=victimLocState)
+                fprintf(fid,'\nR: %s extract_victim : %s_%s_%s_%s : * :  * : -50', agent1Actions{a1}, agent1Loc{x}, agent2Loc{z},victimlocNode, dangerLoc{d});
                end
 	    end
           end 
@@ -453,7 +453,7 @@ for a1=1:length(agent1Actions)
 for a2=1:length(agent2Actions)
   for z=1:length(agent2Loc)
     for v=1:length(victimLoc)                
-      fprintf(fid,'\nR:  clear_danger %s : b_%s_%s_b :  * : * : 100',agent2Actions{a2}, agent2Loc{z}, victimLoc{v});
+      fprintf(fid,'\nR:  clear_danger %s : %s_%s_%s_%s :  * : * : 100',agent2Actions{a2}, dangerlocNode, agent2Loc{z}, victimLoc{v},dangerlocNode);
     end
   end 
 end
@@ -463,7 +463,7 @@ end
 for x=1:length(agent1Loc)
   for a1=1:length(agent1Actions)
 	for sd=1:length(dangerLoc)
-	  fprintf(fid,'\nR:  %s extract_victim : %s_a_a_%s : * : * : 100', agent1Actions{a1},agent1Loc{x},dangerLoc{sd});
+	  fprintf(fid,'\nR:  %s extract_victim : %s_%s_%s_%s : * : * : 100', agent1Actions{a1},agent1Loc{x},victimlocNode,victimlocNode,dangerLoc{sd});
 	end
     end
 end 
