@@ -347,9 +347,9 @@ fprintf(fid,'\nR: * : * : * : * : -10.00');
       for a1=1:length(agent1Actions)
 	  for x=1:length(agent1Loc)
 	    for v=1:length(victimLoc)
-                fprintf(fid,'\nR: %s down : %s_d_%s_%s : * :  * : -69', agent1Actions{a1}, agent1Loc{x},victimLoc{v},dangerlocNode);
-                fprintf(fid,'\nR: %s up : %s_b_%s_%s : * :  * : -100', agent1Actions{a1}, agent1Loc{x},victimLoc{v},dangerlocNode);
-		fprintf(fid,'\nR: %s right : %s_j_%s_%s : * :  * : -100', agent1Actions{a1}, agent1Loc{x},victimLoc{v},dangerlocNode);
+                fprintf(fid,'\nR: %s down : %s_d_%s_%s : * :  * : -40', agent1Actions{a1}, agent1Loc{x},victimLoc{v},dangerlocNode);
+                fprintf(fid,'\nR: %s up : %s_b_%s_%s : * :  * : -40', agent1Actions{a1}, agent1Loc{x},victimLoc{v},dangerlocNode);
+		fprintf(fid,'\nR: %s right : %s_j_%s_%s : * :  * : -40', agent1Actions{a1}, agent1Loc{x},victimLoc{v},dangerlocNode);
               end
 	    end  
       end 
