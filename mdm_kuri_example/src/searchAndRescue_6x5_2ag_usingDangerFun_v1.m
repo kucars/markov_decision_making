@@ -47,7 +47,7 @@ format long;
 outputFile = 'MAHRC_6x5_danFun_v1.dpomdp';  
 fid = fopen(outputFile, 'wb');
 
-% Write to File the top comments and svarnings
+% Write to File the top comments ------------and svarnings
 fprintf(fid,'# This DEC-POMDP Model svas generated MATLAB Script');
 fprintf(fid,'\n# This script is still experimental and bugs might appear');
 fprintf(fid,'\n# Tarek Taha & Hend Al Tair - KUSTAR\n');
@@ -343,24 +343,23 @@ end
 %fprintf(fid,'\nR: * : * : * : * : -1.0');
 fprintf(fid,'\nR: * : * : * : * : -10.00');
 %----------------- penality for human go to danger------------------------- 
-
       for a1=1:length(agent1Actions)
 	  for x=1:length(agent1Loc)
-	    for v=1:length(victimLoc)
+	     for v=1:length(victimLoc)
                 fprintf(fid,'\nR: %s down : %s_d_%s_%s : * :  * : -40', agent1Actions{a1}, agent1Loc{x},victimLoc{v},dangerlocNode);
                 fprintf(fid,'\nR: %s up : %s_b_%s_%s : * :  * : -40', agent1Actions{a1}, agent1Loc{x},victimLoc{v},dangerlocNode);
 		fprintf(fid,'\nR: %s right : %s_j_%s_%s : * :  * : -40', agent1Actions{a1}, agent1Loc{x},victimLoc{v},dangerlocNode);
               end
-	    end  
+	  end  
       end 
- %----------------- penality for human go to danger_USING danger function------------------------- 
+%----------------- penality for human go to danger_USING danger function------------------------- 
 
   for a1=1:length(agent1Actions)
     for a2=1:length(agent2Actions)
       for x=1:length(agent1Loc)
 	for z=1:length(agent2Loc)
 	  for v=1:length(victimLoc)
-		dangerZoneReward = dangerRewardFun_v1(network_indices,dangerLocState,z);
+		dangerZoneReward = dangerRewardFun_v1(network_indices,dangerLocState,network(z,a2));
 		fprintf(fid,'\nR: %s %s : %s_%s_%s_%s : * :  * : %f', agent1Actions{a1}, agent2Actions{a2},agent1Loc{x},agent2Loc{z},victimLoc{v},dangerlocNode,dangerZoneReward);
 	end
       end
@@ -368,7 +367,7 @@ fprintf(fid,'\nR: * : * : * : * : -10.00');
   end
  end
 
- %----------------- penality for  robot clears danger and there is no danger------------------------- 
+%----------------- penality for  robot clears danger and there is no danger------------------------- 
 
 %   for a2=1:length(agent2Actions)
 %        for x=1:length(agent1Loc)
@@ -391,7 +390,7 @@ fprintf(fid,'\nR: * : * : * : * : -10.00');
 %            end 
 %        end 
 %    end 
-  %----------------- penality for  robot clears danger and robot is not in danger node------------------------- 
+%----------------- penality for  robot clears danger and robot is not in danger node------------------------- 
 for a2=1:length(agent2Actions)
       for x=1:length(agent1Loc)
 	 for z=1:length(agent2Loc)
@@ -403,7 +402,7 @@ for a2=1:length(agent2Actions)
           end 
       end 
   end 
-  %----------------- penality for extract victim and human is not in node of victim------------------------- 
+%----------------- penality for extract victim and human is not in node of victim------------------------- 
 %  for a1=1:length(agent1Actions)
 %        for x=1:length(agent1Loc)
 %  	 for z=1:length(agent2Loc)
