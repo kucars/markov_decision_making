@@ -343,15 +343,15 @@ end
 %fprintf(fid,'\nR: * : * : * : * : -1.0');
 fprintf(fid,'\nR: * : * : * : * : -10.00');
 %----------------- penality for human go to danger------------------------- 
-      for a1=1:length(agent1Actions)
-	  for x=1:length(agent1Loc)
-	     for v=1:length(victimLoc)
-                fprintf(fid,'\nR: %s down : %s_d_%s_%s : * :  * : -40', agent1Actions{a1}, agent1Loc{x},victimLoc{v},dangerlocNode);
-                fprintf(fid,'\nR: %s up : %s_b_%s_%s : * :  * : -40', agent1Actions{a1}, agent1Loc{x},victimLoc{v},dangerlocNode);
-		fprintf(fid,'\nR: %s right : %s_j_%s_%s : * :  * : -40', agent1Actions{a1}, agent1Loc{x},victimLoc{v},dangerlocNode);
-              end
-	  end  
-      end 
+%        for a1=1:length(agent1Actions)
+%  	  for x=1:length(agent1Loc)
+%  	     for v=1:length(victimLoc)
+%                  fprintf(fid,'\nR: %s down : %s_d_%s_%s : * :  * : -40', agent1Actions{a1}, agent1Loc{x},victimLoc{v},dangerlocNode);
+%                  fprintf(fid,'\nR: %s up : %s_b_%s_%s : * :  * : -40', agent1Actions{a1}, agent1Loc{x},victimLoc{v},dangerlocNode);
+%  		fprintf(fid,'\nR: %s right : %s_j_%s_%s : * :  * : -40', agent1Actions{a1}, agent1Loc{x},victimLoc{v},dangerlocNode);
+%                end
+%  	  end  
+%        end 
 %----------------- penality for human go to danger_USING danger function------------------------- 
 
   for a1=1:length(agent1Actions)
@@ -395,8 +395,10 @@ for a2=1:length(agent2Actions)
       for x=1:length(agent1Loc)
 	 for z=1:length(agent2Loc)
             for v=1:length(victimLoc)
-              if(x~=dangerLocState)
-                fprintf(fid,'\nR: clear_danger %s : %s_%s_%s_%s : * :  * : -20', agent2Actions{a2}, agent1Loc{x}, agent2Loc{z}, victimLoc{v},dangerlocNode);
+	      for d=1:length(dangerLoc)
+		if(x~=dangerLocState)
+                fprintf(fid,'\nR: clear_danger %s : %s_%s_%s_%s : * :  * : -15', agent2Actions{a2}, agent1Loc{x}, agent2Loc{z}, victimLoc{v},dangerLoc{d});
+		end
 	      end
 	    end
           end 
