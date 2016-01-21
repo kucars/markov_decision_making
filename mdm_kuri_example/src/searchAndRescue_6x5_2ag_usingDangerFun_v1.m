@@ -361,11 +361,11 @@ fprintf(fid,'\nR: * : * : * : * : -10.00');
 	  for v=1:length(victimLoc)
 		dangerZoneReward = dangerRewardFun_v1(network_indices,dangerLocState,network(z,a2));
 		fprintf(fid,'\nR: %s %s : %s_%s_%s_%s : * :  * : %f', agent1Actions{a1}, agent2Actions{a2},agent1Loc{x},agent2Loc{z},victimLoc{v},dangerlocNode,dangerZoneReward);
+	  end
 	end
       end
     end
   end
- end
 
 %----------------- penality for  robot clears danger and there is no danger------------------------- 
 
@@ -391,13 +391,14 @@ fprintf(fid,'\nR: * : * : * : * : -10.00');
 %        end 
 %    end 
 %----------------- penality for  robot clears danger and robot is not in danger node------------------------- 
+%before instead of dangerLoc{d} (for c and n) i put only c using dangerlocNode
 for a2=1:length(agent2Actions)
-      for x=1:length(agent1Loc)
+    for x=1:length(agent1Loc)
 	 for z=1:length(agent2Loc)
             for v=1:length(victimLoc)
 	      for d=1:length(dangerLoc)
 		if(x~=dangerLocState)
-                fprintf(fid,'\nR: clear_danger %s : %s_%s_%s_%s : * :  * : -15', agent2Actions{a2}, agent1Loc{x}, agent2Loc{z}, victimLoc{v},dangerLoc{d});
+		  fprintf(fid,'\nR: clear_danger %s : %s_%s_%s_%s : * :  * : -30', agent2Actions{a2}, agent1Loc{x}, agent2Loc{z}, victimLoc{v},dangerLoc{d});
 		end
 	      end
 	    end
@@ -424,15 +425,13 @@ for a2=1:length(agent2Actions)
     end
   end 
 end
-
- 
 %--------------- Extracting a victim is highly rewarderd--------------------
 for x=1:length(agent1Loc)
   for a1=1:length(agent1Actions)
-	for sd=1:length(dangerLoc)
+    for sd=1:length(dangerLoc)
 	  fprintf(fid,'\nR:  %s extract_victim : %s_%s_%s_%s : * : * : 100', agent1Actions{a1},agent1Loc{x},victimlocNode,victimlocNode,dangerLoc{sd});
-	end
     end
+  end
 end 
 
 
