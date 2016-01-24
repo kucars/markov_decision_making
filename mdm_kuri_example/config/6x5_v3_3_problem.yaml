@@ -1,5 +1,5 @@
-pomdp_model: /home/hind/catkin_ws/src/markov_decision_making/mdm_kuri_example/src/MAHRC_6x5_danFun_v1.dpomdp
-policy_file: /home/hind/.madp/results/POMDP/MAHRC_6x5_danFun_v1/POMDP_MAHRC_6x5_danFun_v1
+pomdp_model: /home/hind/catkin_ws/src/markov_decision_making/mdm_kuri_example/src/MAHRC_6x5_v3_3.dpomdp
+policy_file: /home/hind/.madp/results/POMDP/MAHRC_6x5_v3_3/POMDP_MAHRC_6x5_v3_3
 decision_horizon: 50
 initial_action: stop_stop
 initial_state: b_b_f_c

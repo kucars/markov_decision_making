@@ -44,7 +44,7 @@ network_indices=[[6,5];[6,4];[4,4];[3,4];[3,5];[1,5];[1,1];[3,1];[3,2];[4,2];[5,
 
 format long; 
 % Multi-Agent Human Robot Collaboration
-outputFile = 'MAHRC_6x5_danFun_v1.dpomdp';  
+outputFile = 'MAHRC_6x5_v3_3.dpomdp';  
 fid = fopen(outputFile, 'wb');
 
 % Write to File the top comments ------------and svarnings
@@ -352,20 +352,29 @@ fprintf(fid,'\nR: * : * : * : * : -10.00');
 %                end
 %  	  end  
 %        end 
+      for a1=1:length(agent1Actions)
+	for a2=1:length(agent2Actions)
+	  for x=1:length(agent1Loc)
+	     for v=1:length(victimLoc)
+                fprintf(fid,'\nR: %s %s : * : %s_%s_%s_%s :  * : -48', agent1Actions{a1}, agent2Actions{a2}, agent1Loc{x},dangerlocNode,victimLoc{v},dangerlocNode);
+              end
+            end
+	  end  
+      end
 %----------------- penality for human go to danger_USING danger function------------------------- 
 
-  for a1=1:length(agent1Actions)
-    for a2=1:length(agent2Actions)
-      for x=1:length(agent1Loc)
-	for z=1:length(agent2Loc)
-	  for v=1:length(victimLoc)
-		dangerZoneReward = dangerRewardFun_v1(network_indices,dangerLocState,network(z,a2));
-		fprintf(fid,'\nR: %s %s : %s_%s_%s_%s : * :  * : %f', agent1Actions{a1}, agent2Actions{a2},agent1Loc{x},agent2Loc{z},victimLoc{v},dangerlocNode,dangerZoneReward);
-	  end
-	end
-      end
-    end
-  end
+%    for a1=1:length(agent1Actions)
+%      for a2=1:length(agent2Actions)
+%        for x=1:length(agent1Loc)
+%  	for z=1:length(agent2Loc)
+%  	  for v=1:length(victimLoc)
+%  		dangerZoneReward = dangerRewardFun_v1(network_indices,dangerLocState,network(z,a2));
+%  		fprintf(fid,'\nR: %s %s : %s_%s_%s_%s : * :  * : %f', agent1Actions{a1}, agent2Actions{a2},agent1Loc{x},agent2Loc{z},victimLoc{v},dangerlocNode,dangerZoneReward);
+%  	  end
+%  	end
+%        end
+%      end
+%    end
 
 %----------------- penality for  robot clears danger and there is no danger------------------------- 
 
