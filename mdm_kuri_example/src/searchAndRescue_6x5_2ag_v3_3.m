@@ -356,7 +356,7 @@ fprintf(fid,'\nR: * : * : * : * : -10.00');
 	for a2=1:length(agent2Actions)
 	  for x=1:length(agent1Loc)
 	     for v=1:length(victimLoc)
-                fprintf(fid,'\nR: %s %s : * : %s_%s_%s_%s :  * : -48', agent1Actions{a1}, agent2Actions{a2}, agent1Loc{x},dangerlocNode,victimLoc{v},dangerlocNode);
+                fprintf(fid,'\nR: %s %s : * : %s_%s_%s_%s :  * : -43', agent1Actions{a1}, agent2Actions{a2}, agent1Loc{x},dangerlocNode,victimLoc{v},dangerlocNode);
               end
             end
 	  end  

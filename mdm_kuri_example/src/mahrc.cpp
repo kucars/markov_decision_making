@@ -86,7 +86,8 @@ void publishExpectedReward ( uint32_t a, boost::shared_ptr<DecPOMDPDiscreteInter
     std::vector<double> r_vec;
     for ( uint32_t s = 0; s < decpomdp_->GetNrStates(); s++ )
     {
-        r_vec.push_back (decpomdp_->GetReward ( s, a )) ;
+        r_vec.push_back (decpomdp_->GetReward ( s, a )) ; //GetReward(Index sI, Index jaI)
+        //std::cout<<"reward:"<<decpomdp_->GetReward ( s, a )<<"\n";
     }
     reward = belief_->InnerProduct ( r_vec );
     std::cout<<"Expected Reward from this action is:"<<reward<<"\n";
