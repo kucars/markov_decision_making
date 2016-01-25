@@ -5,14 +5,10 @@ initial_action: stop_stop
 initial_state: g_a_f_c
 initial_state_belief: 1.0
 observations: 
-    - noVic_noDan_noVic_noDan
+    - vic_noDan_noVic_noDan
     - noVic_noDan_noVic_noDan
     - noVic_noDan_noVic_noDan
     - noVic_dan_noVic_noDan
-    - noVic_noDan_noVic_noDan
-    - noVic_noDan_noVic_noDan
-    - noVic_noDan_noVic_noDan
-    - noVic_noDan_noVic_noDan
     - noVic_noDan_noVic_noDan
     - noVic_noDan_vic_noDan
     - noVic_noDan_noVic_noDan
