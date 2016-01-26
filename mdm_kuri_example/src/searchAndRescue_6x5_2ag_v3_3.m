@@ -395,7 +395,7 @@ for a2=1:length(agent2Actions)
             for v=1:length(victimLoc)
 	      %for d=1:length(dangerLoc)
 		if(x~=dangerLocState)
-		  fprintf(fid,'\nR: clear_danger %s : %s_%s_%s_%s : * :  * : -20', agent2Actions{a2}, agent1Loc{x}, agent2Loc{z}, victimLoc{v},dangerlocNode);
+		  fprintf(fid,'\nR: clear_danger %s : %s_%s_%s_%s : * :  * : -30', agent2Actions{a2}, agent1Loc{x}, agent2Loc{z}, victimLoc{v},dangerlocNode);
 		end
 	      %end
 	    end
