@@ -5,16 +5,19 @@
 %agent1 is robot,  agent 2 is human
 agent1Loc = {'a','b', 'c','d','e','f','g','h','i','j','k','l'};
 agent2Loc = {'a','b', 'c','d','e','f','g','h','i','j','k','l'};
-dangerLoc = {'c','n'};%n means no danger
-victimLoc = {'f','n'};%n means no victim 
 
-b = randi(12,1)
+victim_loc_random = randi(12,1)
+danger_loc_random = randi(12,1)
 
-victimLocState = 6;%the node 
-dangerLocState = 3;
+victimLocState = victim_loc_random;
+dangerLocState = danger_loc_random;
 
-victimlocNode ='f';
-dangerlocNode ='c';
+victimlocNode = agent1Loc{victim_loc_random};
+dangerlocNode = agent1Loc{danger_loc_random};
+
+dangerLoc = {agent1Loc{danger_loc_random},'n'};
+victimLoc = {agent1Loc{victim_loc_random},'n'};
+
 
 agent1Actions     = {'right','left','up','down','stop','clear_danger'};
 agent2Actions     = {'right','left','up','down','stop','extract_victim'};
@@ -25,13 +28,13 @@ agent2Observation = {'vic_noDan','noVic_dan','noVic_noDan'};
 
 %right,left,up, down,stop,clear/extract
 %-----------------------------------------
-%  g	|	|	|	|   f(V	|
+%  g	|	|	|	|   f	|
 %-----------------------------------------
 %   	| xxxxxx|xxxxxx	|xxxxxx	|	|
 %-----------------------------------------
-%  h	|   i	|xxxxxxx|   d	|   e	|
+%  h	|   i	|xxxxxxx|   d(v)|   e(d)|
 %-----------------------------------------
-%xxxxxxx|  j	| 	|  c(D)	|xxxxxxx|
+%xxxxxxx|  j	| 	|  c	|xxxxxxx|
 %-----------------------------------------
 %  k	|xxxxxxx|xxxxxxx|	|xxxxxxx|
 %-----------------------------------------
@@ -46,7 +49,7 @@ network_indices=[[6,5];[6,4];[4,4];[3,4];[3,5];[1,5];[1,1];[3,1];[3,2];[4,2];[5,
 
 format long; 
 % Multi-Agent Human Robot Collaboration
-outputFile = 'MAHRC_6x5_danFun_v1.dpomdp';  
+outputFile = 'MAHRC_6x5_randomDandV_v1.dpomdp';  
 fid = fopen(outputFile, 'wb');
 
 % Write to File the top comments ------------and svarnings

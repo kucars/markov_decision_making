@@ -2,12 +2,9 @@ pomdp_model: /home/kuri/catkin_ws/src/markov_decision_making/mdm_kuri_example/sr
 policy_file: /home/kuri/.madp/results/POMDP/MAHRC_6x5_v3_3/POMDP_MAHRC_6x5_v3_3
 decision_horizon: 50
 initial_action: stop_stop
-initial_state: g_a_f_c
+initial_state: b_b_f_c
 initial_state_belief: 1.0
 observations: 
-    - vic_noDan_noVic_noDan
-    - noVic_noDan_noVic_noDan
-    - noVic_noDan_noVic_noDan
     - noVic_dan_noVic_noDan
     - noVic_noDan_noVic_noDan
     - noVic_noDan_noVic_noDan
