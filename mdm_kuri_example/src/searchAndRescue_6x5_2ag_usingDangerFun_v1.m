@@ -6,14 +6,14 @@
 agent1Loc = {'a','b', 'c','d','e','f','g','h','i','j','k','l'};
 agent2Loc = {'a','b', 'c','d','e','f','g','h','i','j','k','l'};
 dangerLoc = {'c','n'};%n means no danger
-victimLoc = {'f','n'};%n means no victim 
+victimLoc = {'d','n'};%n means no victim 
 
-b = randi(12,1)
+%b = randi(12,1)
 
-victimLocState = 6;%the node 
+victimLocState = 4;%the node 
 dangerLocState = 3;
 
-victimlocNode ='f';
+victimlocNode ='d';
 dangerlocNode ='c';
 
 agent1Actions     = {'right','left','up','down','stop','clear_danger'};
@@ -25,17 +25,17 @@ agent2Observation = {'vic_noDan','noVic_dan','noVic_noDan'};
 
 %right,left,up, down,stop,clear/extract
 %-----------------------------------------
-%  g	|	|	|	|   f(V	|
+%  g	|	|	|	|   f	|
 %-----------------------------------------
 %   	| xxxxxx|xxxxxx	|xxxxxx	|	|
 %-----------------------------------------
-%  h	|   i	|xxxxxxx|   d	|   e	|
+%  h	|   i	|xxxxxxx|  d(V)	|   e	|
 %-----------------------------------------
-%xxxxxxx|  j	| 	|  c(D)	|xxxxxxx|
+%xxxxxxx|  j(H)	| 	|  c(D)	|xxxxxxx|
 %-----------------------------------------
 %  k	|xxxxxxx|xxxxxxx|	|xxxxxxx|
 %-----------------------------------------
-%  l	|	|	|   b	| a(R,H)|
+%  l	|	|	|   b(R)| a	|
 %-----------------------------------------
 
 %{right, left, up, down, stop, clear/extract}
