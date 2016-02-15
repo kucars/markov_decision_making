@@ -19,19 +19,19 @@ dangerlocNode ='d';
 agent1Actions     = {'right','left','up','down','stop','clear_danger'};
 agent2Actions     = {'right','left','up','down','stop','extract_victim'};
 
-agent1Observation = {'vic_noDan','noVic_dan','noVic_noDan'};
-agent2Observation = {'vic_noDan','noVic_dan','noVic_noDan'};
+agent1Observation = {'vic_noDan','noVic_dan','noVic_noDan','vic_dan'};
+agent2Observation = {'vic_noDan','noVic_dan','noVic_noDan','vic_dan'};
 
 
 %right,left,up, down,stop,clear/extract
 %-----------------------------------------
-%  g	|	|	|	|   f(H)|
+%  g	|	|	|	|   f	|
 %-----------------------------------------
 %   	| xxxxxx|xxxxxx	|xxxxxx	|	|
 %-----------------------------------------
 %  h	|   i	|xxxxxxx|  d(V)(D)|   e|
 %-----------------------------------------
-%xxxxxxx|  j	| 	|  c	|xxxxxxx|
+%xxxxxxx|  j(H)	| 	|  c	|xxxxxxx|
 %-----------------------------------------
 %  k	|xxxxxxx|xxxxxxx|	|xxxxxxx|
 %-----------------------------------------
@@ -46,7 +46,7 @@ network_indices=[[6,5];[6,4];[4,4];[3,4];[3,5];[1,5];[1,1];[3,1];[3,2];[4,2];[5,
 
 format long; 
 % Multi-Agent Human Robot Collaboration
-outputFile = 'MAHRC_6x5_danFun_v1.dpomdp';  
+outputFile = 'MAHRC_6x5_danFun_v2.dpomdp';  
 fid = fopen(outputFile, 'wb');
 
 % Write to File the top comments ------------and svarnings
@@ -278,12 +278,16 @@ for a1=1:length(agent1Actions)
 		  probO1=0.0;
                   probO2=0.0;
 		  uniProb1=0.0;  
-		  
+		  %---x is robot-----
 		  if(x==victimLocState && strcmp(victimLoc{sv},victimlocNode) && strcmp(agent1Observation{o1},'vic_noDan')) 
+		    probO1= obsCertainty;
+		  elseif(x==victimLocState && strcmp(victimLoc{sv},victimlocNode) && strcmp(agent1Observation{o1},'vic_dan')) 
 		    probO1= obsCertainty;
 		  elseif(x==victimLocState && strcmp(victimLoc{sv},'n') && strcmp(agent1Observation{o1},'noVic_noDan'))
 		     probO1= obsCertainty;
 		  elseif ( x==dangerLocState && strcmp(dangerLoc{sd},dangerlocNode) && strcmp(agent1Observation{o1},'noVic_dan'))
+		     probO1= obsCertainty;
+		  elseif ( x==dangerLocState && strcmp(dangerLoc{sd},dangerlocNode) && strcmp(agent1Observation{o1},'vic_dan'))
 		     probO1= obsCertainty;
 		  elseif ( x==dangerLocState && strcmp(dangerLoc{sd},'n') && strcmp(agent1Observation{o1},'noVic_noDan'))
 		     probO1= obsCertainty;
@@ -293,12 +297,16 @@ for a1=1:length(agent1Actions)
 		     probO1= (1-obsCertainty)/(a1ObservationSpace-1);
 		  end 
 
-		  
+		  %---z is the human-----
 		  if(z==victimLocState && strcmp(victimLoc{sv},victimlocNode) && strcmp(agent2Observation{o2},'vic_noDan'))
+		    probO2= obsCertainty;
+		  elseif(z==victimLocState && strcmp(victimLoc{sv},victimlocNode) && strcmp(agent2Observation{o2},'vic_dan'))
 		    probO2= obsCertainty;
 		  elseif(z==victimLocState && strcmp(victimLoc{sv},'n') && strcmp(agent2Observation{o2},'noVic_noDan'))
 		     probO2= obsCertainty;
 		  elseif ( z==dangerLocState && strcmp(dangerLoc{sd},dangerlocNode) && strcmp(agent2Observation{o2},'noVic_dan'))
+		     probO2= obsCertainty;
+		  elseif ( z==dangerLocState && strcmp(dangerLoc{sd},dangerlocNode) && strcmp(agent2Observation{o2},'vic_dan'))
 		     probO2= obsCertainty;
 		  elseif ( z==dangerLocState && strcmp(dangerLoc{sd},'n') && strcmp(agent2Observation{o2},'noVic_noDan'))
 		     probO2= obsCertainty;
