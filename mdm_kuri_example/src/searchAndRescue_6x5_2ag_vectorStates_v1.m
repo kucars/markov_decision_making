@@ -1,17 +1,20 @@
-%********************************************************************
-%Description : this script is using the classical way of reward function with multiple objectives 
-%********************************************************************
+%***************************************************************
+%Description: 
+% in this script i use the criteria as vector of states for the
+% robot and the human states 
+
+%***************************************************************
 
 %agent1 is robot,  agent 2 is human
 agent1Loc = {'a','b', 'c','d','e','f','g','h','i','j','k','l'};
 agent2Loc = {'a','b', 'c','d','e','f','g','h','i','j','k','l'};
 dangerLoc = {'c','n'};%n means no danger
-victimLoc = {'f','n'};%n means no victim 
+victimLoc = {'d','n'};%n means no victim 
 
-victimLocState = 6;%the node 
+victimLocState = 4;%the node 
 dangerLocState = 3;
 
-victimlocNode ='f';
+victimlocNode ='d';
 dangerlocNode ='c';
 
 agent1Actions     = {'right','left','up','down','stop','clear_danger'};
@@ -23,17 +26,17 @@ agent2Observation = {'vic_noDan','noVic_dan','noVic_noDan'};
 
 %right,left,up, down,stop,clear/extract
 %-----------------------------------------
-%  g	|	|	|	|   f(V	|
+%  g	|	|	|	|   f(H)|
 %-----------------------------------------
 %   	| xxxxxx|xxxxxx	|xxxxxx	|	|
 %-----------------------------------------
-%  h	|   i	|xxxxxxx|   d	|   e	|
+%  h	|   i	|xxxxxxx|  d(V)|   e	|
 %-----------------------------------------
 %xxxxxxx|  j	| 	|  c(D)	|xxxxxxx|
 %-----------------------------------------
 %  k	|xxxxxxx|xxxxxxx|	|xxxxxxx|
 %-----------------------------------------
-%  l	|	|	|   b	| a(R,H)|
+%  l	|	|	|   b(R)| a	|
 %-----------------------------------------
 
 %{right, left, up, down, stop, clear/extract}
@@ -44,11 +47,11 @@ network_indices=[[6,5];[6,4];[4,4];[3,4];[3,5];[1,5];[1,1];[3,1];[3,2];[4,2];[5,
 
 format long; 
 % Multi-Agent Human Robot Collaboration
-outputFile = 'MAHRC_6x5_v3_3.dpomdp';  
+outputFile = 'MAHRC_6x5_vectorStates_v1.dpomdp';  
 fid = fopen(outputFile, 'wb');
 
 % Write to File the top comments ------------and svarnings
-fprintf(fid,'# This DEC-POMDP Model svas generated MATLAB Script');
+fprintf(fid,'# This DEC-POMDP Model was generated MATLAB Script');
 fprintf(fid,'\n# This script is still experimental and bugs might appear');
 fprintf(fid,'\n# Tarek Taha & Hend Al Tair - KUSTAR\n');
 
@@ -332,92 +335,28 @@ end
 
 
  
-% Build Resvard Function
-% Typical problems only use R(s,ja) svhich is specified by:
+% Build Reward Function
+% Typical problems only use R(s,ja) which is specified by:
 %   R: <a1 a2...an> : <start-state> : * : * : %f
 %   or
 %   R: <a1 a2...an> : <start-state> : <end-state> : <observation> %f
 
 
-%---------------- Useless motions are penalised----------------------------
-%fprintf(fid,'\nR: * : * : * : * : -1.0');
+%---------------- penality for unnecessary motion ----------------------------
 fprintf(fid,'\nR: * : * : * : * : -10.00');
-%----------------- penality for human go to danger------------------------- 
-
-      for a1=1:length(agent1Actions)
-	for a2=1:length(agent2Actions)
-	  for x=1:length(agent1Loc)
-	     for v=1:length(victimLoc)
-                fprintf(fid,'\nR: %s %s : * : %s_%s_%s_%s :  * : -43', agent1Actions{a1}, agent2Actions{a2}, agent1Loc{x},dangerlocNode,victimLoc{v},dangerlocNode);
-              end
-            end
-	  end  
-      end
 %----------------- penality for human go to danger_USING danger function------------------------- 
-
-%    for a1=1:length(agent1Actions)
-%      for a2=1:length(agent2Actions)
-%        for x=1:length(agent1Loc)
-%  	for z=1:length(agent2Loc)
-%  	  for v=1:length(victimLoc)
-%  		dangerZoneReward = dangerRewardFun_v1(network_indices,dangerLocState,network(z,a2));
-%  		fprintf(fid,'\nR: %s %s : %s_%s_%s_%s : * :  * : %f', agent1Actions{a1}, agent2Actions{a2},agent1Loc{x},agent2Loc{z},victimLoc{v},dangerlocNode,dangerZoneReward);
-%  	  end
-%  	end
-%        end
-%      end
-%    end
-
-%----------------- penality for  robot clears danger and there is no danger------------------------- 
-
-%   for a2=1:length(agent2Actions)
-%        for x=1:length(agent1Loc)
-%  	 for z=1:length(agent2Loc)
-%              for v=1:length(victimLoc)
-%                  fprintf(fid,'\nR: clear_danger %s : %s_%s_%s_n : * :  * : -12', agent2Actions{a2}, agent1Loc{x}, agent2Loc{z}, victimLoc{v});
-%  	    end
-%            end 
-%        end 
-%    end 
-%----------------- penality for  robot clears danger and robot is not in danger node------------------------- 
-
-for a2=1:length(agent2Actions)
-    for x=1:length(agent1Loc)
-	 for z=1:length(agent2Loc)
-            for v=1:length(victimLoc)
-	      %for d=1:length(dangerLoc)
-		if(x~=dangerLocState)
-		  fprintf(fid,'\nR: clear_danger %s : %s_%s_%s_%s : * :  * : -30', agent2Actions{a2}, agent1Loc{x}, agent2Loc{z}, victimLoc{v},dangerlocNode);
-		end
-	      %end
-	    end
-          end 
-      end 
-  end   
-%----------------- penality for extract victim and there is no victim------------------------- 
-%  
-%   for a1=1:length(agent1Actions)
-%        for x=1:length(agent1Loc)
-%  	 for z=1:length(agent2Loc)
-%              for d=1:length(dangerLoc)
-%                  fprintf(fid,'\nR: %s extract_victim : %s_%s_n_%s : * :  * : -20', agent1Actions{a1}, agent1Loc{x}, agent2Loc{z}, dangerLoc{d});
-%  	    end
-%            end 
-%        end 
-%    end 
-
-%----------------- penality for extract victim and human is not in node of victim------------------------- 
-%  for a1=1:length(agent1Actions)
-%        for x=1:length(agent1Loc)
-%  	 for z=1:length(agent2Loc)
-%              for d=1:length(dangerLoc)
-%  	      if(z~=victimLocState)
-%                  fprintf(fid,'\nR: %s extract_victim : %s_%s_%s_%s : * :  * : -50', agent1Actions{a1}, agent1Loc{x}, agent2Loc{z},victimlocNode, dangerLoc{d});
-%                 end
-%  	    end
-%            end 
-%        end 
-%    end 
+  for a1=1:length(agent1Actions)
+    for a2=1:length(agent2Actions)
+      for x=1:length(agent1Loc)
+	for z=1:length(agent2Loc)
+	  for v=1:length(victimLoc)
+		dangerZoneReward = dangerRewardFun_v1(network_indices,dangerLocState,network(z,a2));
+		fprintf(fid,'\nR: %s %s : %s_%s_%s_%s : * :  * : %f', agent1Actions{a1}, agent2Actions{a2},agent1Loc{x},agent2Loc{z},victimLoc{v},dangerlocNode,dangerZoneReward);
+	  end
+	end
+      end
+    end
+  end
 % -----------------Reward for clearing danger----------------------------------
 for a2=1:length(agent2Actions)
   for z=1:length(agent2Loc)

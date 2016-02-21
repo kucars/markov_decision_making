@@ -1,20 +1,19 @@
-%3x3 map, fixed victim and danger location
+
+%this version works fine for the current actions and observations. 
 %Node: change the nodes to d not sting because sometimes its assigned to
 %d and sometimes its refered to originical as string 
 
 %agent1 is robot,  agent 2 is human
 agent1Loc = {'a','b', 'c','d','e','f','g','h','i','j','k','l'};
 agent2Loc = {'a','b', 'c','d','e','f','g','h','i','j','k','l'};
-dangerLoc = {'d','n'};%n means no danger
+dangerLoc = {'c','n'};%n means no danger
 victimLoc = {'d','n'};%n means no victim 
 
-%b = randi(12,1)
-
 victimLocState = 4;%the node 
-dangerLocState = 4;
+dangerLocState = 3;
 
 victimlocNode ='d';
-dangerlocNode ='d';
+dangerlocNode ='c';
 
 agent1Actions     = {'right','left','up','down','stop','clear_danger'};
 agent2Actions     = {'right','left','up','down','stop','extract_victim'};

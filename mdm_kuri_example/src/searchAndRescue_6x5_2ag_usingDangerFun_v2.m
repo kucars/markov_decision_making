@@ -1,4 +1,6 @@
-%3x3 map, fixed victim and danger location
+
+%in this version i added the observation vic_dan but it still requires fixing the observation function. 
+
 %Node: change the nodes to d not sting because sometimes its assigned to
 %d and sometimes its refered to originical as string 
 
