@@ -7,12 +7,12 @@
 agent1Loc = {'a','b', 'c','d','e','f','g','h','i','j','k','l'};
 agent2Loc = {'a','b', 'c','d','e','f','g','h','i','j','k','l'};
 dangerLoc = {'c','n'};%n means no danger
-victimLoc = {'d','n'};%n means no victim 
+victimLoc = {'f','n'};%n means no victim 
 
-victimLocState = 4;%the node 
+victimLocState = 6;%the node 
 dangerLocState = 3;
 
-victimlocNode ='d';
+victimlocNode ='f';
 dangerlocNode ='c';
 
 agent1Actions     = {'right','left','up','down','stop','clear_danger'};
@@ -45,7 +45,7 @@ network_indices=[[6,5];[6,4];[4,4];[3,4];[3,5];[1,5];[1,1];[3,1];[3,2];[4,2];[5,
 
 format long; 
 % Multi-Agent Human Robot Collaboration
-outputFile = 'MAHRC_6x5_usingFunctions_v1.dpomdp';  
+outputFile = 'MAHRC_6x5_usingFASTparameters_v1.dpomdp';  
 fid = fopen(outputFile, 'wb');
 % Write to File the top comments 
 fprintf(fid,'# This DEC-POMDP Model svas generated MATLAB Script');
@@ -341,7 +341,28 @@ end
 
 %---------------- Useless motions are penalised----------------------------
 %fprintf(fid,'\nR: * : * : * : * : -1.0');
-fprintf(fid,'\nR: * : * : * : * : -10.00');
+%fprintf(fid,'\nR: * : * : * : * : -10.00');
+%uselessMotionPenalization = -3;%used for the * 
+uselessMotionPenalization = -2; 
+
+for a1=1:length(agent1Actions)
+    for a2=1:length(agent2Actions)
+      for x=1:length(agent1Loc)
+	for z=1:length(agent2Loc)
+	  for v=1:length(victimLoc)
+	   for d=1:length(dangerLoc)
+		distanceAgent1 = calculateDistance(network_indices,x,network(x,a1));
+		distanceAgent2 = calculateDistance(network_indices,z,network(z,a2));
+		%jointDistanceReward= (uselessMotionPenalization*distanceAgent1)+(uselessMotionPenalization*distanceAgent2); 
+		jointDistanceReward= (uselessMotionPenalization/distanceAgent1)+(uselessMotionPenalization/distanceAgent2); 
+		fprintf(fid,'\nR: %s %s : %s_%s_%s_%s : * :  * : %f', agent1Actions{a1}, agent2Actions{a2},agent1Loc{x},agent2Loc{z},victimLoc{v},dangerLoc{d},jointDistanceReward);
+	   end 
+	 end
+	end
+      end
+    end
+  end
+
 %----------------- penality for human go to danger------------------------- 
 %        for a1=1:length(agent1Actions)
 %  	  for x=1:length(agent1Loc)
@@ -353,13 +374,14 @@ fprintf(fid,'\nR: * : * : * : * : -10.00');
 %  	  end  
 %        end 
 %----------------- penality for human go to danger_USING danger function------------------------- 
-
+dangerPenalization=-50;
   for a1=1:length(agent1Actions)
     for a2=1:length(agent2Actions)
       for x=1:length(agent1Loc)
 	for z=1:length(agent2Loc)
 	  for v=1:length(victimLoc)
-		dangerZoneReward = dangerRewardFun_v1(network_indices,dangerLocState,network(z,a2));
+		distance = calculateDistance(network_indices,dangerLocState,network(z,a2));
+		dangerZoneReward= dangerPenalization/distance; 
 		fprintf(fid,'\nR: %s %s : %s_%s_%s_%s : * :  * : %f', agent1Actions{a1}, agent2Actions{a2},agent1Loc{x},agent2Loc{z},victimLoc{v},dangerlocNode,dangerZoneReward);
 	  end
 	end
