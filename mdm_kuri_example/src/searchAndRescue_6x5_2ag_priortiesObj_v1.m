@@ -1,6 +1,7 @@
-%********************************************************************
-%Description : this script is using the classical way of reward function with multiple objectives 
-%********************************************************************
+
+%this version works fine for the current actions and observations. 
+%Node: change the nodes to d not sting because sometimes its assigned to
+%d and sometimes its refered to originical as string 
 
 %agent1 is robot,  agent 2 is human
 agent1Loc = {'a','b', 'c','d','e','f','g','h','i','j','k','l'};
@@ -23,17 +24,17 @@ agent2Observation = {'vic_noDan','noVic_dan','noVic_noDan'};
 
 %right,left,up, down,stop,clear/extract
 %-----------------------------------------
-%  g	|	|	|	|   f(V	|
+%  g	|	|	|	|   f(H)|
 %-----------------------------------------
 %   	| xxxxxx|xxxxxx	|xxxxxx	|	|
 %-----------------------------------------
-%  h	|   i	|xxxxxxx|   d	|   e	|
+%  h	|   i	|xxxxxxx|  d(V)(D)|   e|
 %-----------------------------------------
-%xxxxxxx|  j	| 	|  c(D)	|xxxxxxx|
+%xxxxxxx|  j	| 	|  c	|xxxxxxx|
 %-----------------------------------------
 %  k	|xxxxxxx|xxxxxxx|	|xxxxxxx|
 %-----------------------------------------
-%  l	|	|	|   b	| a(R,H)|
+%  l	|	|	|   b(R)| a	|
 %-----------------------------------------
 
 %{right, left, up, down, stop, clear/extract}
@@ -44,10 +45,9 @@ network_indices=[[6,5];[6,4];[4,4];[3,4];[3,5];[1,5];[1,1];[3,1];[3,2];[4,2];[5,
 
 format long; 
 % Multi-Agent Human Robot Collaboration
-outputFile = 'MAHRC_6x5_usingTimewithClassical_v1.dpomdp';  
+outputFile = 'MAHRC_6x5_priortiesObj_v1.dpomdp';  
 fid = fopen(outputFile, 'wb');
-
-% Write to File the top comments ------------and svarnings
+% Write to File the top comments 
 fprintf(fid,'# This DEC-POMDP Model svas generated MATLAB Script');
 fprintf(fid,'\n# This script is still experimental and bugs might appear');
 fprintf(fid,'\n# Tarek Taha & Hend Al Tair - KUSTAR\n');
@@ -147,7 +147,7 @@ end
 
 %HencComment: remember array start the index from 1 not zero 
 
-% Hosv many actions per state:
+% How many actions per state:
 a1StateSpace = size(agent1Loc)(2);
 a2StateSpace = size(agent2Loc)(2);
 dStateSpace  = size(dangerLoc)(2);
@@ -338,12 +338,11 @@ end
 %   or
 %   R: <a1 a2...an> : <start-state> : <end-state> : <observation> %f
 
+priority_order = {'clear_danger','dangerDistance','extract_victim','time'};
 
 %---------------- Useless motions are penalised----------------------------
-%fprintf(fid,'\nR: * : * : * : * : -1.0');
 %fprintf(fid,'\nR: * : * : * : * : -10.00');
-
-uselessMotionPenalization = -2.5;
+uselessMotionPenalization = -2; 
 
 for a1=1:length(agent1Actions)
     for a2=1:length(agent2Actions)
@@ -353,7 +352,6 @@ for a1=1:length(agent1Actions)
 	   for d=1:length(dangerLoc)
 		distanceAgent1 = calculateDistance(network_indices,x,network(x,a1));
 		distanceAgent2 = calculateDistance(network_indices,z,network(z,a2));
-		%jointDistanceReward= (uselessMotionPenalization*distanceAgent1)+(uselessMotionPenalization*distanceAgent2); 
 		jointDistanceReward= (uselessMotionPenalization/distanceAgent1)+(uselessMotionPenalization/distanceAgent2); 
 		fprintf(fid,'\nR: %s %s : %s_%s_%s_%s : * :  * : %f', agent1Actions{a1}, agent2Actions{a2},agent1Loc{x},agent2Loc{z},victimLoc{v},dangerLoc{d},jointDistanceReward);
 	   end 
@@ -362,82 +360,22 @@ for a1=1:length(agent1Actions)
       end
     end
   end
-%----------------- penality for human go to danger------------------------- 
 
-      for a1=1:length(agent1Actions)
-	for a2=1:length(agent2Actions)
-	  for x=1:length(agent1Loc)
-	     for v=1:length(victimLoc)
-                fprintf(fid,'\nR: %s %s : * : %s_%s_%s_%s :  * : -43', agent1Actions{a1}, agent2Actions{a2}, agent1Loc{x},dangerlocNode,victimLoc{v},dangerlocNode);
-              end
-            end
-	  end  
-      end
 %----------------- penality for human go to danger_USING danger function------------------------- 
-
-%    for a1=1:length(agent1Actions)
-%      for a2=1:length(agent2Actions)
-%        for x=1:length(agent1Loc)
-%  	for z=1:length(agent2Loc)
-%  	  for v=1:length(victimLoc)
-%  		dangerZoneReward = dangerRewardFun_v1(network_indices,dangerLocState,network(z,a2));
-%  		fprintf(fid,'\nR: %s %s : %s_%s_%s_%s : * :  * : %f', agent1Actions{a1}, agent2Actions{a2},agent1Loc{x},agent2Loc{z},victimLoc{v},dangerlocNode,dangerZoneReward);
-%  	  end
-%  	end
-%        end
-%      end
-%    end
-
-%----------------- penality for  robot clears danger and there is no danger------------------------- 
-
-%   for a2=1:length(agent2Actions)
-%        for x=1:length(agent1Loc)
-%  	 for z=1:length(agent2Loc)
-%              for v=1:length(victimLoc)
-%                  fprintf(fid,'\nR: clear_danger %s : %s_%s_%s_n : * :  * : -12', agent2Actions{a2}, agent1Loc{x}, agent2Loc{z}, victimLoc{v});
-%  	    end
-%            end 
-%        end 
-%    end 
-%----------------- penality for  robot clears danger and robot is not in danger node------------------------- 
-
-%for a2=1:length(agent2Actions)
-%    for x=1:length(agent1Loc)
-%	 for z=1:length(agent2Loc)
-%            for v=1:length(victimLoc)
-%	      %for d=1:length(dangerLoc)
-%		if(x~=dangerLocState)
-%		  fprintf(fid,'\nR: clear_danger %s : %s_%s_%s_%s : * :  * : -30', agent2Actions{a2}, agent1Loc{x}, agent2Loc{z}, victimLoc{v},dangerlocNode);
-%		end
-	      %end
-%	    end
-%          end 
-%      end 
-%  end   
-%----------------- penality for extract victim and there is no victim------------------------- 
-%  
-%   for a1=1:length(agent1Actions)
-%        for x=1:length(agent1Loc)
-%  	 for z=1:length(agent2Loc)
-%              for d=1:length(dangerLoc)
-%                  fprintf(fid,'\nR: %s extract_victim : %s_%s_n_%s : * :  * : -20', agent1Actions{a1}, agent1Loc{x}, agent2Loc{z}, dangerLoc{d});
-%  	    end
-%            end 
-%        end 
-%    end 
-
-%----------------- penality for extract victim and human is not in node of victim------------------------- 
-%  for a1=1:length(agent1Actions)
-%        for x=1:length(agent1Loc)
-%  	 for z=1:length(agent2Loc)
-%              for d=1:length(dangerLoc)
-%  	      if(z~=victimLocState)
-%                  fprintf(fid,'\nR: %s extract_victim : %s_%s_%s_%s : * :  * : -50', agent1Actions{a1}, agent1Loc{x}, agent2Loc{z},victimlocNode, dangerLoc{d});
-%                 end
-%  	    end
-%            end 
-%        end 
-%  end 
+dangerPenalization=-50;
+  for a1=1:length(agent1Actions)
+    for a2=1:length(agent2Actions)
+      for x=1:length(agent1Loc)
+	for z=1:length(agent2Loc)
+	  for v=1:length(victimLoc)
+		distance = calculateDistance(network_indices,dangerLocState,network(z,a2));
+		dangerZoneReward= dangerPenalization/distance; 
+		fprintf(fid,'\nR: %s %s : %s_%s_%s_%s : * :  * : %f', agent1Actions{a1}, agent2Actions{a2},agent1Loc{x},agent2Loc{z},victimLoc{v},dangerlocNode,dangerZoneReward);
+	  end
+	end
+      end
+    end
+  end
 % -----------------Reward for clearing danger----------------------------------
 for a2=1:length(agent2Actions)
   for z=1:length(agent2Loc)
@@ -454,6 +392,8 @@ for x=1:length(agent1Loc)
     end
   end
 end 
+
+
 
 
 fprintf(fid,'\n');
