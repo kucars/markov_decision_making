@@ -13,6 +13,7 @@
 #include <mdm_library/controller_timed_pomdp.h>
 #include <string>
 
+//==================== publishCurrentBelief ==============================================
 void publishCurrentBelief (boost::shared_ptr<DecPOMDPDiscreteInterface> decpomdp,boost::shared_ptr<JointBeliefInterface> belief)
 {
     double maxBelief = -1, beliefValue = 0;
@@ -32,6 +33,7 @@ void publishCurrentBelief (boost::shared_ptr<DecPOMDPDiscreteInterface> decpomdp
     std::cout<<"\n";
 }
 
+//=================== actionNameToIndex ==================================================
 int actionNameToIndex(boost::shared_ptr<DecPOMDPDiscreteInterface> decpomdp,std::string actionName)
 {
     for ( size_t a = 0; a < decpomdp->GetNrJointActions(); a++ )
@@ -45,6 +47,7 @@ int actionNameToIndex(boost::shared_ptr<DecPOMDPDiscreteInterface> decpomdp,std:
     }
 }
 
+//=================== stateNameToIndex ===================================================
 int stateNameToIndex(boost::shared_ptr<DecPOMDPDiscreteInterface> decpomdp, std::string stateName)
 {
     for ( uint32_t s = 0; s < decpomdp->GetNrStates(); s++ )
@@ -58,6 +61,7 @@ int stateNameToIndex(boost::shared_ptr<DecPOMDPDiscreteInterface> decpomdp, std:
     }
 }
 
+//=================== observationIndicesFromStrings ======================================
 std::vector<int> observationIndicesFromStrings(boost::shared_ptr<DecPOMDPDiscreteInterface> decpomdp, std::vector<std::string> observations)
 {
     std::vector<int> obs;
@@ -79,7 +83,7 @@ std::vector<int> observationIndicesFromStrings(boost::shared_ptr<DecPOMDPDiscret
     return obs;
 }
 
-
+//=================== publishExpectedReward ==============================================
 void publishExpectedReward ( uint32_t a, boost::shared_ptr<DecPOMDPDiscreteInterface> decpomdp_,boost::shared_ptr<JointBeliefInterface> belief_)
 {
     double reward;
@@ -93,6 +97,7 @@ void publishExpectedReward ( uint32_t a, boost::shared_ptr<DecPOMDPDiscreteInter
     std::cout<<"Expected Reward from this action is:"<<reward<<"\n";
 }
 
+//=================== main ===============================================================
 int main ( int argc, char** argv )
 {    
     ros::init(argc, argv, "mdm_kuri_example");
