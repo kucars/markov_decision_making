@@ -1,5 +1,5 @@
 %----------------------Plot the joint beliefs----------------
-%v3_3
+%v3_3 classical 
 Episode = [0 1 2 3 4 5 6 7 8]; 
 Joint_Belief1=[1 0.955433 0.873915 0.803682 0.747376 0.705382 0.686528 0.774354 0.725652];
 Joint_Rewards1=[-10.1956 99.6207 -10.0005 -10.078 -10.0005 -10.0002 -10.0002 98.4628 -10.0001];
@@ -15,11 +15,18 @@ Joint_Belief3=[1 0.955433 0.873915 0.800016 0.744006 0.702186 0.673901 0.820215 
 Joint_Rewards3=[-15.4508 99.6629 -1.79078 -1.88905 -3.06117 -2.12133 -1.61236 98.5476 -2.61171];
 accumlativeRewards3 = [-15.4508 84.212 82.421 80.532 77.471 75.350 73.737 172.29 169.67];
 
+%using time with classical v1
+Joint_Belief4=[1 0.955433 0.873915 0.803682 0.747376 0.723411 0.82561 0.930436 0.840253];
+Joint_Rewards4=[-1.02894 99.7014 -1.03232 -1.44027 -1.09349 -0.931223 -0.756536 98.5761 -0.595945];
+accumlativeRewards4 = [-1.02894 98.67246 97.64014 96.19987 95.10638 94.175157 93.418621 191.994721 191.398776];
+
+
+
 figure 
-h= plot(Episode,Joint_Belief1, '--go',Episode,Joint_Belief2,'-.r*',Episode,Joint_Belief3,'-.xb');
+h= plot(Episode,Joint_Belief1, '--go',Episode,Joint_Belief2,'-.r*',Episode,Joint_Belief3,'-.xb',Episode,Joint_Belief4,'--+k');
 set (h, 'LineWidth', 2);
 %plot(JointRewards1,':');
-legend('Classical','ByUsingDangerDistance','ByUsingTimeAndDangerDistance');
+legend('Classical','ByUsingDangerDistance','ByUsingTimeAndDangerDistance','Time and Classical model');
 grid on
 title('Comparison between the joint-beliefs of the models')
 xlabel('Episode');
@@ -110,16 +117,15 @@ text(7,0.820215,state27)
 state28 = '\leftarrow state l-f-n-n';
 text(8,0.752565,state28)
 %----------------plot the rewards----------------
-
 figure 
 x= [0 1 2 3 4 5 6 7 8];
-y= [-10.1956 -15.4508 -15.4508; 99.6207 99.6629 99.6629; -10.0005 -10.0171 -1.79078; -10.078 -10.0772 -1.88905; -10.0005 -10.0028 -3.06117; -10.0002 -10.0021 -2.12133; -10.0002 -10.0007 -1.61236;98.4628 98.463 98.5476; -10.0001 -10.0003  -2.61171];
+y= [-10.1956 -15.4508 -15.4508 -1.02894; 99.6207 99.6629 99.6629 99.7014; -10.0005 -10.0171 -1.79078 -1.03232; -10.078 -10.0772 -1.88905 -1.44027; -10.0005 -10.0028 -3.06117 -1.09349; -10.0002 -10.0021 -2.12133 -0.931223; -10.0002 -10.0007 -1.61236 -0.756536;98.4628 98.463 98.5476 98.5761; -10.0001 -10.0003  -2.61171 -0.595945];
 
 c=plot(x,y);
 set(c,'LineWidth',2);
-legend('Classical','ByUsingDangerDistance','ByUsingTimeAndDangerDistance');
+legend('Classical','ByUsingDangerDistance','ByUsingTimeAndDangerDistance','Time with classical');
 grid on
-title('Comparison between the joint-rewards of the models')
+title('Comparison between the joint-rewards of the models');
 xlabel('Episode');
 ylabel('Joint Rewards');
 
@@ -127,32 +133,31 @@ ylabel('Joint Rewards');
 
 figure 
 x1= [0 1 2 3 4 5 6 7 8];
-y1= [-10.1956 -15.4508 -15.4508; 89.425 84.212 84.212; 79.425 74.195 82.421; 69.347 64.118 80.532; 59.346 54.115 77.471; 49.346 44.113 75.350; 39.346 34.112 73.737; 137.81 132.58 172.29; 127.81 122.57 169.67];
+y1= [-10.1956 -15.4508 -15.4508 -1.02894; 89.425 84.212 84.212 98.67246; 79.425 74.195 82.421 97.64014; 69.347 64.118 80.532 96.19987; 59.346 54.115 77.471 95.10638; 49.346 44.113 75.350 94.175157; 39.346 34.112 73.737 93.418621; 137.81 132.58 172.29 191.994721; 127.81 122.57 169.67 191.398776];
 
 c1=plot(x1,y1);
 set(c1,'LineWidth',2);
-legend('Classical','ByUsingDangerDistance','ByUsingTimeAndDangerDistance');
+legend('Classical','ByUsingDangerDistance','ByUsingTimeAndDangerDistance','Time with Classical');
 grid on
-title('Comparison between the joint accumlated rewards of the models')
+title('Comparison between the joint accumlated rewards of the models');
 xlabel('Episode');
 ylabel('Joint Accumlated Rewards');
 
 clearDanger = '\leftarrow Clear Danger';
-text(1,89.425,clearDanger)
+text(1,89.425,clearDanger);
 
 extractvictim = '\leftarrow Extract Victim';
-text(7,172.29,extractvictim)
+text(7,172.29,extractvictim);
 
 %----------------plot of agents location -----------------
 %********version classical *************************************
 %position agent 1 
-x=[0 1 2 3 4 5 6 7 8]
-y=[2 3 3 4 4 3 4 3 2]
+x=[0 1 2 3 4 5 6 7 8];
+y=[2 3 3 4 4 3 4 3 2];
 %position agent 2
-x1=[0 1 2 3 4 5 6 7 8]
-y1=[2 1 1 2 3 4 5 6 6]
+x1=[0 1 2 3 4 5 6 7 8];
+y1=[2 1 1 2 3 4 5 6 6];
 %**********version using danger function ************************
-
 %position of agent 1
 a = [0 1 2 3 4 5 6 7 8]; 
 b =[ 2 2 3 4 3 2 1 1 1];
@@ -169,8 +174,17 @@ l = [2 3 3 2 1 1 2 12 12];
 k1 = [0 1 2 3 4 5 6 7 8]; 
 l1 = [2 1 1 2 3 4 5 6 6];
 
+%******time with the classical**************
+% position of agent 1 
+h=[0 1 2 3 4 5 6 7 8];
+j=[2 3 3 4 4 5 6 5 5];
+
+% position of agent 2 
+h1=[0 1 2 3 4 5 6 7 8];
+j1=[2 1 1 2 3 4 5 6 6];
+
 figure
-p=plot(x,y,'go',x1,y1,'gx',a,b,'ro',a1,b1,'rx',k,l,'bo',k1,l1,'bx');
+p=plot(x,y,'go',x1,y1,'gx',a,b,'ro',a1,b1,'rx',k,l,'bo',k1,l1,'bx',h,j,'ko',h1,j1,'kx');
 set(p,'LineWidth',2);
 
 legend('Robot','Human');

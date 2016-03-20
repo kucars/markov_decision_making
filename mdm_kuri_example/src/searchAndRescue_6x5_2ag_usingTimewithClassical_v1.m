@@ -343,7 +343,7 @@ end
 %fprintf(fid,'\nR: * : * : * : * : -1.0');
 %fprintf(fid,'\nR: * : * : * : * : -10.00');
 
-uselessMotionPenalization = -2.5;
+uselessMotionPenalization = -1;
 
 for a1=1:length(agent1Actions)
     for a2=1:length(agent2Actions)
