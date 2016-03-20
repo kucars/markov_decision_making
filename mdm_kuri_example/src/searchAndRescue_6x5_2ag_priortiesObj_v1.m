@@ -395,8 +395,6 @@ end%end for loop
 
 
 
-
-
 fprintf(fid,'\n');
 
 fclose(fid);
