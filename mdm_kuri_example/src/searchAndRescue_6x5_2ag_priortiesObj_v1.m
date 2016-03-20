@@ -370,11 +370,11 @@ for y=1:length(priority_order)
 	      
 	      %=====strp2: now print the rewards 
 	      if(strcmp(agent1Actions{a1},'clear_danger')&& strcmp(dangerLoc{d},dangerlocNode))
-		fprintf(fid,'\nR:  clear_danger %s : %s_%s_%s_%s :  * : * : %f',agent2Actions{a2},dangerlocNode, agent2Loc{z}, victimLoc{v},dangerlocNode, reward_clearDanger+dangerZoneReward+jointDistanceReward);
+		fprintf(fid,'\nR:  clear_danger %s : %s_%s_%s_%s :  * : * : %f',agent2Actions{a2},dangerlocNode, agent2Loc{z}, victimLoc{v},dangerlocNode, reward_clearDanger);
 	      elseif (strcmp(dangerLoc{d},dangerlocNode))
-		fprintf(fid,'\nR: %s %s : %s_%s_%s_%s : * :  * : %f', agent1Actions{a1}, agent2Actions{a2},agent1Loc{x},agent2Loc{z},victimLoc{v},dangerlocNode,dangerZoneReward+jointDistanceReward);
+		fprintf(fid,'\nR: %s %s : %s_%s_%s_%s : * :  * : %f', agent1Actions{a1}, agent2Actions{a2},agent1Loc{x},agent2Loc{z},victimLoc{v},dangerlocNode,dangerZoneReward);
 	      elseif (strcmp(agent2Actions{a2},'extract_victim')&& strcmp(victimLoc{v},victimlocNode))
-		fprintf(fid,'\nR:  %s extract_victim : %s_%s_%s_%s : * : * : %f', agent1Actions{a1},agent1Loc{x},victimlocNode,victimlocNode,dangerLoc{sd},reward_extractVictim+jointDistanceReward);
+		fprintf(fid,'\nR:  %s extract_victim : %s_%s_%s_%s : * : * : %f', agent1Actions{a1},agent1Loc{x},victimlocNode,victimlocNode,dangerLoc{sd},reward_extractVictim);
 	      else 
 		fprintf(fid,'\nR: %s %s : %s_%s_%s_%s : * :  * : %f', agent1Actions{a1}, agent2Actions{a2},agent1Loc{x},agent2Loc{z},victimLoc{v},dangerLoc{d},jointDistanceReward);    
 	      end%end if statement
