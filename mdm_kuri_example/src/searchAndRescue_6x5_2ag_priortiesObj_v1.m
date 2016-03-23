@@ -343,10 +343,6 @@ priority_order = {'clear_danger','extract_victim','dangerDistance','time'};
 %------------------------call the functions based on the priority of objectives------
 priority_weights=rewardsBasedonPriority_v1(priority_order);
 
-reward_clearDanger = 0; 
-reward_extractVictim = 0; 
-dangerZoneReward=0;
-jointDistanceReward=0;
 
   
   for a1=1:length(agent1Actions)
@@ -355,33 +351,38 @@ jointDistanceReward=0;
 	for z=1:length(agent2Loc)
 	  for v=1:length(victimLoc)
 	    for d=1:length(dangerLoc)
-	     for y=1:length(priority_order)
+	      reward_clearDanger = 0; 
+	      reward_extractVictim = 0; 
+	      dangerZoneReward=0;
+	      jointDistanceReward=0;
 
+	     for y=1:length(priority_order)
 	      %=====step 1: put rewards based on priorties 
-	      if(strcmp(priority_order{y},'clear_danger'))
-		reward_clearDanger=priority_weights(y);
-	      elseif(strcmp(priority_order{y},'extract_victim'))
-		reward_extractVictim = priority_weights(y);
-	      elseif(strcmp(priority_order{y},'dangerDistance'))
-		distance = calculateDistance(network_indices,dangerLocState,network(z,a2));
-		dangerZoneReward= priority_weights(y)/distance; 
-	      elseif(strcmp(priority_order{y},'time'))
-		distanceAgent1 = calculateDistance(network_indices,x,network(x,a1));
-		distanceAgent2 = calculateDistance(network_indices,z,network(z,a2));
-		jointDistanceReward= (priority_weights(y)/distanceAgent1)+(priority_weights(y)/distanceAgent2); 
-	      end%end if statement 
-	      
+		if(strcmp(priority_order{y},'clear_danger'))
+		  reward_clearDanger=priority_weights(y);
+		elseif(strcmp(priority_order{y},'extract_victim'))
+		  reward_extractVictim = priority_weights(y);
+		elseif(strcmp(priority_order{y},'dangerDistance'))
+		  distance = calculateDistance(network_indices,dangerLocState,network(z,a2));
+		  dangerZoneReward= priority_weights(y)/distance; 
+		elseif(strcmp(priority_order{y},'time'))
+		  distanceAgent1 = calculateDistance(network_indices,x,network(x,a1));
+		  distanceAgent2 = calculateDistance(network_indices,z,network(z,a2));
+		  jointDistanceReward= (priority_weights(y)/distanceAgent1)+(priority_weights(y)/distanceAgent2); 
+		end%end if statement 
+	      end%end for loop
+
 	      sum_reward = reward_clearDanger+reward_extractVictim+dangerZoneReward+jointDistanceReward;
-	      %=====strp2: now print the rewards 
-	      if(strcmp(agent1Actions{a1},'clear_danger')&& strcmp(dangerLoc{d},dangerlocNode))
-		fprintf(fid,'\nR:  clear_danger %s : %s_%s_%s_%s :  * : * : %f',agent2Actions{a2},dangerlocNode, agent2Loc{z}, victimLoc{v},dangerlocNode, sum_reward);
-	      elseif (strcmp(dangerLoc{d},dangerlocNode))
-		fprintf(fid,'\nR: %s %s : %s_%s_%s_%s : * :  * : %f', agent1Actions{a1}, agent2Actions{a2},agent1Loc{x},agent2Loc{z},victimLoc{v},dangerlocNode,sum_reward);
-	      elseif (strcmp(agent2Actions{a2},'extract_victim')&& strcmp(victimLoc{v},victimlocNode))
-		fprintf(fid,'\nR:  %s extract_victim : %s_%s_%s_%s : * : * : %f', agent1Actions{a1},agent1Loc{x},victimlocNode,victimlocNode,dangerLoc{sd},sum_reward);
-	      else 
+	      %=====step 2: now print the rewards 
+%  	      if(strcmp(agent1Actions{a1},'clear_danger')&& strcmp(dangerLoc{d},dangerlocNode))
+%  		fprintf(fid,'\nR:  clear_danger %s : %s_%s_%s_%s :  * : * : %f',agent2Actions{a2},dangerlocNode, agent2Loc{z}, victimLoc{v},dangerlocNode, sum_reward);
+%  	      elseif (strcmp(dangerLoc{d},dangerlocNode))
+%  		fprintf(fid,'\nR: %s %s : %s_%s_%s_%s : * :  * : %f', agent1Actions{a1}, agent2Actions{a2},agent1Loc{x},agent2Loc{z},victimLoc{v},dangerlocNode,sum_reward);
+%  	      elseif (strcmp(agent2Actions{a2},'extract_victim')&& strcmp(victimLoc{v},victimlocNode))
+%  		fprintf(fid,'\nR:  %s extract_victim : %s_%s_%s_%s : * : * : %f', agent1Actions{a1},agent1Loc{x},victimlocNode,victimlocNode,dangerLoc{d},sum_reward);
+%  	      else 
 		fprintf(fid,'\nR: %s %s : %s_%s_%s_%s : * :  * : %f', agent1Actions{a1}, agent2Actions{a2},agent1Loc{x},agent2Loc{z},victimLoc{v},dangerLoc{d},sum_reward);    
-	      end%end if statement
+	      %end%end if statement
 	      
 	    end
 	   end
@@ -391,7 +392,6 @@ jointDistanceReward=0;
       end 
   
   
-end%end for loop
 
 %reward = rewards(length(rewards));
 
