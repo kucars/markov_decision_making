@@ -395,7 +395,8 @@ priority_weights=rewardsBasedonPriority_v1(priority_order);
 		  end 
 		end 
 %  		fprintf(fid,'\nR:  %s extract_victim : %s_%s_%s_%s : * : * : %f', agent1Actions{a1},agent1Loc{x},victimlocNode,victimlocNode,dangerLoc{d},sum_reward);
-  	      else
+  	      %else
+	      end
 		for y=1:length(priority_order)
 		  if (strcmp(priority_order{y},'time'))
 		    distanceAgent1 = calculateDistance(network_indices,x,network(x,a1));
@@ -403,7 +404,7 @@ priority_weights=rewardsBasedonPriority_v1(priority_order);
 		    jointDistanceReward= (priority_weights(y)/distanceAgent1)+(priority_weights(y)/distanceAgent2);
 		  end 
 		end 
-	      end 
+	       
 		sum_reward = reward_clearDanger+reward_extractVictim+dangerZoneReward+jointDistanceReward;
 		fprintf(fid,'\nR: %s %s : %s_%s_%s_%s : * :  * : %f', agent1Actions{a1}, agent2Actions{a2},agent1Loc{x},agent2Loc{z},victimLoc{v},dangerLoc{d},sum_reward);    
 	      %end%end if statement
