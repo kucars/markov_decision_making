@@ -1,5 +1,5 @@
-pomdp_model: /home/hend/catkin_ws/src/markov_decision_making/mdm_kuri_example/src/MAHRC_6x5_priortiesObj_v1.dpomdp
-policy_file: /home/hend/.madp/results/POMDP/MAHRC_6x5_priortiesObj_v1/POMDP_MAHRC_6x5_priortiesObj_v1_g0.9_PerseusPOMDPValueFunction_h999999
+pomdp_model: /home/hend/catkin_ws/src/markov_decision_making/mdm_kuri_example/src/MAHRC_6x5_priortiesObj_v2_2.dpomdp
+policy_file: /home/hend/.madp/results/POMDP/MAHRC_6x5_priortiesObj_v2_2/POMDP_MAHRC_6x5_priortiesObj_v2_2_g0.9_PerseusPOMDPValueFunction_h999999
 decision_horizon: 50
 initial_action: stop_stop
 initial_state: b_b_f_c

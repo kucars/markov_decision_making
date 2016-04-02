@@ -45,7 +45,7 @@ network_indices=[[6,5];[6,4];[4,4];[3,4];[3,5];[1,5];[1,1];[3,1];[3,2];[4,2];[5,
 
 format long; 
 % Multi-Agent Human Robot Collaboration
-outputFile = 'MAHRC_6x5_priortiesObj_v1.dpomdp';  
+outputFile = 'MAHRC_6x5_priortiesObj_v2_1.dpomdp';  
 fid = fopen(outputFile, 'wb');
 % Write to File the top comments 
 fprintf(fid,'# This DEC-POMDP Model svas generated MATLAB Script');
@@ -340,59 +340,43 @@ end
 
 priority_order = {'clear_danger','extract_victim','dangerDistance','time'};
 
-%------------------------call the functions based on the priority of objectives------
-priority_weights=rewardsBasedonPriority_v1(priority_order);
 
-
-  
   for a1=1:length(agent1Actions)
     for a2=1:length(agent2Actions)
       for x=1:length(agent1Loc)
 	for z=1:length(agent2Loc)
 	  for v=1:length(victimLoc)
 	    for d=1:length(dangerLoc)
-	      
+	     
 	      reward_clearDanger = 0; 
-	      reward_extractVictim = 0; 
-	      dangerZoneReward=0;
-	      jointDistanceReward=0;
+	      dangerZoneReward =0;
+	      reward_extractVictim =0;
+	      jointDistanceReward =0;
 
-	      
+	      % -----------------Reward for clearing danger----------------------------------
   	      if(strcmp(agent1Actions{a1},'clear_danger')&& strcmp(dangerLoc{d},dangerlocNode)&& strcmp(agent1Loc(network(x,a1)),dangerlocNode))
-		for y=1:length(priority_order)
-		  if(strcmp(priority_order{y},'clear_danger'))
-		    reward_clearDanger=priority_weights(y);
-		  end
-		end
+		reward_clearDanger = 100; 
 	      end
+	      %----------------- penality for human go to danger_USING danger function-------
+	      dangerPenalization=-50;
   	      if (strcmp(dangerLoc{d},dangerlocNode))
-		for y=1:length(priority_order)
-		  if(strcmp(priority_order{y},'dangerDistance'))
-		    distance = calculateDistance(network_indices,dangerLocState,network(z,a2));
-		    dangerZoneReward= priority_weights(y)/distance; 
-		  end
-		end
-	      end
-	      
+		distance = calculateDistance(network_indices,dangerLocState,network(z,a2));
+		dangerZoneReward= dangerPenalization/distance; 
+	      end   
+	      %--------------- Extracting a victim is highly rewarderd-----------------------
   	      if (strcmp(agent2Actions{a2},'extract_victim')&& strcmp(victimLoc{v},victimlocNode)&& strcmp(agent2Loc(network(z,a2)),victimlocNode))
-		for y=1:length(priority_order)
-		  if (strcmp(priority_order{y},'extract_victim'))
-		    reward_extractVictim = priority_weights(y);
-		  end 
-		end 
+		reward_extractVictim = 100; 
 	      end
-		
-		for y=1:length(priority_order)
-		  if (strcmp(priority_order{y},'time'))
-		    distanceAgent1 = calculateDistance(network_indices,x,network(x,a1));
-		    distanceAgent2 = calculateDistance(network_indices,z,network(z,a2));
-		    jointDistanceReward= (priority_weights(y)/distanceAgent1)+(priority_weights(y)/distanceAgent2);
-		  end 
-		end 
+	      %---------------- Useless motions are penalised---------------------------- 
+	      uselessMotionPenalization = -2; 
+	      distanceAgent1 = calculateDistance(network_indices,x,network(x,a1));
+	      distanceAgent2 = calculateDistance(network_indices,z,network(z,a2));
+	      jointDistanceReward= (uselessMotionPenalization/distanceAgent1)+(uselessMotionPenalization/distanceAgent2);
+
 	       
-		sum_reward = reward_clearDanger+reward_extractVictim+dangerZoneReward+jointDistanceReward;
-		
-		fprintf(fid,'\nR: %s %s : %s_%s_%s_%s : * :  * : %f', agent1Actions{a1}, agent2Actions{a2},agent1Loc{x},agent2Loc{z},victimLoc{v},dangerLoc{d},sum_reward);    
+	      jointReward = calculateSumRewards_v1_1(priority_order,jointDistanceReward,dangerZoneReward,reward_clearDanger,reward_extractVictim);
+
+	      fprintf(fid,'\nR: %s %s : %s_%s_%s_%s : * :  * : %f', agent1Actions{a1}, agent2Actions{a2},agent1Loc{x},agent2Loc{z},victimLoc{v},dangerLoc{d},jointReward);    
 	      
 	    end
 	   end
@@ -400,10 +384,6 @@ priority_weights=rewardsBasedonPriority_v1(priority_order);
 	 end
 	end
       end 
-  
-  
-
-%reward = rewards(length(rewards));
 
 %==================================================================================================================================================
 

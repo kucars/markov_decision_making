@@ -1,16 +1,17 @@
+
 function [priority_weights] = rewardsBasedonPriority_v1(priority_order)
 
-%-----------------------set the weights- flexible size--------------------------------
-max_min_weights = {100,-1}; 
+%-----------------------set the weights- flexible size---------------------
+max_weights = 100; 
 for x=1:length(priority_order)
   if (x==1)
-    priority_weights (x) = max_min_weights{1};
-  elseif (x==length(priority_order))
-    priority_weights (x) = max_min_weights{2};
-  elseif (x!=1 && x!=length(priority_order))
-    priority_weights (x) = max_min_weights{1}/(x*-1);
-  end%end if
-end%end for loop
+    priority_weights (x) = max_weights;
+  elseif ((x<= length(priority_order)/2) && (x>1))
+    priority_weights (x) = max_weights-(x*8);
+  else
+    priority_weights (x) = (x*x*6)-max_weights;
+  end %end if
+end %end for loop
  
 
 
