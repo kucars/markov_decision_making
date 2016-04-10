@@ -21,7 +21,7 @@ weightTime =0;
       elseif ((x>1)&&(x<=length(priority_order)/2))
 	weightDangerToDistance=(x*0.9)/x;
       elseif (x>length(priority_order)/2)
-	weightDangerToDistance=x/15;
+	weightDangerToDistance=x/20;
       end  
     elseif(strcmp(priority_order{x},'extract_victim'))
       if(x==1)
@@ -37,7 +37,7 @@ weightTime =0;
       elseif ((x>1)&&(x<=length(priority_order)/2))
 	weightTime=(x*0.9)/x;
       elseif (x>length(priority_order)/2)
-	weightTime=x/10;
+	weightTime=x/20;
       end  
     end%end for loop
   end%end for loop 

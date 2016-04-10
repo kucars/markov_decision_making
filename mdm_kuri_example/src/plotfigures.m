@@ -20,17 +20,24 @@ Joint_Belief4=[1 0.955433 0.873915 0.803682 0.747376 0.723411 0.82561 0.930436 0
 Joint_Rewards4=[-1.02894 99.7014 -1.03232 -1.44027 -1.09349 -0.931223 -0.756536 98.5761 -0.595945];
 accumlativeRewards4 = [-1.02894 98.67246 97.64014 96.19987 95.10638 94.175157 93.418621 191.994721 191.398776];
 
+%priortiesObj_v1 (do the weights before generate the rewards) 
+Episode1 = [0 1 2 3 4 5 6 7 8 9]; 
+Joint_Belief5=[1 0.955433 0.878075 0.811495 0.749904 0.712859 0.689467 0.692254 0.795797 0.723151]
+Joint_Rewards5= [-12.0231 84.4154 -3.01883 -1.37291 -1.92137 -3.06693 -2.96563 -1.87477 84.6836 -1.46718]
+accumlativeRewards5= [-12.0231 -24.0462 -27.06503 -28.43794 -30.35931 -33.42624 -36.39187 -38.26664 -76.53328 -78.00046]
 
 
 figure 
-h= plot(Episode,Joint_Belief1, '--go',Episode,Joint_Belief2,'-.r*',Episode,Joint_Belief3,'-.xb',Episode,Joint_Belief4,'--+k');
+h= plot(Episode,Joint_Belief1, '--go',Episode,Joint_Belief2,'-.r*',Episode,Joint_Belief3,'-.xb',Episode,Joint_Belief4,'--+k',Episode1, Joint_Belief5,'-.po');
 set (h, 'LineWidth', 2);
 %plot(JointRewards1,':');
-legend('Classical','ByUsingDangerDistance','ByUsingTimeAndDangerDistance','Time and Classical model');
+lngd=legend('Classical','Using Risk','Using Time and Risk','Time and Classical model','priortiesObj_v1');
 grid on
 title('Comparison between the joint-beliefs of the models')
 xlabel('Episode');
 ylabel('Joint Belief');
+set(lngd,'Location','NorthEast');
+set(lngd,'interpreter','latex','fontsize',8);
 
 %----representing states for model 1---------------
 state00 = '\leftarrow state b-b-f-c';
@@ -195,6 +202,20 @@ xlabel('Episode');
 ylabel('Nodes');
 
 
+%----------------plot bars test----------
+figure 
+%x_axis= ['clear_danger''extract_victim''dangerDistance''time'; 'clear_danger''extract_victim''dangerDistance''time'];
+
+a2 = [ 2 3; 4 5 ];
+b2 = [2 2; 2 3];
+
+%set(gcf,'Color',[1,1,1]);
+%hold on;  
+bar(a2,'r');  
+bar(b2,'g');  
+%bar(c2,'r');
+%bar(d2,'y');
+legend('a', 'b');
 
 
 

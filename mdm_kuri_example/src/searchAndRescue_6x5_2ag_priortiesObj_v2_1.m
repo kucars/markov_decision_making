@@ -378,6 +378,8 @@ priority_order = {'clear_danger','extract_victim','dangerDistance','time'};
 
 	      fprintf(fid,'\nR: %s %s : %s_%s_%s_%s : * :  * : %f', agent1Actions{a1}, agent2Actions{a2},agent1Loc{x},agent2Loc{z},victimLoc{v},dangerLoc{d},jointReward);    
 	      
+	      
+	      
 	    end
 	   end
 	  end
@@ -388,7 +390,8 @@ priority_order = {'clear_danger','extract_victim','dangerDistance','time'};
 %==================================================================================================================================================
 
 
-
 fprintf(fid,'\n');
 
 fclose(fid);
+
+
