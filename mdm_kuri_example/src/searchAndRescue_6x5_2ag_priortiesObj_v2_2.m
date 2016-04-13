@@ -340,125 +340,51 @@ end
 
 priority_order = {'clear_danger','extract_victim','dangerDistance','time'};
 
-%---------------- Useless motions are penalised----------------------------
-%fprintf(fid,'\nR: * : * : * : * : -1.0');
-%fprintf(fid,'\nR: * : * : * : * : -10.00');
-%uselessMotionPenalization = -3;%used for the * 
-uselessMotionPenalization = -2; 
 
-for a1=1:length(agent1Actions)
-    for a2=1:length(agent2Actions)
-      for x=1:length(agent1Loc)
-	for z=1:length(agent2Loc)
-	  for v=1:length(victimLoc)
-	   for d=1:length(dangerLoc)
-		distanceAgent1 = calculateDistance(network_indices,x,network(x,a1));
-		distanceAgent2 = calculateDistance(network_indices,z,network(z,a2));
-		%jointDistanceReward= (uselessMotionPenalization*distanceAgent1)+(uselessMotionPenalization*distanceAgent2); 
-		jointDistanceReward= (uselessMotionPenalization/distanceAgent1)+(uselessMotionPenalization/distanceAgent2); 
-		%fprintf(fid,'\nR: %s %s : %s_%s_%s_%s : * :  * : %f', agent1Actions{a1}, agent2Actions{a2},agent1Loc{x},agent2Loc{z},victimLoc{v},dangerLoc{d},jointDistanceReward);
-	   end 
-	 end
-	end
-      end
-    end
-  end
-%----------------- penality for human go to danger_USING danger function------------------------- 
-dangerPenalization=-50;
-  for a1=1:length(agent1Actions)
-    for a2=1:length(agent2Actions)
-      for x=1:length(agent1Loc)
-	for z=1:length(agent2Loc)
-	  for v=1:length(victimLoc)
-		distance = calculateDistance(network_indices,dangerLocState,network(z,a2));
-		dangerZoneReward= dangerPenalization/distance; 
-		%fprintf(fid,'\nR: %s %s : %s_%s_%s_%s : * :  * : %f', agent1Actions{a1}, agent2Actions{a2},agent1Loc{x},agent2Loc{z},victimLoc{v},dangerlocNode,dangerZoneReward);
-	  end
-	end
-      end
-    end
-  end
-% -----------------Reward for clearing danger----------------------------------
-for a2=1:length(agent2Actions)
-  for z=1:length(agent2Loc)
-    for v=1:length(victimLoc)                
-      %fprintf(fid,'\nR:  clear_danger %s : %s_%s_%s_%s :  * : * : 100',agent2Actions{a2},dangerlocNode, agent2Loc{z}, victimLoc{v},dangerlocNode);
-      		reward_clearDanger = 100; 
-    end
-  end 
-end
-%--------------- Extracting a victim is highly rewarderd--------------------
-for x=1:length(agent1Loc)
-  for a1=1:length(agent1Actions)
-    for sd=1:length(dangerLoc)
-     % fprintf(fid,'\nR:  %s extract_victim : %s_%s_%s_%s : * : * : 100', agent1Actions{a1},agent1Loc{x},victimlocNode,victimlocNode,dangerLoc{sd});
-      reward_extractVictim = 100; 
-
-    end
-  end
-end 
-
-%====================now i should call the sum function=======================
-% should it all be in one nested for loop? because i'm worried about the states. .we have different states and the rewards reflect that!!!!
-
-jointReward = calculateSumRewards_v1_2(priority_order,jointDistanceReward,dangerZoneReward,reward_clearDanger,reward_extractVictim);
-
-
-
-
-
-
-
-
-priority_weights=rewardsBasedonPriority_v1(priority_order);
-
-
-  
   for a1=1:length(agent1Actions)
     for a2=1:length(agent2Actions)
       for x=1:length(agent1Loc)
 	for z=1:length(agent2Loc)
 	  for v=1:length(victimLoc)
 	    for d=1:length(dangerLoc)
-	      
-	      
+	     
+%  	      reward_clearDanger = 0; 
+%  	      dangerZoneReward =0;
+%  	      reward_extractVictim =0;
+%  	      jointDistanceReward =0;
 
-	      
-  	      if(strcmp(agent1Actions{a1},'clear_danger')&& strcmp(dangerLoc{d},dangerlocNode)&& strcmp(agent1Loc(network(x,a1)),dangerlocNode))
-		for y=1:length(priority_order)
-		  if(strcmp(priority_order{y},'clear_danger'))
-		    reward_clearDanger=priority_weights(y);
-		  end
-		end
-	      end
-  	      if (strcmp(dangerLoc{d},dangerlocNode))
-		for y=1:length(priority_order)
-		  if(strcmp(priority_order{y},'dangerDistance'))
-		    distance = calculateDistance(network_indices,dangerLocState,network(z,a2));
-		    dangerZoneReward= priority_weights(y)/distance; 
-		  end
-		end
-	      end
-	      
-  	      if (strcmp(agent2Actions{a2},'extract_victim')&& strcmp(victimLoc{v},victimlocNode)&& strcmp(agent2Loc(network(z,a2)),victimlocNode))
-		for y=1:length(priority_order)
-		  if (strcmp(priority_order{y},'extract_victim'))
-		    reward_extractVictim = priority_weights(y);
-		  end 
-		end 
-	      end
-		
-		for y=1:length(priority_order)
-		  if (strcmp(priority_order{y},'time'))
-		    distanceAgent1 = calculateDistance(network_indices,x,network(x,a1));
-		    distanceAgent2 = calculateDistance(network_indices,z,network(z,a2));
-		    jointDistanceReward= (priority_weights(y)/distanceAgent1)+(priority_weights(y)/distanceAgent2);
-		  end 
-		end 
+	      % -----------------Reward for clearing danger----------------------------------
+%    	      if(strcmp(agent1Actions{a1},'clear_danger')&& strcmp(dangerLoc{d},dangerlocNode)&& strcmp(agent1Loc(network(x,a1)),dangerlocNode))
+%  		reward_clearDanger = 100; 
+%  	      end
+	      %----------------- penality for human go to danger_USING danger function-------
+%  	      dangerPenalization=-50;
+%    	      if (strcmp(dangerLoc{d},dangerlocNode))
+%  		distance = calculateDistance(network_indices,dangerLocState,network(z,a2));
+%  		dangerZoneReward= dangerPenalization/distance; 
+%  	      end   
+	      %--------------- Extracting a victim is highly rewarderd-----------------------
+%    	      if (strcmp(agent2Actions{a2},'extract_victim')&& strcmp(victimLoc{v},victimlocNode)&& strcmp(agent2Loc(network(z,a2)),victimlocNode))
+%  		reward_extractVictim = 100; 
+%  	      end
+	      %---------------- Useless motions are penalised---------------------------- 
+%  	      uselessMotionPenalization = -2; 
+%  	      distanceAgent1 = calculateDistance(network_indices,x,network(x,a1));
+%  	      distanceAgent2 = calculateDistance(network_indices,z,network(z,a2));
+%  	      jointDistanceReward= (uselessMotionPenalization/distanceAgent1)+(uselessMotionPenalization/distanceAgent2);
+
 	       
-		sum_reward = reward_clearDanger+reward_extractVictim+dangerZoneReward+jointDistanceReward;
-		
-		fprintf(fid,'\nR: %s %s : %s_%s_%s_%s : * :  * : %f', agent1Actions{a1}, agent2Actions{a2},agent1Loc{x},agent2Loc{z},victimLoc{v},dangerLoc{d},sum_reward);    
+	      reward_clearDanger = clearDangerReward(agent1Actions{a1},agent1Loc,dangerLoc{d},dangerlocNode,x,a1,network);
+	      dangerZoneReward = distancetoDangerReward(dangerLoc{d},network,dangerlocNode,network_indices,dangerLocState,z,a2);
+	      reward_extractVictim = extractVictimReward(agent2Actions{a2},agent2Loc,victimLoc{v},victimlocNode,network,z,a2);
+	      jointDistanceReward = timeReward(network_indices,network,x,z,a1,a2);
+	      
+	       
+	      jointReward = calculateSumRewards_v1_1(priority_order,jointDistanceReward,dangerZoneReward,reward_clearDanger,reward_extractVictim);
+
+	      fprintf(fid,'\nR: %s %s : %s_%s_%s_%s : * :  * : %f', agent1Actions{a1}, agent2Actions{a2},agent1Loc{x},agent2Loc{z},victimLoc{v},dangerLoc{d},jointReward);    
+	      
+	      
 	      
 	    end
 	   end
@@ -466,15 +392,12 @@ priority_weights=rewardsBasedonPriority_v1(priority_order);
 	 end
 	end
       end 
-  
-  
-
-%reward = rewards(length(rewards));
 
 %==================================================================================================================================================
-
 
 
 fprintf(fid,'\n');
 
 fclose(fid);
+
+
