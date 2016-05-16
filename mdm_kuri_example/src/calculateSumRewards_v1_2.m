@@ -1,4 +1,4 @@
-function [sum] = calculateSumRewards_v1_1(priority_order,jointDistanceReward,dangerZoneReward,reward_clearDanger,reward_extractVictim)
+function [sum] = calculateSumRewards_v1_2(priority_order,jointDistanceReward,dangerZoneReward,reward_clearDanger,reward_extractVictim)
 
 sum = 0; 
 weightClearDanger = 0;
@@ -13,31 +13,31 @@ weightTime =0;
       elseif ((x>1)&&(x<=length(priority_order)/2))
 	weightClearDanger=(x*0.9)/x;
       elseif (x>length(priority_order)/2)
-	weightClearDanger=x/-0.5; 
+	weightClearDanger=x/10; 
       end 
-    elseif if(strcmp(priority_order{x},'dangerDistance'))
+    elseif(strcmp(priority_order{x},'dangerDistance'))
       if(x==1)
 	weightDangerToDistance=x;
       elseif ((x>1)&&(x<=length(priority_order)/2))
 	weightDangerToDistance=(x*0.9)/x;
       elseif (x>length(priority_order)/2)
-	weightClearDanger=x/-0.5;
+	weightDangerToDistance=(x/0.9)*0.3;
       end  
-    elseif (strcmp(priority_order{y},'extract_victim'))
+    elseif(strcmp(priority_order{x},'extract_victim'))
       if(x==1)
 	weightExtractVictim=x;
       elseif ((x>1)&&(x<=length(priority_order)/2))
 	weightExtractVictim=(x*0.9)/x;
       elseif (x>length(priority_order)/2)
-	weightClearDanger=x/-0.5;
+	weightExtractVictim=x/10;
       end  
-    elseif(strcmp(priority_order{y},'time'))
+    elseif(strcmp(priority_order{x},'time'))
       if(x==1)
 	weightTime=x;
       elseif ((x>1)&&(x<=length(priority_order)/2))
 	weightTime=(x*0.9)/x;
       elseif (x>length(priority_order)/2)
-	weightClearDanger=x/-0.5;
+	weightTime=(x/0.9)*0.3;
       end  
     end%end for loop
   end%end for loop 

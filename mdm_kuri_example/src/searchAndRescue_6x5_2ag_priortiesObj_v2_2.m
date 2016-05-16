@@ -380,11 +380,47 @@ priority_order = {'clear_danger','extract_victim','dangerDistance','time'};
 	      jointDistanceReward = timeReward(network_indices,network,x,z,a1,a2);
 	      
 	       
-	      jointReward = calculateSumRewards_v1_1(priority_order,jointDistanceReward,dangerZoneReward,reward_clearDanger,reward_extractVictim);
+	      jointReward = calculateSumRewards_v1_2(priority_order,jointDistanceReward,dangerZoneReward,reward_clearDanger,reward_extractVictim);
 
 	      fprintf(fid,'\nR: %s %s : %s_%s_%s_%s : * :  * : %f', agent1Actions{a1}, agent2Actions{a2},agent1Loc{x},agent2Loc{z},victimLoc{v},dangerLoc{d},jointReward);    
 	      
-	      
+	      %---------save the rewards per objective-------------------
+	      if(strcmp(agent1Actions{a1},'down')&&strcmp(agent2Actions{a2},'up')&&strcmp(agent1Loc{x},'i')&&strcmp(agent2Loc{z},'c')&&strcmp(victimLoc{v},'f')&&strcmp(dangerLoc{d},'c'))
+		x_ep0= [reward_clearDanger reward_extractVictim dangerZoneReward jointDistanceReward];
+	      end 
+	      if(strcmp(agent1Actions{a1},'right')&&strcmp(agent2Actions{a2},'right')&&strcmp(agent1Loc{x},'j')&&strcmp(agent2Loc{z},'d')&&strcmp(victimLoc{v},'f')&&strcmp(dangerLoc{d},'c'))
+		x_ep1= [reward_clearDanger reward_extractVictim dangerZoneReward jointDistanceReward];
+	      end
+	      if(strcmp(agent1Actions{a1},'clear_danger')&&strcmp(agent2Actions{a2},'up')&&strcmp(agent1Loc{x},'c')&&strcmp(agent2Loc{z},'e')&&strcmp(victimLoc{v},'f')&&strcmp(dangerLoc{d},'c'))
+		x_ep2= [reward_clearDanger reward_extractVictim dangerZoneReward jointDistanceReward];
+	      end
+	      if(strcmp(agent1Actions{a1},'down')&&strcmp(agent2Actions{a2},'extract_victim')&&strcmp(agent1Loc{x},'c')&&strcmp(agent2Loc{z},'f')&&strcmp(victimLoc{v},'f')&&strcmp(dangerLoc{d},'n'))
+		x_ep3= [reward_clearDanger reward_extractVictim dangerZoneReward jointDistanceReward];
+	      end
+	      if(strcmp(agent1Actions{a1},'left')&&strcmp(agent2Actions{a2},'down')&&strcmp(agent1Loc{x},'b')&&strcmp(agent2Loc{z},'f')&&strcmp(victimLoc{v},'n')&&strcmp(dangerLoc{d},'n'))
+		x_ep4= [reward_clearDanger reward_extractVictim dangerZoneReward jointDistanceReward];
+	      end
+	      if(strcmp(agent1Actions{a1},'right')&&strcmp(agent2Actions{a2},'up')&&strcmp(agent1Loc{x},'l')&&strcmp(agent2Loc{z},'e')&&strcmp(victimLoc{v},'n')&&strcmp(dangerLoc{d},'n'))
+		x_ep5= [reward_clearDanger reward_extractVictim dangerZoneReward jointDistanceReward];
+	      end
+	      if(strcmp(agent1Actions{a1},'left')&&strcmp(agent2Actions{a2},'down')&&strcmp(agent1Loc{x},'b')&&strcmp(agent2Loc{z},'f')&&strcmp(victimLoc{v},'n')&&strcmp(dangerLoc{d},'n'))
+		x_ep6= [reward_clearDanger reward_extractVictim dangerZoneReward jointDistanceReward];
+	      end
+	      if(strcmp(agent1Actions{a1},'right')&&strcmp(agent2Actions{a2},'up')&&strcmp(agent1Loc{x},'l')&&strcmp(agent2Loc{z},'e')&&strcmp(victimLoc{v},'n')&&strcmp(dangerLoc{d},'n'))
+		x_ep7= [reward_clearDanger reward_extractVictim dangerZoneReward jointDistanceReward];
+	      end
+	      if(strcmp(agent1Actions{a1},'left')&&strcmp(agent2Actions{a2},'down')&&strcmp(agent1Loc{x},'b')&&strcmp(agent2Loc{z},'f')&&strcmp(victimLoc{v},'n')&&strcmp(dangerLoc{d},'n'))
+		x_ep8= [reward_clearDanger reward_extractVictim dangerZoneReward jointDistanceReward];
+	      end
+	      if(strcmp(agent1Actions{a1},'right')&&strcmp(agent2Actions{a2},'up')&&strcmp(agent1Loc{x},'l')&&strcmp(agent2Loc{z},'e')&&strcmp(victimLoc{v},'n')&&strcmp(dangerLoc{d},'n'))
+		x_ep9= [reward_clearDanger reward_extractVictim dangerZoneReward jointDistanceReward];
+	      end
+	      if(strcmp(agent1Actions{a1},'left')&&strcmp(agent2Actions{a2},'down')&&strcmp(agent1Loc{x},'b')&&strcmp(agent2Loc{z},'f')&&strcmp(victimLoc{v},'n')&&strcmp(dangerLoc{d},'n'))
+		x_ep10= [reward_clearDanger reward_extractVictim dangerZoneReward jointDistanceReward];
+	      end
+
+
+	      %----------------------------------------------------------
 	      
 	    end
 	   end
@@ -399,5 +435,36 @@ priority_order = {'clear_danger','extract_victim','dangerDistance','time'};
 fprintf(fid,'\n');
 
 fclose(fid);
+
+%--------------Save rewards in file------
+outputFile = 'priortiesObj_v2_2_TC41_icfc.txt';  
+fid = fopen(outputFile, 'wb');
+% Write to File the top comments 
+fprintf(fid,'\n TC41 starting state is i_c_f_c');
+fprintf(fid,'\n Ep0: %f',x_ep0);
+fprintf(fid,'\n Ep1: %f',x_ep1);
+fprintf(fid,'\n Ep2: %f',x_ep2);
+fprintf(fid,'\n Ep3: %f',x_ep3);
+fprintf(fid,'\n Ep4: %f',x_ep4);
+fprintf(fid,'\n Ep5: %f',x_ep5);
+fprintf(fid,'\n Ep6: %f',x_ep6);
+fprintf(fid,'\n Ep7: %f',x_ep7);
+fprintf(fid,'\n Ep8: %f',x_ep8);
+fprintf(fid,'\n Ep9: %f',x_ep9);
+fprintf(fid,'\n Ep10: %f',x_ep10);
+fprintf(fid,'\n');
+fclose(fid);
+
+%--------------Plot----------------------
+figure 
+  
+bar([x_ep0;x_ep1;x_ep2;x_ep3;x_ep4;x_ep5;x_ep6;x_ep7;x_ep8;x_ep9;x_ep10]); 
+grid on
+title('Rewards per Objective at Each Time Step')
+xlabel('Episode');
+ylabel('Joint Rewards');
+lngd=legend('Clear Danger', 'Extract Victim','Distance from Danger','Time of Travel');
+set(lngd,'Location','NorthEast');
+set(lngd,'interpreter','latex','fontsize',8);
 
 
